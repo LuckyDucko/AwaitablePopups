@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AwaitablePopupsExample.FakeLogin.FakeLogin"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ViewModel="clr-namespace:AwaitablePopupsExample.FakeLogin"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    ios:Page.UseSafeArea="true"
+    x:DataType="ViewModel:FakeLoginViewModel"
+    BackgroundColor="#f5f5f5"
+    NavigationPage.HasNavigationBar="False">
+    <StackLayout Margin="20,0,20,0" VerticalOptions="Start">
+        <Image
+            Margin="0,70,0,0"
+            HorizontalOptions="CenterAndExpand"
+            Source="NoSource.png" />
+        <Label
+            Margin="0,15,0,0"
+            Text="Phone number"
+            TextColor="Black" />
+        <Entry
+            AutomationId="MobileEntry"
+            IsSpellCheckEnabled="false"
+            IsTextPredictionEnabled="false"
+            Keyboard="Telephone"
+            MaxLength="16"
+            Text="{Binding Mobile, Mode=TwoWay}" />
+        <Label
+            Margin="0,15,0,0"
+            Text="PIN"
+            TextColor="Black" />
+        <Entry
+            AutomationId="PinEntry"
+            IsPassword="true"
+            IsSpellCheckEnabled="false"
+            IsTextPredictionEnabled="false"
+            Text="{Binding Password, Mode=TwoWay}" />
+        <Button
+            Margin="0,25,0,20"
+            BackgroundColor="Red"
+            BorderColor="White"
+            BorderWidth="1"
+            Command="{Binding LoginAsync}"
+            CornerRadius="25"
+            FontAttributes="Bold"
+            HeightRequest="50"
+            IsEnabled="{Binding LoginEnabled}"
+            Text="Sign In"
+            TextColor="Gray" />
+        <StackLayout
+            HorizontalOptions="Center"
+            Orientation="Horizontal"
+            Spacing="10">
+            <Label
+                FontSize="Default"
+                HorizontalOptions="Start"
+                Text="Remember Me"
+                TextColor="White"
+                VerticalOptions="Center" />
+            <Switch IsToggled="{Binding RememberMe, Mode=TwoWay}" OnColor="Pink" />
+        </StackLayout>
+    </StackLayout>
+</ContentPage>
