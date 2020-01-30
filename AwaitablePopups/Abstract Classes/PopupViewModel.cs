@@ -8,7 +8,6 @@ namespace AwaitablePopups.AbstractClasses
     public abstract class PopupViewModel<TReturnable> : BaseViewModel
     {
         public TaskCompletionSource<TReturnable> Returnable { get; set; }
-
         protected TReturnable BaseExitValue { get; set; }
 
         private string _mainPopupInformation;
@@ -45,7 +44,11 @@ namespace AwaitablePopups.AbstractClasses
                 PopupService.PopAsync();
             }
         }
-
+        /// <summary>
+        /// This is for use only when you wish for some form of reusable wrapper,
+        /// it provides little protection or help.
+        /// </summary>
+        /// <param name="optionalProperties"></param>
         public void InitialiseOptionalProperties(Dictionary<string, object> optionalProperties)
         {
             foreach (KeyValuePair<string, object> property in optionalProperties)

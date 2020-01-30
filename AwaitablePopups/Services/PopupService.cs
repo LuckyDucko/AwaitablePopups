@@ -64,7 +64,8 @@ namespace Awaitable.Services
             }
         }
 
-        public TPopupPage CreatePopupPage<TPopupPage>() where TPopupPage : PopupPage, new()
+        public TPopupPage CreatePopupPage<TPopupPage>()
+            where TPopupPage : PopupPage, new()
         {
             return new TPopupPage();
         }
