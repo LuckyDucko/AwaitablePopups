@@ -16,12 +16,17 @@ pool:
   name: Hosted VS2017
   demands: msbuild
 
+
 # The different steps in our build
 steps:
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 4.9.3'
   inputs:
     versionSpec: 4.9.3
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '3.x'
 
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
