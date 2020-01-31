@@ -32,7 +32,7 @@ steps:
     command: 'restore'
     projects: 'AwaitablePopups/AwaitablePopups.csproj'
     feedsToUse: 'select'
-    vstsFeed: 'fe37826d-ecb5-4994-91d9-32b0f52b8fd0''
+    vstsFeed: 'fe37826d-ecb5-4994-91d9-32b0f52b8fd0'
 
 - task: MSBuild@1
   displayName: 'Build solution'
