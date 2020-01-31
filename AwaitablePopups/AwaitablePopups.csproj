@@ -1,31 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <PackOnBuild>true</PackOnBuild>
-    <PackageVersion>0.1</PackageVersion>
-    <Authors>Tyson Elliot Hooker</Authors>
-    <NeutralLanguage>en-AU</NeutralLanguage>
-    <Description>Create your own DisplayAlerts using XAML.</Description>
-    <PackageId>AwaitablePopups</PackageId>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <LangVersion>8.0</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <LangVersion>8.0</LangVersion>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Class1.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="AsyncAwaitBestPractices" Version="4.0.1" />
-    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.5-dev.8">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991537" />
-    <PackageReference Include="Rg.Plugins.Popup" Version="1.2.0.223" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <PackOnBuild>true</PackOnBuild>
+        <PackageVersion>0.1.4</PackageVersion>
+        <Authors>Tyson Hooker</Authors>
+        <NeutralLanguage>en-AU</NeutralLanguage>
+        <Description>Create your own DisplayAlerts using XAML.
+Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
+        <PackageId>AwaitablePopups</PackageId>
+        <Owners>LuckyDucko</Owners>
+        <PackageLicenseUrl>https://mit-license.org</PackageLicenseUrl>
+        <DevelopmentDependency>true</DevelopmentDependency>
+        <PackageProjectUrl>https://github.com/LuckyDucko/AwaitablePopups</PackageProjectUrl>
+        <PackageTags>Xamarin-forms</PackageTags>
+        <Title>Awaitable Popups</Title>
+        <Copyright>Tyson Hooker 2020</Copyright>
+        <Summary>Easy Popups for mvvm</Summary>
+    </PropertyGroup>
+    <PropertyGroup>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <LangVersion>8.0</LangVersion>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <LangVersion>8.0</LangVersion>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Remove="Class1.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="AsyncAwaitBestPractices" Version="4.0.1" />
+        <PackageReference Include="Xamarin.Forms" Version="4.4.0.991537" />
+        <PackageReference Include="Rg.Plugins.Popup" Version="1.2.0.223" />
+        <PackageReference Include="NuGet.Build.Packaging" Version="0.2.2">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
 </Project>

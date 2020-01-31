@@ -6,7 +6,7 @@ using AwaitablePopups.Interfaces;
 
 namespace AwaitablePopups.AbstractClasses
 {
-    public abstract class BaseViewModel : INotifyPropertyChanged
+    public abstract class BasePopupViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected IPopupService PopupService { get; set; }
@@ -23,7 +23,7 @@ namespace AwaitablePopups.AbstractClasses
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected BaseViewModel(IPopupService popupService)
+        protected BasePopupViewModel(IPopupService popupService)
         {
             PopupService = popupService;
         }

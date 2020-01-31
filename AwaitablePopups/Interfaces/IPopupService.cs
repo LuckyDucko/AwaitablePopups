@@ -11,7 +11,7 @@ namespace AwaitablePopups.Interfaces
             where TPopupPage : PopupPage, new();
         TPopupPage AttachViewModel<TPopupPage, TViewModel>(TPopupPage popupPage, TViewModel viewModel)
             where TPopupPage : PopupPage, IGenericViewModel<TViewModel>
-            where TViewModel : BaseViewModel;
+            where TViewModel : BasePopupViewModel;
         Task<TReturnable> PushAsync<TViewModel, TPopupPage, TReturnable>(TViewModel modalViewModel)
             where TPopupPage : PopupPage, IGenericViewModel<TViewModel>, new()
             where TViewModel : PopupViewModel<TReturnable>;

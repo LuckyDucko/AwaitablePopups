@@ -5,7 +5,7 @@ using AwaitablePopups.Interfaces;
 
 namespace AwaitablePopups.AbstractClasses
 {
-    public abstract class PopupViewModel<TReturnable> : BaseViewModel
+    public abstract class PopupViewModel<TReturnable> : BasePopupViewModel
     {
         public TaskCompletionSource<TReturnable> Returnable { get; set; }
         protected TReturnable BaseExitValue { get; set; }

@@ -72,7 +72,7 @@ namespace Awaitable.Services
 
         public TPopupPage AttachViewModel<TPopupPage, TViewModel>(TPopupPage popupPage, TViewModel viewModel)
             where TPopupPage : PopupPage, IGenericViewModel<TViewModel>
-            where TViewModel : BaseViewModel
+            where TViewModel : BasePopupViewModel
         {
             popupPage.SetViewModel(viewModel);
             return popupPage;

@@ -4,7 +4,7 @@ using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
 using Xamarin.Forms;
 
-namespace AwaitablePopups.PopupPages.SingleResponsePopupPage
+namespace AwaitablePopups.PopupPages.SingleResponse
 {
     public sealed class SingleResponseViewModel : PopupViewModel<bool>
     {

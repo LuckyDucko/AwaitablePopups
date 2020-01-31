@@ -2,7 +2,7 @@
 using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
 
-namespace AwaitablePopups.PopupPages.DualResponsePopupPage
+namespace AwaitablePopups.PopupPages.DualResponse
 {
     public sealed class DualResponseViewModel : PopupViewModel<bool>
     {

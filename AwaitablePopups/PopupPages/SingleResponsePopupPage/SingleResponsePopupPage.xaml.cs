@@ -1,7 +1,7 @@
 ﻿using AwaitablePopups.Interfaces;
 using Rg.Plugins.Popup.Pages;
 
-namespace AwaitablePopups.PopupPages.SingleResponsePopupPage
+namespace AwaitablePopups.PopupPages.SingleResponse
 {
     public partial class SingleResponsePopupPage : PopupPage, IGenericViewModel<SingleResponseViewModel>
     {

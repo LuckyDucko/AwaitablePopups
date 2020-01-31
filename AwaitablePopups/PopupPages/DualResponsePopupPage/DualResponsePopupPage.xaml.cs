@@ -2,7 +2,7 @@
 using AwaitablePopups.Interfaces;
 using Rg.Plugins.Popup.Pages;
 
-namespace AwaitablePopups.PopupPages.DualResponsePopupPage
+namespace AwaitablePopups.PopupPages.DualResponse
 {
     public partial class DualResponsePopupPage : PopupPage, IGenericViewModel<DualResponseViewModel>
     {
