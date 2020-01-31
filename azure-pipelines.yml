@@ -27,11 +27,12 @@ steps:
   inputs:
     packageType: 'sdk'
     version: '3.x'
-
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
+- task: DotNetCoreCLI@2
   inputs:
-    restoreSolution: 'AwaitablePopups.sln'
+    command: 'restore'
+    projects: 'AwaitablePopups/AwaitablePopups.csproj'
+    feedsToUse: 'select'
+    vstsFeed: 'fe37826d-ecb5-4994-91d9-32b0f52b8fd0''
 
 - task: MSBuild@1
   displayName: 'Build solution'
