@@ -125,7 +125,7 @@ Coming soon, however, the MIT license is what im thinking
 ## Contact
 
 My [Github](https://github.com/LuckyDucko),
-or reach me on the [Xamarin Slack] (https://xamarinchat.herokuapp.com/),
+or reach me on the [Xamarin Slack](https://xamarinchat.herokuapp.com/),
 or on my [E-mail](tyson@logchecker.com.au)
 
 Project Link: [AwaitablePopups](https://github.com/LuckyDucko/AwaitablePopups)
