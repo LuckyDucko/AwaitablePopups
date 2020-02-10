@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <PackOnBuild>true</PackOnBuild>
         <PackageVersion>0.1.4</PackageVersion>
         <Authors>Tyson Hooker</Authors>
@@ -22,10 +22,10 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <LangVersion>latest</LangVersion>
+        <LangVersion>8.0</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <LangVersion>latest</LangVersion>
+        <LangVersion>8.0</LangVersion>
     </PropertyGroup>
     <ItemGroup>
         <Compile Remove="Class1.cs" />
@@ -38,14 +38,5 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-    </ItemGroup>
-    <ItemGroup>
-      <None Remove="PopupPages\DualResponsePopupPage\DualResponseViewModel.cs~" />
-      <None Remove="PopupPages\DualResponsePopupPage\DualResponsePopupPage.xaml.cs~" />
-      <None Remove="PopupPages\SingleResponsePopupPage\SingleResponsePopupPage.xaml.cs~" />
-      <None Remove="PopupPages\SingleResponsePopupPage\SingleResponseViewModel.cs~" />
-      <None Remove="Abstract Classes\PopupViewModel.cs~" />
-      <None Remove="Abstract Classes\BaseViewModel.cs~" />
-      <None Remove="Interfaces\IPopupService.cs~" />
     </ItemGroup>
 </Project>

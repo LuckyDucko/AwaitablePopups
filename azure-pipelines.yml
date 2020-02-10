@@ -33,10 +33,8 @@ steps:
     projects: 'AwaitablePopups/AwaitablePopups.csproj'
     feedsToUse: 'select'
     vstsFeed: 'fe37826d-ecb5-4994-91d9-32b0f52b8fd0'
-
-- task: MSBuild@1
-  displayName: 'Build solution'
+- task: DotNetCoreCLI@2
   inputs:
-    solution: 'AwaitablePopups/AwaitablePopups.csproj'
-    msbuildArguments: '/t:restore;build /p:PackageOutputPath=$(build.artifactstagingdirectory)'
-    clean: true
+    command: 'build'
+    projects: 'AwaitablePopups/AwaitablePopups.csproj'
+    arguments: '--configuration Release'

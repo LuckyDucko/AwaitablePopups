@@ -88,7 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AwaitablePopupsExample\AwaitablePopupsExample.csproj">
-      <Project>{F6E4E709-2A60-4BAA-A6AB-7B5275AB761B}</Project>
+      <Project>{1B03D8A0-DA76-491C-AAFB-B753DD687555}</Project>
       <Name>AwaitablePopupsExample</Name>
     </ProjectReference>
     <ProjectReference Include="..\AwaitablePopups\AwaitablePopups.csproj">
