@@ -2,14 +2,14 @@
 using System.Threading.Tasks;
 using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
-using AwaitablePopups.PopupPages.DualResponsePopupPage;
-using AwaitablePopups.PopupPages.SingleResponsePopupPage;
+using AwaitablePopups.PopupPages.DualResponse;
+using AwaitablePopups.PopupPages.SingleResponse;
 using AsyncAwaitBestPractices.MVVM;
 using System.Runtime.InteropServices;
 
 namespace AwaitablePopupsExample.FakeLogin
 {
-    public class FakeLoginViewModel : BaseViewModel
+    public class FakeLoginViewModel : BasePopupViewModel
     {
 
         private string _mobile;
