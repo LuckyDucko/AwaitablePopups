@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <PackOnBuild>true</PackOnBuild>
-        <PackageVersion>0.1.4</PackageVersion>
+        <PackageVersion>0.1.5</PackageVersion>
         <Authors>Tyson Hooker</Authors>
         <NeutralLanguage>en-AU</NeutralLanguage>
         <Description>Create your own DisplayAlerts using XAML.
@@ -16,16 +16,16 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
         <PackageTags>Xamarin-forms</PackageTags>
         <Title>Awaitable Popups</Title>
         <Copyright>Tyson Hooker 2020</Copyright>
-        <Summary>Easy Popups for mvvm</Summary>
+        <Summary>Popup Modals For Xamarin Forms</Summary>
     </PropertyGroup>
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <LangVersion>8.0</LangVersion>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <LangVersion>8.0</LangVersion>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <ItemGroup>
         <Compile Remove="Class1.cs" />
