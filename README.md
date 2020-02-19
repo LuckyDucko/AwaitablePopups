@@ -53,10 +53,10 @@ You can install the nuget by looking up 'AwaitablePopups' in your nuget package 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-I have included a very base example, but here is the nutes and bolts. 
+I have included a very base example, but here is the nuts and bolts. 
 
 This is a function that is called when a user incorrectly logs in.
-We create the ViewModel, and then assign the viewmodel properties with what we want. 
+We create the ViewModel, and then assign the ViewModel properties with what we want. 
 The most important is the Single Button Command here, (which can accept the AsyncCommand from AsyncAwaitBestPractices or anything that implements ICommand). 
 
 This property allows you to enact any functionality within the popup once a button is pressed, this could be a call to an API, an extended amount of processing, it does however, need to finish with SafeCloseModal, a function which will return whatever value you place inside it (aslong as it matches pushasync, which is below)
@@ -64,9 +64,9 @@ This property allows you to enact any functionality within the popup once a butt
 Once you have setup the rest of the properties (image is important), you then use PushAsync.
 PushAsync is the generic glue that holds this all together. With it, you will specify the ViewModel, the Page, and the type you are returning using safeclosemodal. 
 
-This is because one viewmodel could be used for several popuppages, and so forth.
+This is because one ViewModel could be used for several popuppages, and so forth.
 
-A limitation here is that no matter what, you return one type. This is something i will need to workaround in the future.
+A limitation here is that no matter what, you return one type. This is something I will need to workaround in the future.
 ```csharp
 private async Task<bool> IncorrectLoginAsync()
 {
@@ -82,7 +82,7 @@ private async Task<bool> IncorrectLoginAsync()
 ```
 
 
-This function then is called like this
+This function then is called like this:
 ```csharp
 if (string.IsNullOrEmpty(Mobile) || string.IsNullOrEmpty(Password))
 {
