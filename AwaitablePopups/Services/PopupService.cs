@@ -3,9 +3,11 @@ using System.Threading.Tasks;
 using AsyncAwaitBestPractices;
 using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
+using AwaitablePopups.PopupPages.Loader;
 using Rg.Plugins.Popup.Contracts;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
+using Xamarin.Forms;
 
 namespace Awaitable.Services
 {
@@ -78,16 +80,59 @@ namespace Awaitable.Services
             return popupPage;
         }
 
+        public async Task WrapTaskInLoader(Task action, Color loaderColour, Color loaderPopupColour, string reasonForLoader, Color textColour)
+        {
+            var loaderWaiting = new LoaderViewModel(this)
+            {
+                LoaderColour = loaderColour,
+                MainPopupColour = loaderPopupColour,
+                MainPopupInformation = reasonForLoader,
+                TextColour = textColour
+            };
+            if (!action.IsCompleted)
+            {
+#pragma warning disable CS4014
+                var popupModal = AttachViewModel(CreatePopupPage<LoaderPopupPage>(), loaderWaiting);
+                s_popupNavigation.PushAsync(popupModal);
+#pragma warning restore CS4014
+                action.GetAwaiter().OnCompleted(() => Device.BeginInvokeOnMainThread(() => loaderWaiting.SafeCloseModal()));
+
+            }
+            await action;
+        }
+
+        public async Task<TAsyncActionResult> WrapReturnableTaskInLoader<TAsyncActionResult>(Task<TAsyncActionResult> action, Color loaderColour, Color loaderPopupColour, string reasonForLoader, Color textColour)
+        {
+            var loaderWaiting = new LoaderViewModel(this)
+            {
+                LoaderColour = loaderColour,
+                MainPopupColour = loaderPopupColour,
+                MainPopupInformation = reasonForLoader,
+                TextColour = textColour
+            };
+            if (!action.IsCompleted)
+            {
+#pragma warning disable CS4014
+                var popupModal = AttachViewModel(CreatePopupPage<LoaderPopupPage>(), loaderWaiting);
+                s_popupNavigation.PushAsync(popupModal);
+#pragma warning restore CS4014
+                action.GetAwaiter().OnCompleted(() => Device.BeginInvokeOnMainThread(() => loaderWaiting.SafeCloseModal()));
+
+            }
+            await action;
+            return action.Result;
+        }
         /// <typeparam name="TViewModel">The ViewModel Type that is Attached to the Generic PopupPage</typeparam>
         /// <typeparam name="TPopupPage">The Generic Popupup that will be pushed onto the Navigation Stack</typeparam>
         /// <typeparam name="TReturnable">The Type that we expect to be return from the PopupPage through the generic ViewModel </typeparam>
         /// <param name="modalViewModel">The ViewModel that has been created</param>
         /// <returns>an Async Task that will wait for the PopupPage to return its value through its Viewmodel</returns>
         public async Task<TReturnable> PushAsync<TViewModel, TPopupPage, TReturnable>(TViewModel modalViewModel)
-            where TPopupPage : PopupPage, IGenericViewModel<TViewModel>, new()
-            where TViewModel : PopupViewModel<TReturnable>
+    where TPopupPage : PopupPage, IGenericViewModel<TViewModel>, new()
+    where TViewModel : PopupViewModel<TReturnable>
         {
             TPopupPage popupModal = AttachViewModel(CreatePopupPage<TPopupPage>(), modalViewModel);
+            await Task.Delay(200);
             await s_popupNavigation.PushAsync(popupModal);
             return await modalViewModel.Returnable.Task;
         }

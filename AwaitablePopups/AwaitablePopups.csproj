@@ -39,4 +39,7 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="PopupPages\Loader\" />
+    </ItemGroup>
 </Project>

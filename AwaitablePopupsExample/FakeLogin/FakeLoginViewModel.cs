@@ -83,6 +83,8 @@ namespace AwaitablePopupsExample.FakeLogin
 
         private async Task<bool> GenericErrorAsync()
         {
+            await PopupService.WrapTaskInLoader(Task.Delay(1000), Xamarin.Forms.Color.Azure, Xamarin.Forms.Color.Brown, "Loading", Xamarin.Forms.Color.Red);
+
             var exceptionCaughtError = new SingleResponseViewModel(PopupService);
             exceptionCaughtError.SingleButtonCommand = new Xamarin.Forms.Command(() => exceptionCaughtError.SafeCloseModal(false));
             exceptionCaughtError.SingleButtonColour = Xamarin.Forms.Color.Coral;
@@ -96,6 +98,7 @@ namespace AwaitablePopupsExample.FakeLogin
 
         private async Task<bool> IncorrectLoginAsync()
         {
+            await PopupService.WrapTaskInLoader(Task.Delay(1000), Xamarin.Forms.Color.Azure, Xamarin.Forms.Color.Brown, "Loading", Xamarin.Forms.Color.Red);
             var incorrectLoginError = new SingleResponseViewModel(PopupService);
             incorrectLoginError.SingleButtonCommand = new Xamarin.Forms.Command(() => incorrectLoginError.SafeCloseModal(false));
             incorrectLoginError.SingleButtonColour = Xamarin.Forms.Color.Goldenrod;
@@ -108,6 +111,7 @@ namespace AwaitablePopupsExample.FakeLogin
 
         private async Task<bool> SuccessfulLoginAsync()
         {
+            await PopupService.WrapTaskInLoader(Task.Delay(1000), Xamarin.Forms.Color.Azure, Xamarin.Forms.Color.Brown, "Loading", Xamarin.Forms.Color.Red);
             var successfulLogin = new SingleResponseViewModel(PopupService);
             successfulLogin.SingleButtonCommand = new Xamarin.Forms.Command(() => successfulLogin.SafeCloseModal(true));
             successfulLogin.SingleButtonColour = Xamarin.Forms.Color.HotPink;
@@ -120,6 +124,7 @@ namespace AwaitablePopupsExample.FakeLogin
 
         private async Task<bool> CheeseModeAsync()
         {
+            await PopupService.WrapTaskInLoader(Task.Delay(1000), Xamarin.Forms.Color.Azure, Xamarin.Forms.Color.Brown, "Loading", Xamarin.Forms.Color.Red);
             var EnjoyCheese = new DualResponseViewModel(PopupService);
             EnjoyCheese.RightButtonCommand = new Xamarin.Forms.Command(() => EnjoyCheese.SafeCloseModal(false));
             EnjoyCheese.RightButtonColour = Xamarin.Forms.Color.Gray;
