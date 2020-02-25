@@ -7,7 +7,7 @@
     <br />
   </p>
 </p>
-
+<a href="https://www.codacy.com/manual/LuckyDucko/AwaitablePopups?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=LuckyDucko/AwaitablePopups&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/a40801ba4d7848888fd5cf8e6d673a07"/></a>
 
 
 <!-- TABLE OF CONTENTS -->
