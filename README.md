@@ -109,7 +109,7 @@ if (string.IsNullOrEmpty(Mobile) || string.IsNullOrEmpty(Password))
 And then, if a user puts in an incorrect login, the popup will show, wait for user interaction, and fire off 
 `incorrectLoginError.SafeCloseModal(false))` which in turn, makes `loginResult = false`.
 
-here is an example 
+here is an example (Looks slow due to giphy)
 
 ![Gif Example](https://media.giphy.com/media/Q7pkolc03xencSDzZh/giphy.gif)
 
