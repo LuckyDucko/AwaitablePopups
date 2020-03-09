@@ -35,7 +35,7 @@
                             FontSize="17"
                             HorizontalTextAlignment="Center"
                             Text="{Binding MainPopupInformation, Mode=OneWay, FallbackValue='Generic Information'}"
-                            TextColor="{Binding TextColour, FallbackValue=#FDFDFD}" />
+                            TextColor="{Binding TextColour, Mode=OneWay, FallbackValue=#FDFDFD}" />
                     </Grid>
                 </Frame>
                 <ActivityIndicator

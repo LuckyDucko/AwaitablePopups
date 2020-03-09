@@ -37,12 +37,25 @@ namespace AwaitablePopups.AbstractClasses
 
         public void SafeCloseModal(TReturnable result)
         {
-            if (!IsBusy)
+            try
             {
-                IsBusy = true;
-                Returnable.SetResult(result);
+                var safeCloseAttempt = Returnable.TrySetResult(result);
+                if (!safeCloseAttempt)
+                {
+                    Returnable = new TaskCompletionSource<TReturnable>();
+                    Returnable.SetResult(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                Returnable = new TaskCompletionSource<TReturnable>();
+                Returnable.SetResult(default);
+            }
+            finally
+            {
                 PopupService.PopAsync();
             }
+
         }
         /// <summary>
         /// This is for use only when you wish for some form of reusable wrapper,

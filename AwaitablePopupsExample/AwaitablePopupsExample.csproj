@@ -15,15 +15,15 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991537" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
-    <PackageReference Include="AsyncAwaitBestPractices" Version="4.0.1" />
-    <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="4.0.1" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\AwaitablePopups\AwaitablePopups.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="FakeLogin\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AsyncAwaitBestPractices" Version="4.1.0" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="1.2.0.223" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />
+    <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="4.1.0" />
   </ItemGroup>
 </Project>

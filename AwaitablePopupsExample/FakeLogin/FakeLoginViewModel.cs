@@ -4,6 +4,8 @@ using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
 using AwaitablePopups.PopupPages.DualResponse;
 using AwaitablePopups.PopupPages.SingleResponse;
+
+using AsyncAwaitBestPractices;
 using AsyncAwaitBestPractices.MVVM;
 using System.Runtime.InteropServices;
 
@@ -83,7 +85,16 @@ namespace AwaitablePopupsExample.FakeLogin
 
         private async Task<bool> GenericErrorAsync()
         {
-            await PopupService.WrapTaskInLoader(Task.Delay(1000), Xamarin.Forms.Color.Azure, Xamarin.Forms.Color.Brown, "Loading", Xamarin.Forms.Color.Red);
+            System.Collections.Generic.List<string> Reasons = new System.Collections.Generic.List<string>
+            {
+                "Twiddling Thumbs",
+                "Rolling Eyes",
+                "Checking Watch",
+                "General Complaining",
+                "Calling in late to work",
+                "Waiting"
+            };
+            await PopupService.WrapTaskInLoader(Task.Delay(10000), Xamarin.Forms.Color.Blue, Xamarin.Forms.Color.White, Reasons, Xamarin.Forms.Color.Black);
 
             var exceptionCaughtError = new SingleResponseViewModel(PopupService);
             exceptionCaughtError.SingleButtonCommand = new Xamarin.Forms.Command(() => exceptionCaughtError.SafeCloseModal(false));
@@ -98,20 +109,42 @@ namespace AwaitablePopupsExample.FakeLogin
 
         private async Task<bool> IncorrectLoginAsync()
         {
-            await PopupService.WrapTaskInLoader(Task.Delay(1000), Xamarin.Forms.Color.Azure, Xamarin.Forms.Color.Brown, "Loading", Xamarin.Forms.Color.Red);
+            System.Collections.Generic.List<string> Reasons = new System.Collections.Generic.List<string>
+            {
+                "Twiddling Thumbs",
+                "Rolling Eyes",
+                "Checking Watch",
+                "General Complaining",
+                "Calling in late to work",
+                "Waiting"
+            };
+
+            await PopupService.WrapTaskInLoader(Task.Delay(10000), Xamarin.Forms.Color.Blue, Xamarin.Forms.Color.White, Reasons, Xamarin.Forms.Color.Black);
+
             var incorrectLoginError = new SingleResponseViewModel(PopupService);
             incorrectLoginError.SingleButtonCommand = new Xamarin.Forms.Command(() => incorrectLoginError.SafeCloseModal(false));
             incorrectLoginError.SingleButtonColour = Xamarin.Forms.Color.Goldenrod;
-            incorrectLoginError.SingleButtonText = "Try Again";
+            incorrectLoginError.SingleButtonText = "Okay";
             incorrectLoginError.MainPopupInformation = "Your Phone Number or Pin is incorrect, please try again.";
-            incorrectLoginError.MainPopupColour = Xamarin.Forms.Color.Honeydew;
+            incorrectLoginError.MainPopupColour = Xamarin.Forms.Color.Gray;
             incorrectLoginError.SingleDisplayImage = "NoSource.png";
             return await PopupService.PushAsync<SingleResponseViewModel, SingleResponsePopupPage, bool>(incorrectLoginError);
         }
 
         private async Task<bool> SuccessfulLoginAsync()
         {
-            await PopupService.WrapTaskInLoader(Task.Delay(1000), Xamarin.Forms.Color.Azure, Xamarin.Forms.Color.Brown, "Loading", Xamarin.Forms.Color.Red);
+            System.Collections.Generic.List<string> Reasons = new System.Collections.Generic.List<string>
+            {
+                "Twiddling Thumbs",
+                "Rolling Eyes",
+                "Checking Watch",
+                "General Complaining",
+                "Calling in late to work",
+                "Waiting"
+            };
+
+            await PopupService.WrapTaskInLoader(Task.Delay(10000), Xamarin.Forms.Color.Blue, Xamarin.Forms.Color.White, Reasons, Xamarin.Forms.Color.Black);
+
             var successfulLogin = new SingleResponseViewModel(PopupService);
             successfulLogin.SingleButtonCommand = new Xamarin.Forms.Command(() => successfulLogin.SafeCloseModal(true));
             successfulLogin.SingleButtonColour = Xamarin.Forms.Color.HotPink;
@@ -124,7 +157,17 @@ namespace AwaitablePopupsExample.FakeLogin
 
         private async Task<bool> CheeseModeAsync()
         {
-            await PopupService.WrapTaskInLoader(Task.Delay(1000), Xamarin.Forms.Color.Azure, Xamarin.Forms.Color.Brown, "Loading", Xamarin.Forms.Color.Red);
+            System.Collections.Generic.List<string> Reasons = new System.Collections.Generic.List<string>
+            {
+                "Twiddling Thumbs",
+                "Rolling Eyes",
+                "Checking Watch",
+                "General Complaining",
+                "Calling in late to work",
+                "Waiting"
+            };
+
+            await PopupService.WrapTaskInLoader(Task.Delay(10000), Xamarin.Forms.Color.Blue, Xamarin.Forms.Color.White, Reasons, Xamarin.Forms.Color.Black);
             var EnjoyCheese = new DualResponseViewModel(PopupService);
             EnjoyCheese.RightButtonCommand = new Xamarin.Forms.Command(() => EnjoyCheese.SafeCloseModal(false));
             EnjoyCheese.RightButtonColour = Xamarin.Forms.Color.Gray;
