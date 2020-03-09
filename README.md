@@ -137,7 +137,7 @@ Coming soon, but if you have any ideas or anything, please feel free to make an 
 <!-- LICENSE -->
 ## License
 
-Coming soon, however, the MIT license is what im thinking
+This project uses the MIT License
 
 
 
