@@ -46,7 +46,7 @@ namespace AwaitablePopups.AbstractClasses
                     Returnable.SetResult(result);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Returnable = new TaskCompletionSource<TReturnable>();
                 Returnable.SetResult(default);

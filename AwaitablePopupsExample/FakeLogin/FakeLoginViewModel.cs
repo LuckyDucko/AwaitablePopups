@@ -118,7 +118,6 @@ namespace AwaitablePopupsExample.FakeLogin
                 "Calling in late to work",
                 "Waiting"
             };
-
             await PopupService.WrapTaskInLoader(Task.Delay(10000), Xamarin.Forms.Color.Blue, Xamarin.Forms.Color.White, Reasons, Xamarin.Forms.Color.Black);
 
             var incorrectLoginError = new SingleResponseViewModel(PopupService);
