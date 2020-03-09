@@ -56,8 +56,12 @@ You can install the nuget by looking up 'AwaitablePopups' in your nuget package 
 
 I have included a very base example, but here is the nuts and bolts. 
 
-This is a function that is called when a user incorrectly logs in.
-We create the ViewModel, and then assign the ViewModel properties with what we want. 
+This is a function that is called when a user logs in using the incorrect credentials.
+
+First, there is the loader. This is a new addition to the Plugin, and it allows you to wrap any function in a 
+Progress loader, and it will automatically disappear when that task is complete. It has an extra of allowing you to scroll through messages that will display to the end user, if you so choose.
+
+Second, now that the Login attempt is over, We create the ViewModel, and then assign the ViewModel properties with what we want. 
 The most important is the Single Button Command here, (which can accept the AsyncCommand from AsyncAwaitBestPractices or anything that implements ICommand). 
 
 This property allows you to enact any functionality within the popup once a button is pressed, this could be a call to an API, an extended amount of processing, it does however, need to finish with SafeCloseModal, a function which will return whatever value you place inside it (aslong as it matches pushasync, which is below)
@@ -71,12 +75,23 @@ A limitation here is that no matter what, you return one type. This is something
 ```csharp
 private async Task<bool> IncorrectLoginAsync()
 {
+    System.Collections.Generic.List<string> Reasons = new System.Collections.Generic.List<string>
+    {
+        "Twiddling Thumbs",
+        "Rolling Eyes",
+        "Checking Watch",
+        "General Complaining",
+        "Calling in late to work",
+        "Waiting"
+    };
+    await PopupService.WrapTaskInLoader(Task.Delay(10000), Xamarin.Forms.Color.Blue, Xamarin.Forms.Color.White, Reasons, Xamarin.Forms.Color.Black);
+
     var incorrectLoginError = new SingleResponseViewModel(PopupService);
     incorrectLoginError.SingleButtonCommand = new Xamarin.Forms.Command(() => incorrectLoginError.SafeCloseModal(false));
     incorrectLoginError.SingleButtonColour = Xamarin.Forms.Color.Goldenrod;
-    incorrectLoginError.SingleButtonText = "Try Again";
+    incorrectLoginError.SingleButtonText = "Okay";
     incorrectLoginError.MainPopupInformation = "Your Phone Number or Pin is incorrect, please try again.";
-    incorrectLoginError.MainPopupColour = Xamarin.Forms.Color.Honeydew;
+    incorrectLoginError.MainPopupColour = Xamarin.Forms.Color.Gray;
     incorrectLoginError.SingleDisplayImage = "NoSource.png";
     return await PopupService.PushAsync<SingleResponseViewModel, SingleResponsePopupPage, bool>(incorrectLoginError);
 }
@@ -93,6 +108,10 @@ if (string.IsNullOrEmpty(Mobile) || string.IsNullOrEmpty(Password))
 
 And then, if a user puts in an incorrect login, the popup will show, wait for user interaction, and fire off 
 `incorrectLoginError.SafeCloseModal(false))` which in turn, makes `loginResult = false`.
+
+here is an example 
+
+![Gif Example](https://media.giphy.com/media/Q7pkolc03xencSDzZh/giphy.gif)
 
 
 
