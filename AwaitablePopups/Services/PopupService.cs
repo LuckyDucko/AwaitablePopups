@@ -11,7 +11,7 @@ using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 
-namespace Awaitable.Services
+namespace AwaitablePopups.Services
 {
     public class PopupService : IPopupService
     {

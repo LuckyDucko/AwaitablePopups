@@ -4,10 +4,10 @@ using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
 using AwaitablePopups.PopupPages.DualResponse;
 using AwaitablePopups.PopupPages.SingleResponse;
-
-using AsyncAwaitBestPractices;
 using AsyncAwaitBestPractices.MVVM;
-using System.Runtime.InteropServices;
+using AwaitablePopups.Structs;
+using Xamarin.Forms;
+using System.Collections.Generic;
 
 namespace AwaitablePopupsExample.FakeLogin
 {
@@ -59,11 +59,11 @@ namespace AwaitablePopupsExample.FakeLogin
                 {
                     loginResult = await IncorrectLoginAsync();
                 }
-                else if (Mobile.Equals("Cheese") || Password.Equals("Cheese"))
+                else if (Mobile.Equals("Dual"))
                 {
-                    loginResult = await CheeseModeAsync();
+                    loginResult = await AcceptConditions();
                 }
-                else if (Mobile.Equals("Correct") && Password.Equals("Correct"))
+                else if (Mobile.Equals("Single"))
                 {
                     loginResult = await SuccessfulLoginAsync();
                 }
@@ -81,11 +81,9 @@ namespace AwaitablePopupsExample.FakeLogin
             return loginResult;
         }
 
-
-
-        private async Task<bool> GenericErrorAsync()
+        private static List<string> LoadingReasons()
         {
-            System.Collections.Generic.List<string> Reasons = new System.Collections.Generic.List<string>
+            return new List<string>
             {
                 "Twiddling Thumbs",
                 "Rolling Eyes",
@@ -94,91 +92,32 @@ namespace AwaitablePopupsExample.FakeLogin
                 "Calling in late to work",
                 "Waiting"
             };
-            await PopupService.WrapTaskInLoader(Task.Delay(10000), Xamarin.Forms.Color.Blue, Xamarin.Forms.Color.White, Reasons, Xamarin.Forms.Color.Black);
+        }
 
-            var exceptionCaughtError = new SingleResponseViewModel(PopupService);
-            exceptionCaughtError.SingleButtonCommand = new Xamarin.Forms.Command(() => exceptionCaughtError.SafeCloseModal(false));
-            exceptionCaughtError.SingleButtonColour = Xamarin.Forms.Color.Coral;
-            exceptionCaughtError.SingleButtonText = "Okay";
-            exceptionCaughtError.MainPopupInformation = "There was a Device error. Dang.";
-            exceptionCaughtError.MainPopupColour = Xamarin.Forms.Color.Gray;
-            exceptionCaughtError.SingleDisplayImage = "NoSource.png";
-            return await PopupService.PushAsync<SingleResponseViewModel, SingleResponsePopupPage, bool>(exceptionCaughtError);
+
+        private async Task<bool> GenericErrorAsync()
+        {
+            await PopupService.WrapTaskInLoader(Task.Delay(10000), Color.Blue, Color.White, LoadingReasons(), Color.Black);
+            return await SingleResponseViewModel.GeneratePopup(new PopupButton(Color.Coral, Color.Black, "Okay"), Color.Gray, "There was a Device error. Dang.", "NoSource.png");
         }
 
 
         private async Task<bool> IncorrectLoginAsync()
         {
-            System.Collections.Generic.List<string> Reasons = new System.Collections.Generic.List<string>
-            {
-                "Twiddling Thumbs",
-                "Rolling Eyes",
-                "Checking Watch",
-                "General Complaining",
-                "Calling in late to work",
-                "Waiting"
-            };
-            await PopupService.WrapTaskInLoader(Task.Delay(10000), Xamarin.Forms.Color.Blue, Xamarin.Forms.Color.White, Reasons, Xamarin.Forms.Color.Black);
-
-            var incorrectLoginError = new SingleResponseViewModel(PopupService);
-            incorrectLoginError.SingleButtonCommand = new Xamarin.Forms.Command(() => incorrectLoginError.SafeCloseModal(false));
-            incorrectLoginError.SingleButtonColour = Xamarin.Forms.Color.Goldenrod;
-            incorrectLoginError.SingleButtonText = "Okay";
-            incorrectLoginError.MainPopupInformation = "Your Phone Number or Pin is incorrect, please try again.";
-            incorrectLoginError.MainPopupColour = Xamarin.Forms.Color.Gray;
-            incorrectLoginError.SingleDisplayImage = "NoSource.png";
-            return await PopupService.PushAsync<SingleResponseViewModel, SingleResponsePopupPage, bool>(incorrectLoginError);
+            await PopupService.WrapTaskInLoader(Task.Delay(10000), Color.Blue, Color.White, LoadingReasons(), Color.Black);
+            return await SingleResponseViewModel.GeneratePopup(new PopupButton(Color.Goldenrod, Color.Black, "Okay"), Color.Gray, "Your Phone Number or Pin is incorrect, please try again.", "NoSource.png");
         }
 
         private async Task<bool> SuccessfulLoginAsync()
         {
-            System.Collections.Generic.List<string> Reasons = new System.Collections.Generic.List<string>
-            {
-                "Twiddling Thumbs",
-                "Rolling Eyes",
-                "Checking Watch",
-                "General Complaining",
-                "Calling in late to work",
-                "Waiting"
-            };
-
-            await PopupService.WrapTaskInLoader(Task.Delay(10000), Xamarin.Forms.Color.Blue, Xamarin.Forms.Color.White, Reasons, Xamarin.Forms.Color.Black);
-
-            var successfulLogin = new SingleResponseViewModel(PopupService);
-            successfulLogin.SingleButtonCommand = new Xamarin.Forms.Command(() => successfulLogin.SafeCloseModal(true));
-            successfulLogin.SingleButtonColour = Xamarin.Forms.Color.HotPink;
-            successfulLogin.SingleButtonText = "I Accept";
-            successfulLogin.MainPopupInformation = "Good Job";
-            successfulLogin.MainPopupColour = Xamarin.Forms.Color.Gray;
-            successfulLogin.SingleDisplayImage = "NoSource.png";
-            return await PopupService.PushAsync<SingleResponseViewModel, SingleResponsePopupPage, bool>(successfulLogin);
+            await PopupService.WrapTaskInLoader(Task.Delay(10000), Color.Blue, Color.White, LoadingReasons(), Color.Black);
+            return await SingleResponseViewModel.GeneratePopup(new PopupButton(Color.HotPink, Color.Black, "I Accept"), Color.Gray, "Good Job.", "NoSource.png");
         }
 
-        private async Task<bool> CheeseModeAsync()
+        private async Task<bool> AcceptConditions()
         {
-            System.Collections.Generic.List<string> Reasons = new System.Collections.Generic.List<string>
-            {
-                "Twiddling Thumbs",
-                "Rolling Eyes",
-                "Checking Watch",
-                "General Complaining",
-                "Calling in late to work",
-                "Waiting"
-            };
-
-            await PopupService.WrapTaskInLoader(Task.Delay(10000), Xamarin.Forms.Color.Blue, Xamarin.Forms.Color.White, Reasons, Xamarin.Forms.Color.Black);
-            var EnjoyCheese = new DualResponseViewModel(PopupService);
-            EnjoyCheese.RightButtonCommand = new Xamarin.Forms.Command(() => EnjoyCheese.SafeCloseModal(false));
-            EnjoyCheese.RightButtonColour = Xamarin.Forms.Color.Gray;
-            EnjoyCheese.RightButtonTextColour = Xamarin.Forms.Color.Green;
-            EnjoyCheese.RightButtonText = "I dislike cheese";
-            EnjoyCheese.LeftButtonCommand = new Xamarin.Forms.Command(() => EnjoyCheese.SafeCloseModal(true));
-            EnjoyCheese.LeftButtonColour = Xamarin.Forms.Color.Gray;
-            EnjoyCheese.LeftButtonTextColour = Xamarin.Forms.Color.GreenYellow;
-            EnjoyCheese.LeftButtonText = "Yes please";
-            EnjoyCheese.MainPopupInformation = "Do you wish to enter cheese mode?";
-            EnjoyCheese.MainPopupColour = Xamarin.Forms.Color.Lavender;
-            return await PopupService.PushAsync<DualResponseViewModel, DualResponsePopupPage, bool>(EnjoyCheese);
+            await PopupService.WrapTaskInLoader(Task.Delay(10000), Color.Blue, Color.White, LoadingReasons(), Color.Black);
+            return await DualResponseViewModel.GeneratePopup(new PopupButton(Color.Green, Color.Black, "I Accept"), new PopupButton(Color.Red, Color.Black, "I decline"), Color.Gray, "Do you accept the terms and conditions?", "NoSource.png");
         }
     }
 }

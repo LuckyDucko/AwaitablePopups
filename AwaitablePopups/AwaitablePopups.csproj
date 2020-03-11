@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
         <PackOnBuild>true</PackOnBuild>
-        <PackageVersion>0.1.7</PackageVersion>
+        <PackageVersion>0.1.8</PackageVersion>
         <Authors>Tyson Hooker</Authors>
         <NeutralLanguage>en-AU</NeutralLanguage>
         <Description>Create your own DisplayAlerts using XAML,
@@ -42,9 +42,11 @@ Added the ability for a loader to have switchable text!</PackageReleaseNotes>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="4.1.0" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="PopupPages\Loader\" />
+      <Folder Include="Structs\" />
     </ItemGroup>
     <ItemGroup>
       <None Remove="nuget.config" />

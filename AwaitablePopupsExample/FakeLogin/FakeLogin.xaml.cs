@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Awaitable.Services;
+using AwaitablePopups.Services;
 using Xamarin.Forms;
 
 namespace AwaitablePopupsExample.FakeLogin

@@ -35,6 +35,16 @@ namespace AwaitablePopups.AbstractClasses
             SafeCloseModal(BaseExitValue);
         }
 
+        public async Task SafeCloseModal(Task<TReturnable> buttonCommand)
+        {
+            if (buttonCommand.Status.Equals(TaskStatus.Created))
+            {
+                buttonCommand.Start();
+            }
+            var buttonCommandResult = await buttonCommand;
+            SafeCloseModal(buttonCommandResult);
+        }
+
         public void SafeCloseModal(TReturnable result)
         {
             try

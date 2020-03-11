@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Rg.Plugins.Popup.Pages;
-using AwaitablePopups.AbstractClasses;
+﻿using AwaitablePopups.AbstractClasses;
 
 namespace AwaitablePopups.Interfaces
 {

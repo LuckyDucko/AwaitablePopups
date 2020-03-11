@@ -57,7 +57,8 @@
                             BackgroundColor="{Binding SingleButtonColour, FallbackValue='#FDFDFD'}"
                             Command="{Binding SingleButtonCommand, Mode=OneWay}"
                             CornerRadius="5"
-                            Text="{Binding SingleButtonText, Mode=OneWay, FallbackValue='Button Text'}" />
+                            Text="{Binding SingleButtonText, Mode=OneWay, FallbackValue='Button Text'}"
+                            TextColor="{Binding SingleButtonTextColour, FallbackValue=Green}" />
                     </Grid>
                 </Frame>
             </AbsoluteLayout>
