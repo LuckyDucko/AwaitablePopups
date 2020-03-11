@@ -60,7 +60,7 @@ here is an example of what this plugin makes easy (Looks slow due to giphy)
 
 I have included the older, 'safer' example, and the new simplfied example.
 
----New Example--
+### New Example
 
 To Use the plugin for its inbuilt popup pages (Dual/Single Response and loader.) All you need are these one liners
 
@@ -85,7 +85,7 @@ await PopupService.WrapReturnableTaskInLoader<bool>(IndepthCheckAgainstDatabase(
 
 That's it! for a more indepth of how it works, read on (and check the wiki!)
 
----Older 'Safer' Example--- 
+### Older 'Safer' Example
 
 This example is safer as it allows you to do more direct manipulation with the commands, instead of relying on sneaky wrapping and whatnot.
 This is a function that is called when a user logs in using the incorrect credentials.
