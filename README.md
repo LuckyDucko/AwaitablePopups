@@ -53,9 +53,41 @@ You can install the nuget by looking up 'AwaitablePopups' in your nuget package 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+here is an example of what this plugin makes easy (Looks slow due to giphy)
 
-I have included a very base example, but here is the nuts and bolts. 
+![Gif Example](https://media.giphy.com/media/hosV0dFihvyl0tpFGU/giphy.gif)
 
+
+I have included the older, 'safer' example, and the new simplfied example.
+
+---New Example--
+
+To Use the plugin for its inbuilt popup pages (Dual/Single Response and loader.) All you need are these one liners
+
+`SingleResponse Popup Page`
+```csharp
+return await SingleResponseViewModel.GeneratePopup(new PopupButton(Color.Goldenrod, Color.Black, "Okay"), Color.Gray, "Your Phone Number or Pin is incorrect, please try again.", "NoSource.png");
+```
+
+`DualResponse Popup Page`
+```csharp
+return await DualResponseViewModel.GeneratePopup(new PopupButton(Color.Green, Color.Black, "I Accept"), new PopupButton(Color.Red, Color.Black, "I decline"), Color.Gray, "Do you accept the terms and conditions?", "NoSource.png");
+```
+
+`Loader Popup Page`
+```csharp
+  await PopupService.WrapTaskInLoader(Task.Delay(10000), Color.Blue, Color.White, LoadingReasons(), Color.Black);
+```
+or, to return from the loader a value
+```csharp
+await PopupService.WrapReturnableTaskInLoader<bool>(IndepthCheckAgainstDatabase(), Color.Blue, Color.White, LoadingReasons(), Color.Black);
+```
+
+That's it! for a more indepth of how it works, read on (and check the wiki!)
+
+---Older 'Safer' Example--- 
+
+This example is safer as it allows you to do more direct manipulation with the commands, instead of relying on sneaky wrapping and whatnot.
 This is a function that is called when a user logs in using the incorrect credentials.
 
 First, there is the loader. This is a new addition to the Plugin, and it allows you to wrap any function in a 
@@ -109,9 +141,6 @@ if (string.IsNullOrEmpty(Mobile) || string.IsNullOrEmpty(Password))
 And then, if a user puts in an incorrect login, the popup will show, wait for user interaction, and fire off 
 `incorrectLoginError.SafeCloseModal(false))` which in turn, makes `loginResult = false`.
 
-here is an example (Looks slow due to giphy)
-
-![Gif Example](https://media.giphy.com/media/hosV0dFihvyl0tpFGU/giphy.gif)
 
 
 
