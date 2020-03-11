@@ -9,10 +9,14 @@
 </p>
 
 
+
 <!-- TABLE OF CONTENTS -->
+
 ## Table of Contents
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/609f811983454f5babd100dabde256c1)](https://app.codacy.com/manual/LuckyDucko/AwaitablePopups?utm_source=github.com&utm_medium=referral&utm_content=LuckyDucko/AwaitablePopups&utm_campaign=Badge_Grade_Settings)
+**Codacy**  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/609f811983454f5babd100dabde256c1)](https://app.codacy.com/manual/LuckyDucko/AwaitablePopups?utm_source=github.com&utm_medium=referral&utm_content=LuckyDucko/AwaitablePopups&utm_campaign=Badge_Grade_Settings)
+**NuGet** [![nuget](https://img.shields.io/nuget/v/AwaitablePopups.svg)](https://www.nuget.org/packages/AwaitablePopups/)
+
 
 * [About the Project](#about-the-project)
   * [Built With](#built-with)
