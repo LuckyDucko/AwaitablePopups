@@ -111,7 +111,7 @@ And then, if a user puts in an incorrect login, the popup will show, wait for us
 
 here is an example (Looks slow due to giphy)
 
-![Gif Example](https://media.giphy.com/media/Q7pkolc03xencSDzZh/giphy.gif)
+![Gif Example](https://media.giphy.com/media/hosV0dFihvyl0tpFGU/giphy.gif)
 
 
 
