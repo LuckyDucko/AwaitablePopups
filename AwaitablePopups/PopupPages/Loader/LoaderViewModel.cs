@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using AsyncAwaitBestPractices;
 using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
-using Xamarin.Forms;
 
 namespace AwaitablePopups.PopupPages.Loader
 {

@@ -8,6 +8,7 @@ using AsyncAwaitBestPractices.MVVM;
 using AwaitablePopups.Structs;
 using Xamarin.Forms;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace AwaitablePopupsExample.FakeLogin
 {
@@ -52,7 +53,7 @@ namespace AwaitablePopupsExample.FakeLogin
         public async Task<bool> AttemptLogin()
         {
             LoginEnabled = false;
-            var loginResult = false;
+            var loginResult = await PopupService.WrapReturnableFuncInLoader(LongRunningFunction, Color.Blue, Color.White, LoadingReasons(), Color.Black);
             try
             {
                 if (string.IsNullOrEmpty(Mobile) || string.IsNullOrEmpty(Password))
@@ -94,6 +95,17 @@ namespace AwaitablePopupsExample.FakeLogin
             };
         }
 
+        private bool LongRunningFunction()
+        {
+            Thread.Sleep(6000);
+            return true;
+        }
+
+        private bool LongRunningFunctionWithVariable(bool randomBoolean)
+        {
+            Thread.Sleep(6000);
+            return randomBoolean;
+        }
 
         private async Task<bool> GenericErrorAsync()
         {
