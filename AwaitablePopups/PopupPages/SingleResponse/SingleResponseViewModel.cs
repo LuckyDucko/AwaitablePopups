@@ -8,7 +8,7 @@ using AsyncAwaitBestPractices.MVVM;
 
 namespace AwaitablePopups.PopupPages.SingleResponse
 {
-    public sealed class SingleResponseViewModel : PopupViewModel<bool>
+    public class SingleResponseViewModel : PopupViewModel<bool>
     {
         private ICommand _singleButtonCommand;
         public ICommand SingleButtonCommand

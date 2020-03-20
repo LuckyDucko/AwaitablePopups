@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace AwaitablePopups.PopupPages.DualResponse
 {
-    public sealed class DualResponseViewModel : PopupViewModel<bool>
+    public class DualResponseViewModel : PopupViewModel<bool>
     {
         private ICommand _leftButtonCommand;
         public ICommand LeftButtonCommand
@@ -109,8 +109,8 @@ namespace AwaitablePopups.PopupPages.DualResponse
         public static async Task<bool> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Color MainPopupColour, string popupInformation, string displayImageName)
         {
             var AutoGeneratePopupViewModel = new DualResponseViewModel(AwaitablePopups.Services.PopupService.GetInstance());
-            ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal(true));
-            ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal(false));
+            ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal(false));
+            ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal(true));
             return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, popupInformation, displayImageName, AutoGeneratePopupViewModel);
         }
 
@@ -120,13 +120,13 @@ namespace AwaitablePopups.PopupPages.DualResponse
             AsyncCommand leftButtonCommand = new AsyncCommand(async () =>
             {
                 await leftButtonTask;
-                AutoGeneratePopupViewModel.SafeCloseModal(true);
+                AutoGeneratePopupViewModel.SafeCloseModal(false);
             });
 
             AsyncCommand rightButtonCommand = new AsyncCommand(async () =>
             {
                 await rightButtonTask;
-                AutoGeneratePopupViewModel.SafeCloseModal(false);
+                AutoGeneratePopupViewModel.SafeCloseModal(true);
             });
             return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, popupInformation, displayImageName, AutoGeneratePopupViewModel);
         }

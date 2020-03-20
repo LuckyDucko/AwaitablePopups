@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>netstandard2.0</TargetFramework>
         <PackOnBuild>true</PackOnBuild>
-        <PackageVersion>0.1.8</PackageVersion>
+        <PackageVersion>0.1.9</PackageVersion>
         <Authors>Tyson Hooker</Authors>
         <NeutralLanguage>en-AU</NeutralLanguage>
         <Description>Create your own DisplayAlerts using XAML,
@@ -17,8 +17,9 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
         <PackageTags>Xamarin-forms async popups MVVM </PackageTags>
         <Title>Awaitable Popups</Title>
         <Summary>Popup Modals For Xamarin Forms</Summary>
-        <PackageReleaseNotes>Bug Fixing arround concurrent popups
-Added the ability for a loader to have switchable text!</PackageReleaseNotes>
+        <PackageReleaseNotes>Bug Fixes
+Added the ability to wrap a function in a loader
+Added the new TextInput Class</PackageReleaseNotes>
     </PropertyGroup>
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -36,7 +37,7 @@ Added the ability for a loader to have switchable text!</PackageReleaseNotes>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="AsyncAwaitBestPractices" Version="4.1.0" />
-        <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />
+        <PackageReference Include="Xamarin.Forms" Version="4.5.0.396" />
         <PackageReference Include="Rg.Plugins.Popup" Version="1.2.0.223" />
         <PackageReference Include="NuGet.Build.Packaging" Version="0.2.2">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -47,6 +48,7 @@ Added the ability for a loader to have switchable text!</PackageReleaseNotes>
     <ItemGroup>
       <Folder Include="PopupPages\Loader\" />
       <Folder Include="Structs\" />
+      <Folder Include="PopupPages\TextInput\" />
     </ItemGroup>
     <ItemGroup>
       <None Remove="nuget.config" />

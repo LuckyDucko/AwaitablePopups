@@ -11,7 +11,6 @@ namespace AwaitablePopups.Structs
             ButtonTextColour = buttonTextColour;
             ButtonText = buttonText;
         }
-
         public Xamarin.Forms.Color ButtonColour { get; set; }
         public Xamarin.Forms.Color ButtonTextColour { get; set; }
         public string ButtonText { get; set; }
