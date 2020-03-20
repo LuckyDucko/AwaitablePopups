@@ -66,7 +66,7 @@ I have included the older, 'safer' example, and the new simplfied example.
 
 ### New Example
 
-To Use the plugin for its inbuilt popup pages (Dual/Single Response and loader.) All you need are these one liners
+To Use the plugin for its inbuilt popup pages (Dual/Single Response, TextInput and loader.) All you need are these one liners
 
 `SingleResponse Popup Page`
 ```csharp
@@ -82,9 +82,28 @@ return await DualResponseViewModel.GeneratePopup(new PopupButton(Color.Green, Co
 ```csharp
   await PopupService.WrapTaskInLoader(Task.Delay(10000), Color.Blue, Color.White, LoadingReasons(), Color.Black);
 ```
+
+`Text Input PopupPage`
+```csharp
+await TextInputViewModel.GeneratePopup(new PopupButton(Color.Green, Color.Black, "I Accept"), new PopupButton(Color.Red, Color.Black, "I decline"), Color.Green, "TEXT HERE", "Placeholder");
+```
+
+
 or, to return from the loader a value
 ```csharp
 await PopupService.WrapReturnableTaskInLoader<bool>(IndepthCheckAgainstDatabase(), Color.Blue, Color.White, LoadingReasons(), Color.Black);
+```
+
+you can also add in synchronous functions, however they are wrapped in a task
+```csharp
+
+private bool LongRunningFunction(int millisecondDelay)
+{
+    Thread.Sleep(millisecondDelay);
+    return true;
+}
+await PopupService.WrapReturnableFuncInLoader(LongRunningFunction, 6000, Color.Blue, Color.White, LoadingReasons(), Color.Black);
+
 ```
 
 That's it! for a more indepth of how it works, read on (and check the wiki!)
