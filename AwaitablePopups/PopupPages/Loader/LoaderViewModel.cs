@@ -38,6 +38,13 @@ namespace AwaitablePopups.PopupPages.Loader
             set => SetValue(ref _millisecondsBetweenReasonSwitch, value);
         }
 
+        private string _layoutBounds;
+        public string LayoutBounds
+        {
+            get => _layoutBounds;
+            set => SetValue(ref _layoutBounds, value);
+        }
+
         private CancellationTokenSource TextColourToken { get; set; }
 
         public LoaderViewModel(IPopupService popupService, List<string> reasonsForLoader) : base(popupService)
