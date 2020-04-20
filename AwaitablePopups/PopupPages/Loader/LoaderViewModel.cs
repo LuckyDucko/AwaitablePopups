@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
-using Xamarin.Forms;
 
 namespace AwaitablePopups.PopupPages.Loader
 {
