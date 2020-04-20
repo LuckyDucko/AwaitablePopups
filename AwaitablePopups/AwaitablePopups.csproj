@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <PackOnBuild>true</PackOnBuild>
-        <PackageVersion>0.3.0</PackageVersion>
+        <PackageVersion>0.3.1-Alpha</PackageVersion>
         <Authors>Tyson Hooker</Authors>
         <NeutralLanguage>en-AU</NeutralLanguage>
         <Description>Create your own DisplayAlerts using XAML,
@@ -16,7 +16,7 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
         <PackageTags>Xamarin-forms async popups MVVM </PackageTags>
         <Title>Awaitable Popups</Title>
         <Summary>Popup Modals For Xamarin Forms</Summary>
-        <PackageReleaseNotes>Reworked so nuget doesnt reference unneeded files. Thanks to https://github.com/pmahend1</PackageReleaseNotes>
+        <PackageReleaseNotes>Pre release that removes a bug concerning LoaderPages</PackageReleaseNotes>
     </PropertyGroup>
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -40,8 +40,8 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="AsyncAwaitBestPractices" Version="4.1.0" />
-        <PackageReference Include="Xamarin.Forms" Version="4.5.0.396" />
-        <PackageReference Include="Rg.Plugins.Popup" Version="1.2.0.223" />
+        <PackageReference Include="Xamarin.Forms" Version="4.5.0.617" />
+        <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.2" />
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="4.1.0" />
     </ItemGroup>
     <ItemGroup>
