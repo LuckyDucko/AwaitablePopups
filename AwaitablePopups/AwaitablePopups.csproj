@@ -45,6 +45,7 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
       <Folder Include="PopupPages\Loader\" />
       <Folder Include="Structs\" />
       <Folder Include="PopupPages\TextInput\" />
+      <Folder Include="PopupPages\Login\" />
     </ItemGroup>
     <ItemGroup>
       <None Remove="nuget.config" />

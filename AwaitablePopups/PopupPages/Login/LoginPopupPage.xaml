@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<pages:PopupPage
+	x:Class="AwaitablePopups.PopupPages.Login.LoginPopupPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+    xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    HasKeyboardOffset="False">
+	<pages:PopupPage.Animation>
+		<animations:ScaleAnimation
+			DurationIn = "400"
+			DurationOut="300"
+            EasingIn="SinOut"
+            EasingOut="SinIn"
+            HasBackgroundAnimation="True"
+            PositionIn="Center"
+            PositionOut="Center"
+            ScaleIn="1.2"
+            ScaleOut="0.8" />
+	</pages:PopupPage.Animation>
+	<pages:PopupPage.Content>
+		<ContentView>
+			<AbsoluteLayout>
+				<Frame
+                    Margin="0"
+                    Padding="5"
+                    AbsoluteLayout.LayoutBounds=".5,.35,.6,.6"
+                    AbsoluteLayout.LayoutFlags="All"
+                    BackgroundColor="{Binding MainPopupColour, FallbackValue=#343434}"
+                    CornerRadius="5"
+                    HasShadow="false"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+					<Grid HorizontalOptions="Center" VerticalOptions="Center">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="50*" />
+							<ColumnDefinition Width="50*" />
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="3*" />
+							<RowDefinition Height="38*" />
+							<RowDefinition Height="22*" />
+							<RowDefinition Height="22*" />
+							<RowDefinition Height="15*" />
+						</Grid.RowDefinitions>
+						<Image
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            HorizontalOptions="FillAndExpand"
+                            Source="{Binding PictureSource}" />
+						<Entry
+							Grid.Row="2"
+							Grid.Column="0"
+							Grid.ColumnSpan="2"
+							IsSpellCheckEnabled="false"
+							IsTextPredictionEnabled="false"
+							Text="{Binding Username, Mode=TwoWay}"
+							Placeholder="{Binding UsernamePlaceholder, Mode=TwoWay}"
+							PlaceholderColor="{Binding UsernamePlaceholderColour, Mode=TwoWay}"
+							TextColor="{Binding UsernameTextColour, Mode=TwoWay}"
+							BackgroundColor="{Binding UsernameBackgroundColour}"/>
+						<Entry
+							Grid.Row="3"
+							Grid.Column="0"
+							Grid.ColumnSpan="2"
+							IsPassword="true"
+							IsSpellCheckEnabled="false"
+							IsTextPredictionEnabled="false"
+							Text="{Binding Password, Mode=TwoWay}"
+							Placeholder="{Binding PasswordPlaceholder, Mode=TwoWay}"
+							PlaceholderColor="{Binding PasswordPlaceholderColour, Mode=TwoWay}"
+							TextColor="{Binding PasswordTextColour, Mode=TwoWay}"
+							BackgroundColor="{Binding PasswordBackgroundColour}"/>
+						<Button
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Padding="0"
+                            BackgroundColor="{Binding LeftButtonColour, FallbackValue='#FDFDFD'}"
+                            Command="{Binding LeftButtonCommand, Mode=OneWay}"
+                            CornerRadius="5"
+                            Text="{Binding LeftButtonText, Mode=OneWay, FallbackValue='Left Button Text'}"
+                            TextColor="{Binding LeftButtonTextColour, FallbackValue=Green}" />
+						<Button
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Padding="0"
+                            BackgroundColor="{Binding RightButtonColour, FallbackValue='#FDFDFD'}"
+                            Command="{Binding RightButtonCommand, Mode=OneWay}"
+                            CornerRadius="5"
+                            Text="{Binding RightButtonText, Mode=OneWay, FallbackValue='Right Button Text'}"
+                            TextColor="{Binding RightButtonTextColour, FallbackValue=Red}" />
+					</Grid>
+				</Frame>
+			</AbsoluteLayout>
+		</ContentView>
+	</pages:PopupPage.Content>
+</pages:PopupPage>

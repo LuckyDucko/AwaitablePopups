@@ -116,8 +116,8 @@ namespace AwaitablePopups.PopupPages.TextInput
 		public static async Task<string> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Color MainPopupColour, string DefaultTextInput, string DefaultPlaceHolder)
 		{
 			var AutoGeneratePopupViewModel = new TextInputViewModel(Services.PopupService.GetInstance());
-			ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal(AutoGeneratePopupViewModel.TextInput));
-			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal("No Text For You then"));
+			ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal("No Text Available"));
+			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal(AutoGeneratePopupViewModel.TextInput));
 			return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, DefaultTextInput, DefaultPlaceHolder, AutoGeneratePopupViewModel);
 		}
 
@@ -143,12 +143,12 @@ namespace AwaitablePopups.PopupPages.TextInput
 		{
 			AutoGeneratePopupViewModel.LeftButtonCommand = leftButtonCommand;
 			AutoGeneratePopupViewModel.LeftButtonColour = leftButtonColour;
-			AutoGeneratePopupViewModel.LeftButtonText = leftButtonText ?? "Yes";
+			AutoGeneratePopupViewModel.LeftButtonText = leftButtonText ?? "No";
 			AutoGeneratePopupViewModel.LeftButtonTextColour = leftButtonTextColour;
 
 			AutoGeneratePopupViewModel.RightButtonCommand = rightButtonCommand;
 			AutoGeneratePopupViewModel.RightButtonColour = rightButtonColour;
-			AutoGeneratePopupViewModel.RightButtonText = rightButtonText ?? "No";
+			AutoGeneratePopupViewModel.RightButtonText = rightButtonText ?? "Yes";
 			AutoGeneratePopupViewModel.RightButtonTextColour = rightButtonTextColour;
 
 			AutoGeneratePopupViewModel.MainPopupColour = MainPopupColour;

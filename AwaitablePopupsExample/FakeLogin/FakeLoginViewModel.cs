@@ -10,7 +10,6 @@ using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Threading;
 using AwaitablePopups.PopupPages.TextInput;
-using AsyncAwaitBestPractices;
 
 namespace AwaitablePopupsExample.FakeLogin
 {
