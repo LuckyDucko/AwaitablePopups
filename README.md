@@ -89,6 +89,11 @@ return await DualResponseViewModel.GeneratePopup(new PopupButton(Color.Green, Co
 await TextInputViewModel.GeneratePopup(new PopupButton(Color.Green, Color.Black, "I Accept"), new PopupButton(Color.Red, Color.Black, "I decline"), Color.Green, "TEXT HERE", "Placeholder");
 ```
 
+LoginPage is currently going through some testing, come back soon. 
+`LoginPage PopupPage`
+```csharp
+await LoginPageViewModel.GeneratePopup(CHECK DOCUMENTATION);
+```
 
 or, to return from the loader a value
 ```csharp
