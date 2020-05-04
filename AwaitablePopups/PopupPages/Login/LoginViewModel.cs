@@ -1,6 +1,12 @@
 ﻿using AwaitablePopups.AbstractClasses;
 using System.Windows.Input;
 using AwaitablePopups.Interfaces;
+using Xamarin.Forms;
+using System;
+using System.Threading.Tasks;
+using AwaitablePopups.Structs;
+using System.Collections.Generic;
+using AsyncAwaitBestPractices.MVVM;
 
 namespace AwaitablePopups.PopupPages.Login
 {
@@ -143,6 +149,80 @@ namespace AwaitablePopups.PopupPages.Login
 		{
 		}
 
+		public static async Task<(string username, string password)> GeneratePopup(PopupEntry usernameField, PopupEntry passwordField, PopupButton leftPopupButton, PopupButton rightPopupButton, ICommand leftButtonCommand, ICommand rightButtonCommand, string pictureSource)
+		{
+			var AutoGeneratePopupViewModel = new LoginViewModel(AwaitablePopups.Services.PopupService.GetInstance());
+			PropertySetter(usernameField, passwordField, leftPopupButton, rightPopupButton, leftButtonCommand, rightButtonCommand, pictureSource, AutoGeneratePopupViewModel);
+			return await Services.PopupService.GetInstance().PushAsync<LoginViewModel, LoginPopupPage, (string username, string password)>(AutoGeneratePopupViewModel);
+		}
+
+		/// <summary>
+		/// Only use if you know what you are doing. untested.
+		/// </summary>
+		/// <param name="keyValueProperties"></param>
+		/// <returns></returns>
+		public static async Task<(string username, string password)> GeneratePopup(Dictionary<string, object> keyValueProperties)
+		{
+			var AutoGeneratePopupViewModel = new LoginViewModel(Services.PopupService.GetInstance());
+			AutoGeneratePopupViewModel.InitialiseOptionalProperties(keyValueProperties);
+			return await Services.PopupService.GetInstance().PushAsync<LoginViewModel, LoginPopupPage, (string username, string password)>(AutoGeneratePopupViewModel);
+		}
+
+		public static async Task<(string username, string password)> GeneratePopup(PopupEntry usernameField, PopupEntry passwordField, PopupButton leftPopupButton, PopupButton rightPopupButton, Task<(string username, string password)> leftButtonTask, Task<(string username, string password)> rightButtonTask, string pictureSource)
+		{
+			var AutoGeneratePopupViewModel = new LoginViewModel(AwaitablePopups.Services.PopupService.GetInstance());
+			ICommand leftButtonCommand = new AsyncCommand(async () => await AutoGeneratePopupViewModel.SafeCloseModal(leftButtonTask));
+			ICommand rightButtonCommand = new AsyncCommand(async () => await AutoGeneratePopupViewModel.SafeCloseModal(rightButtonTask));
+			return await GeneratePopup(usernameField, passwordField, leftPopupButton, rightPopupButton, leftButtonCommand, rightButtonCommand, pictureSource);
+		}
+
+		public static async Task<(string username, string password)> GeneratePopup(PopupEntry usernameField, PopupEntry passwordField, PopupButton leftPopupButton, PopupButton rightPopupButton, string pictureSource)
+		{
+			var AutoGeneratePopupViewModel = new LoginViewModel(AwaitablePopups.Services.PopupService.GetInstance());
+			ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal(("invalid", "invalid")));
+			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal((AutoGeneratePopupViewModel.Username, AutoGeneratePopupViewModel.Password)));
+			return await GeneratePopup(usernameField, passwordField, leftPopupButton, rightPopupButton, leftButtonCommand, rightButtonCommand, pictureSource);
+		}
+
+		public static async Task<(string username, string password)> GeneratePopup(PopupEntry usernameField, PopupEntry passwordField, PopupButton leftPopupButton, PopupButton rightPopupButton, Task leftButtonTask, Task rightButtonTask, string pictureSource)
+		{
+			var AutoGeneratePopupViewModel = new LoginViewModel(AwaitablePopups.Services.PopupService.GetInstance());
+			AsyncCommand leftButtonCommand = new AsyncCommand(async () =>
+			{
+				await leftButtonTask;
+				AutoGeneratePopupViewModel.SafeCloseModal(("invalid", "invalid"));
+			});
+
+			AsyncCommand rightButtonCommand = new AsyncCommand(async () =>
+			{
+				await rightButtonTask;
+				AutoGeneratePopupViewModel.SafeCloseModal((AutoGeneratePopupViewModel.Username, AutoGeneratePopupViewModel.Password));
+			});
+			return await GeneratePopup(usernameField, passwordField, leftPopupButton, rightPopupButton, leftButtonCommand, rightButtonCommand, pictureSource);
+		}
+
+		private static void PropertySetter(PopupEntry usernameField, PopupEntry passwordField, PopupButton leftPopupButton, PopupButton rightPopupButton, ICommand leftButtonCommand, ICommand rightButtonCommand, string PictureSource, LoginViewModel AutoGeneratePopupViewModel)
+		{
+			AutoGeneratePopupViewModel.Username = usernameField.EntryText;
+			AutoGeneratePopupViewModel.UsernamePlaceholder = usernameField.EntryPlaceholder;
+			AutoGeneratePopupViewModel.UsernamePlaceholderColour = usernameField.PlaceholderTextColour;
+			AutoGeneratePopupViewModel.UsernameTextColour = usernameField.EntryTextColour;
+			AutoGeneratePopupViewModel.UsernameBackgroundColour = usernameField.BackgroundColour;
+			AutoGeneratePopupViewModel.Password = passwordField.EntryText;
+			AutoGeneratePopupViewModel.PasswordPlaceholder = passwordField.EntryPlaceholder;
+			AutoGeneratePopupViewModel.PasswordPlaceholderColour = passwordField.PlaceholderTextColour;
+			AutoGeneratePopupViewModel.PasswordTextColour = passwordField.EntryTextColour;
+			AutoGeneratePopupViewModel.PasswordBackgroundColour = passwordField.BackgroundColour;
+			AutoGeneratePopupViewModel.LeftButtonCommand = leftButtonCommand ?? throw new ArgumentNullException(nameof(leftButtonCommand));
+			AutoGeneratePopupViewModel.LeftButtonText = leftPopupButton.ButtonText;
+			AutoGeneratePopupViewModel.LeftButtonColour = leftPopupButton.ButtonColour;
+			AutoGeneratePopupViewModel.LeftButtonTextColour = leftPopupButton.ButtonTextColour;
+			AutoGeneratePopupViewModel.RightButtonCommand = rightButtonCommand ?? throw new ArgumentNullException(nameof(rightButtonCommand));
+			AutoGeneratePopupViewModel.RightButtonText = rightPopupButton.ButtonText;
+			AutoGeneratePopupViewModel.RightButtonColour = rightPopupButton.ButtonColour;
+			AutoGeneratePopupViewModel.RightButtonTextColour = rightPopupButton.ButtonTextColour;
+			AutoGeneratePopupViewModel.PictureSource = PictureSource;
+		}
 	}
 }
 

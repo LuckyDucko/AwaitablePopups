@@ -1,6 +1,4 @@
-﻿
-using System;
-using AwaitablePopups.Interfaces;
+﻿using AwaitablePopups.Interfaces;
 using Rg.Plugins.Popup.Pages;
 namespace AwaitablePopups.PopupPages.Login
 {

@@ -67,6 +67,7 @@ namespace AwaitablePopups.AbstractClasses
 			}
 
 		}
+
 		/// <summary>
 		/// This is for use only when you wish for some form of reusable wrapper,
 		/// it provides little protection or help.
