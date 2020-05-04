@@ -1,7 +1,10 @@
 ---
-
-name: 🚀 Feature Request
+name: "\U0001F680 Feature Request"
 about: Want to see something new included in AwaitablePopups? Submit it!
+title: ''
+labels: enhancement, question
+assignees: LuckyDucko
+
 ---
 
 ## Does this affect AwaitablePopups, or is it better suited to [Rg.Plugins.Popup?](https://github.com/rotorgames/Rg.Plugins.Popup)
