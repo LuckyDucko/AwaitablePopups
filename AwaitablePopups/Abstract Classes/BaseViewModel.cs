@@ -6,35 +6,35 @@ using AwaitablePopups.Interfaces;
 
 namespace AwaitablePopups.AbstractClasses
 {
-    public abstract class BasePopupViewModel : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected IPopupService PopupService { get; set; }
+	public abstract class BasePopupViewModel : INotifyPropertyChanged, IBasePopupViewModel
+	{
+		public event PropertyChangedEventHandler PropertyChanged;
+		protected IPopupService PopupService { get; set; }
 
-        private bool _isBusy;
-        public bool IsBusy
-        {
-            get => _isBusy;
-            set => SetValue(ref _isBusy, value);
-        }
+		private bool _isBusy;
+		public bool IsBusy
+		{
+			get => _isBusy;
+			set => SetValue(ref _isBusy, value);
+		}
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
 
-        protected BasePopupViewModel(IPopupService popupService)
-        {
-            PopupService = popupService;
-        }
+		protected BasePopupViewModel(IPopupService popupService)
+		{
+			PopupService = popupService;
+		}
 
-        protected virtual void SetValue<T>(ref T backingField, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingField, value))
-                return;
+		protected virtual void SetValue<T>(ref T backingField, T value, [CallerMemberName] string propertyName = null)
+		{
+			if (EqualityComparer<T>.Default.Equals(backingField, value))
+				return;
 
-            backingField = value;
-            OnPropertyChanged(propertyName);
-        }
-    }
+			backingField = value;
+			OnPropertyChanged(propertyName);
+		}
+	}
 }

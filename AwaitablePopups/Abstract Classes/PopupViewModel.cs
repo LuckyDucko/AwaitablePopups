@@ -5,7 +5,7 @@ using AwaitablePopups.Interfaces;
 
 namespace AwaitablePopups.AbstractClasses
 {
-	public abstract class PopupViewModel<TReturnable> : BasePopupViewModel
+	public abstract class PopupViewModel<TReturnable> : BasePopupViewModel, IPopupViewModel<TReturnable>
 	{
 		public TaskCompletionSource<TReturnable> Returnable { get; set; }
 		protected TReturnable BaseExitValue { get; set; }
@@ -35,7 +35,7 @@ namespace AwaitablePopups.AbstractClasses
 			SafeCloseModal(BaseExitValue);
 		}
 
-		public async Task SafeCloseModal(Task<TReturnable> buttonCommand)
+		public virtual async Task SafeCloseModal(Task<TReturnable> buttonCommand)
 		{
 			if (buttonCommand.Status.Equals(TaskStatus.Created) == buttonCommand.Status.Equals(TaskStatus.WaitingForActivation))
 			{
@@ -45,7 +45,7 @@ namespace AwaitablePopups.AbstractClasses
 			SafeCloseModal(buttonCommandResult);
 		}
 
-		public void SafeCloseModal(TReturnable result)
+		public virtual void SafeCloseModal(TReturnable result)
 		{
 			try
 			{
@@ -73,7 +73,7 @@ namespace AwaitablePopups.AbstractClasses
 		/// it provides little protection or help.
 		/// </summary>
 		/// <param name="optionalProperties"></param>
-		public void InitialiseOptionalProperties(Dictionary<string, object> optionalProperties)
+		public virtual void InitialiseOptionalProperties(Dictionary<string, object> optionalProperties)
 		{
 			foreach (KeyValuePair<string, object> property in optionalProperties)
 			{

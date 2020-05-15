@@ -2,19 +2,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <PackageVersion>0.3.5</PackageVersion>
+        <PackageVersion>0.3.6</PackageVersion>
         <Authors>Tyson Hooker</Authors>
         <NeutralLanguage>en-AU</NeutralLanguage>
         <Description>Create your own DisplayAlerts using XAML,
-or use the DisplayAlerts (and LoaderDialog) thats included!
+or use the DisplayAlerts,LoaderDialogs and LoginViews that's included!
 Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
         <PackageId>AwaitablePopups</PackageId>
         <Owners>LuckyDucko</Owners>
         <PackageProjectUrl>https://github.com/LuckyDucko/AwaitablePopups</PackageProjectUrl>
-        <PackageTags>Xamarin-forms async popups MVVM </PackageTags>
+        <PackageTags>xamarin-forms async popup MVVM custom-popup dialogs userdialogs xamarin popup-page loader awaitable-popups</PackageTags>
         <Title>Awaitable Popups</Title>
         <Summary>Popup Modals For Xamarin Forms</Summary>
-        <PackageReleaseNotes>Added in proper LoginViewModel. Still needs testing surrounding it</PackageReleaseNotes>
+        <PackageReleaseNotes>Fixed Major bug in LoginViewModel using its GeneratePopup Methods which caused it to return bad results. This was due to me assigning the wrong ViewModel in the background.
+
+Beginning the process of Interfacing this out. Added Basic interfaces for all the ViewModels. However, not too useful just yet. 
+
+Added in the new EntryInputViewModel. Its the same as the original TextInput, however, this uses the much smaller entry field opposed to the Editor in the TextInput. IN hindsight a name change would've been smarter
+
+Fixed issues with the example app, as i had some brainfog and had switched the text/vibe of the left and right buttons</PackageReleaseNotes>
         <PackOnBuild>true</PackOnBuild>
     </PropertyGroup>
     <PropertyGroup>
@@ -46,8 +52,13 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
       <Folder Include="Structs\" />
       <Folder Include="PopupPages\TextInput\" />
       <Folder Include="PopupPages\Login\" />
+      <Folder Include="PopupPages\EntryInput\" />
     </ItemGroup>
     <ItemGroup>
       <None Remove="nuget.config" />
+      <None Remove="PopupPages\TextInput\EntryInputPopupPage.xaml.cs~" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Include="PopupPages\EntryInput\EntryInputPopupPage.xaml.cs~" />
     </ItemGroup>
 </Project>

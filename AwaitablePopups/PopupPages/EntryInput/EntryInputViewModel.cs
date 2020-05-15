@@ -4,12 +4,13 @@ using System.Windows.Input;
 using AsyncAwaitBestPractices.MVVM;
 using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
+using AwaitablePopups.PopupPages.TextInput;
 using AwaitablePopups.Structs;
 using Xamarin.Forms;
 
-namespace AwaitablePopups.PopupPages.TextInput
+namespace AwaitablePopups.PopupPages.EntryInput
 {
-	public class TextInputViewModel : PopupViewModel<string>, ITextInputViewModel
+	public class EntryInputViewModel : PopupViewModel<string>, IEntryInputViewModel
 	{
 		private string _textInput;
 		public string TextInput
@@ -80,14 +81,14 @@ namespace AwaitablePopups.PopupPages.TextInput
 			set => SetValue(ref _rightButtonTextColour, value);
 		}
 
-		public TextInputViewModel(IPopupService popupService) : base(popupService)
+		public EntryInputViewModel(IPopupService popupService) : base(popupService)
 		{
 		}
 
-		private static async Task<string> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, ICommand leftButtonCommand, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, ICommand rightButtonCommand, Color MainPopupColour, string DefaultTextInput, string DefaultPlaceHolder, TextInputViewModel AutoGeneratePopupViewModel)
+		private static async Task<string> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, ICommand leftButtonCommand, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, ICommand rightButtonCommand, Color MainPopupColour, string DefaultTextInput, string DefaultPlaceHolder, EntryInputViewModel AutoGeneratePopupViewModel)
 		{
 			PropertySetter(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, DefaultTextInput, DefaultPlaceHolder, AutoGeneratePopupViewModel);
-			return await Services.PopupService.GetInstance().PushAsync<TextInputViewModel, TextInputPopupPage, string>(AutoGeneratePopupViewModel);
+			return await Services.PopupService.GetInstance().PushAsync<EntryInputViewModel, EntryInputPopupPage, string>(AutoGeneratePopupViewModel);
 		}
 
 		public static async Task<string> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Task<bool> leftButtonTask, Task<bool> rightButtonTask, Color MainPopupColour, string DefaultTextInput, string DefaultPlaceHolder)
@@ -107,7 +108,7 @@ namespace AwaitablePopups.PopupPages.TextInput
 
 		public static async Task<string> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Task<string> leftButtonTask, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Task<string> rightButtonTask, Color MainPopupColour, string DefaultTextInput, string DefaultPlaceHolder)
 		{
-			var AutoGeneratePopupViewModel = new TextInputViewModel(Services.PopupService.GetInstance());
+			var AutoGeneratePopupViewModel = new EntryInputViewModel(Services.PopupService.GetInstance());
 			ICommand leftButtonCommand = new AsyncCommand(async () => await AutoGeneratePopupViewModel.SafeCloseModal(leftButtonTask));
 			ICommand rightButtonCommand = new AsyncCommand(async () => await AutoGeneratePopupViewModel.SafeCloseModal(rightButtonTask));
 			return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, DefaultTextInput, DefaultPlaceHolder, AutoGeneratePopupViewModel);
@@ -115,7 +116,7 @@ namespace AwaitablePopups.PopupPages.TextInput
 
 		public static async Task<string> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Color MainPopupColour, string DefaultTextInput, string DefaultPlaceHolder)
 		{
-			var AutoGeneratePopupViewModel = new TextInputViewModel(Services.PopupService.GetInstance());
+			var AutoGeneratePopupViewModel = new EntryInputViewModel(Services.PopupService.GetInstance());
 			ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal("No Text Available"));
 			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal(AutoGeneratePopupViewModel.TextInput));
 			return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, DefaultTextInput, DefaultPlaceHolder, AutoGeneratePopupViewModel);
@@ -123,7 +124,7 @@ namespace AwaitablePopups.PopupPages.TextInput
 
 		public static async Task<string> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Task leftButtonTask, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Task rightButtonTask, Color MainPopupColour, string DefaultTextInput, string DefaultPlaceHolder)
 		{
-			var AutoGeneratePopupViewModel = new TextInputViewModel(Services.PopupService.GetInstance());
+			var AutoGeneratePopupViewModel = new EntryInputViewModel(Services.PopupService.GetInstance());
 			AsyncCommand leftButtonCommand = new AsyncCommand(async () =>
 			{
 				await leftButtonTask;
@@ -139,7 +140,7 @@ namespace AwaitablePopups.PopupPages.TextInput
 		}
 
 
-		private static void PropertySetter(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, ICommand leftButtonCommand, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, ICommand rightButtonCommand, Color MainPopupColour, string DefaultTextInput, string DefaultPlaceHolder, TextInputViewModel AutoGeneratePopupViewModel)
+		private static void PropertySetter(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, ICommand leftButtonCommand, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, ICommand rightButtonCommand, Color MainPopupColour, string DefaultTextInput, string DefaultPlaceHolder, EntryInputViewModel AutoGeneratePopupViewModel)
 		{
 			AutoGeneratePopupViewModel.LeftButtonCommand = leftButtonCommand;
 			AutoGeneratePopupViewModel.LeftButtonColour = leftButtonColour;

@@ -8,7 +8,7 @@ using AwaitablePopups.Interfaces;
 
 namespace AwaitablePopups.PopupPages.Loader
 {
-	public class LoaderViewModel : PopupViewModel<bool>
+	public class LoaderViewModel : PopupViewModel<bool>, ILoaderViewModel
 	{
 		private Xamarin.Forms.Color _loaderColour;
 		public Xamarin.Forms.Color LoaderColour

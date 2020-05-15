@@ -10,6 +10,8 @@ using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Threading;
 using AwaitablePopups.PopupPages.TextInput;
+using AwaitablePopups.PopupPages.EntryInput;
+using AwaitablePopups.PopupPages.Login;
 
 namespace AwaitablePopupsExample.FakeLogin
 {
@@ -59,29 +61,44 @@ namespace AwaitablePopupsExample.FakeLogin
 
 		public async Task<bool> AttemptLogin()
 		{
-			LoginEnabled = false;
-			var textinput = await TextInputViewModel.GeneratePopup(new PopupButton(Color.Green, Color.Black, "I Accept"), new PopupButton(Color.Red, Color.Black, "I decline"), Color.Green, "TEXT HERE", "Placeholder");
-			var pointlessBoolean = await DualResponseViewModel.GeneratePopup(new PopupButton(Color.Green, Color.Black, "I Accept"), new PopupButton(Color.Red, Color.Black, "I decline"), Color.Gray, string.Concat("Your Text:", textinput, "I am doing this weird formatting to attempt to break this with weird scenarios"), "NoSource.png");
-			pointlessBoolean = pointlessBoolean == await PopupService.WrapReturnableFuncInLoader(LongRunningFunction, 6000, pointlessBoolean, Color.Red, Color.White, LoadingReasons(), Color.Black);
-			return await PopupService.WrapReturnableTaskInLoader(NeedlessTestAbstraction(pointlessBoolean), Color.Blue, Color.White, LoadingReasons(), Color.Black);
+			try
+			{
+				if (string.IsNullOrEmpty(Mobile) || string.IsNullOrEmpty(Password))
+				{
+					var (username, password) = await LoginViewModel.GeneratePopup(new PopupEntry(string.Empty, "Username", Color.Black, Color.BlanchedAlmond, Color.WhiteSmoke),
+													   new PopupEntry(string.Empty, "Password", Color.Black, Color.BlanchedAlmond, Color.WhiteSmoke),
+													   new PopupButton(Color.Green, Color.Black, "Cancel"),
+													   new PopupButton(Color.Green, Color.Black, "Submit"),
+													   "NoSource.png");
+					Mobile = username;
+					Password = password;
+				}
+				LoginEnabled = false;
+				var textinput = await EntryInputViewModel.GeneratePopup(new PopupButton(Color.Red, Color.Black, "I decline"), new PopupButton(Color.Green, Color.Black, "I Accept"), Color.Green, "TEXT HERE", "Placeholder");
+				var pointlessBoolean = await DualResponseViewModel.GeneratePopup(new PopupButton(Color.Red, Color.Black, "I decline"), new PopupButton(Color.Green, Color.Black, "I Accept"), Color.Gray, string.Concat("Your Text:", textinput, "I am doing this weird formatting to attempt to break this with weird scenarios"), "NoSource.png");
+				pointlessBoolean = pointlessBoolean == await PopupService.WrapReturnableFuncInLoader(LongRunningFunction, 6000, pointlessBoolean, Color.Red, Color.White, LoadingReasons(), Color.Black);
+				return await PopupService.WrapReturnableTaskInLoader(NeedlessTestAbstraction(pointlessBoolean), Color.Blue, Color.White, LoadingReasons(), Color.Black);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				return false;
+			}
 		}
 
 		private async Task<bool> NeedlessTestAbstraction(bool loginResult)
 		{
 			try
 			{
-				if (string.IsNullOrEmpty(Mobile) || string.IsNullOrEmpty(Password))
-				{
-					loginResult = await IncorrectLoginAsync();
-				}
-				else if (Mobile.Equals("Dual"))
+				if (Mobile.Equals("Dual"))
 				{
 					loginResult = await AcceptConditions();
 				}
-				else if (Mobile.Equals("Single"))
+				else
 				{
 					loginResult = await SuccessfulLoginAsync();
 				}
+
 			}
 			catch (Exception)
 			{
@@ -117,7 +134,6 @@ namespace AwaitablePopupsExample.FakeLogin
 			return await SingleResponseViewModel.GeneratePopup(new PopupButton(Color.Coral, Color.Black, "Okay"), Color.Gray, "There was a Device error. Dang.", "NoSource.png");
 		}
 
-
 		private async Task<bool> IncorrectLoginAsync()
 		{
 			return await SingleResponseViewModel.GeneratePopup(new PopupButton(Color.Goldenrod, Color.Black, "Okay"), Color.Gray, "Your Phone Number or Pin is incorrect, please try again.", "NoSource.png");
@@ -130,7 +146,7 @@ namespace AwaitablePopupsExample.FakeLogin
 
 		private async Task<bool> AcceptConditions()
 		{
-			return await DualResponseViewModel.GeneratePopup(new PopupButton(Color.Green, Color.Black, "I Accept"), new PopupButton(Color.Red, Color.Black, "I decline"), Color.Gray, "Do you accept the terms and conditions?", "NoSource.png");
+			return await DualResponseViewModel.GeneratePopup(new PopupButton(Color.Red, Color.Black, "I decline"), new PopupButton(Color.Green, Color.Black, "I Accept"), Color.Gray, "Do you accept the terms and conditions?", "NoSource.png");
 		}
 	}
 }
