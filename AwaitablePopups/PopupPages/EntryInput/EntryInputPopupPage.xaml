@@ -1,10 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <pages:PopupPage
-    x:Class="AwaitablePopups.PopupPages.TextInput.EntryInputPopupPage"
+    x:Class="AwaitablePopups.PopupPages.EntryInput.EntryInputPopupPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+    xmlns:ViewModel="clr-namespace:AwaitablePopups.PopupPages.EntryInput"
+    x:DataType="ViewModel:EntryInputViewModel"
     HasKeyboardOffset="False">
 	<pages:PopupPage.Animation>
 		<animations:ScaleAnimation
@@ -45,7 +47,7 @@
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             BackgroundColor="WhiteSmoke"
-                            Placeholder="{Binding PlaceholderInput, Mode=TwoWay, FallbackValue='Placeholder'}"
+                            Placeholder="{Binding PlaceHolderInput, Mode=TwoWay, FallbackValue='Placeholder'}"
                             PlaceholderColor="Black"
                             Text="{Binding TextInput, Mode=TwoWay}" />
 						<Button

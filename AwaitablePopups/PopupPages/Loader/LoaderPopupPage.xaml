@@ -4,6 +4,8 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+     xmlns:ViewModel="clr-namespace:AwaitablePopups.PopupPages.Loader"
+    x:DataType="ViewModel:LoaderViewModel"
     HasKeyboardOffset="False">
 	<pages:PopupPage.Content>
 		<ContentView>

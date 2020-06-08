@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+
 using AsyncAwaitBestPractices.MVVM;
+
 using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
 using AwaitablePopups.PopupPages.TextInput;
 using AwaitablePopups.Structs;
+
 using Xamarin.Forms;
 
 namespace AwaitablePopups.PopupPages.EntryInput
@@ -25,6 +28,7 @@ namespace AwaitablePopups.PopupPages.EntryInput
 			get => _placeHolderInput;
 			set => SetValue(ref _placeHolderInput, value);
 		}
+
 		private ICommand _leftButtonCommand;
 		public ICommand LeftButtonCommand
 		{
@@ -85,7 +89,18 @@ namespace AwaitablePopups.PopupPages.EntryInput
 		{
 		}
 
-		private static async Task<string> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, ICommand leftButtonCommand, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, ICommand rightButtonCommand, Color MainPopupColour, string DefaultTextInput, string DefaultPlaceHolder, EntryInputViewModel AutoGeneratePopupViewModel)
+		private static async Task<string> GeneratePopup(Color leftButtonColour,
+												  Color leftButtonTextColour,
+												  string leftButtonText,
+												  ICommand leftButtonCommand,
+												  Color rightButtonColour,
+												  Color rightButtonTextColour,
+												  string rightButtonText,
+												  ICommand rightButtonCommand,
+												  Color MainPopupColour,
+												  string DefaultTextInput,
+												  string DefaultPlaceHolder,
+												  EntryInputViewModel AutoGeneratePopupViewModel)
 		{
 			PropertySetter(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, DefaultTextInput, DefaultPlaceHolder, AutoGeneratePopupViewModel);
 			return await Services.PopupService.GetInstance().PushAsync<EntryInputViewModel, EntryInputPopupPage, string>(AutoGeneratePopupViewModel);

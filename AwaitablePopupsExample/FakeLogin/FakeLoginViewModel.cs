@@ -9,7 +9,6 @@ using AwaitablePopups.Structs;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Threading;
-using AwaitablePopups.PopupPages.TextInput;
 using AwaitablePopups.PopupPages.EntryInput;
 using AwaitablePopups.PopupPages.Login;
 
@@ -17,7 +16,6 @@ namespace AwaitablePopupsExample.FakeLogin
 {
 	public class FakeLoginViewModel : BasePopupViewModel
 	{
-
 		private string _mobile;
 		public string Mobile
 		{
