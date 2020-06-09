@@ -47,7 +47,7 @@
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             BackgroundColor="WhiteSmoke"
-                            Placeholder="{Binding PlaceholderInput, Mode=TwoWay, FallbackValue='Placeholder'}"
+                            Placeholder="{Binding PlaceHolderInput, Mode=TwoWay, FallbackValue='Placeholder'}"
                             PlaceholderColor="Black"
                             Text="{Binding TextInput, Mode=TwoWay}" />
 						<Button
