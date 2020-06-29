@@ -4,7 +4,7 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
-     xmlns:ViewModel="clr-namespace:AwaitablePopups.PopupPages.Loader"
+    xmlns:ViewModel="clr-namespace:AwaitablePopups.PopupPages.Loader"
     x:DataType="ViewModel:LoaderViewModel"
     HasKeyboardOffset="False">
 	<pages:PopupPage.Content>
@@ -18,9 +18,9 @@
                     BackgroundColor="{Binding MainPopupColour, FallbackValue=#434343}"
                     CornerRadius="5"
                     HasShadow="false"
-                    HorizontalOptions="Fill"
-                    VerticalOptions="Fill">
-					<Grid>
+               MinimumWidthRequest="90000"
+                MinimumHeightRequest="90000">
+					<Grid HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="50*" />
 							<ColumnDefinition Width="50*" />
@@ -30,6 +30,14 @@
 							<RowDefinition Height="47*" />
 							<RowDefinition Height="50*" />
 						</Grid.RowDefinitions>
+						<ActivityIndicator
+                                Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                    BackgroundColor="Transparent"
+                    IsRunning="True"
+                    Scale="3"
+                    Color="{Binding LoaderColour, FallbackValue=Black}" />
 						<Label
                             Grid.Row="2"
                             Grid.Column="0"
@@ -40,13 +48,6 @@
                             TextColor="{Binding TextColour, Mode=OneWay, FallbackValue=#FDFDFD}" />
 					</Grid>
 				</Frame>
-				<ActivityIndicator
-                    AbsoluteLayout.LayoutBounds=".5,.25,.6,.6"
-                    AbsoluteLayout.LayoutFlags="All"
-                    BackgroundColor="Transparent"
-                    IsRunning="True"
-                    Scale="3"
-                    Color="{Binding LoaderColour, FallbackValue=Black}" />
 			</AbsoluteLayout>
 		</ContentView>
 	</pages:PopupPage.Content>

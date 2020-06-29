@@ -1,13 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+
 using AwaitablePopups.Interfaces;
 
 namespace AwaitablePopups.AbstractClasses
 {
 	public abstract class PopupViewModel<TReturnable> : BasePopupViewModel, IPopupViewModel<TReturnable>
 	{
+		/// <summary>
+		/// This is what the result of the popupPage will be when it returns to its caller
+		/// </summary>
 		public TaskCompletionSource<TReturnable> Returnable { get; set; }
+
+		/// <summary>
+		/// This is the fallback value, incase of premature exists
+		/// </summary>
 		protected TReturnable BaseExitValue { get; set; }
 
 		private string _mainPopupInformation;
@@ -30,21 +40,33 @@ namespace AwaitablePopups.AbstractClasses
 			BaseExitValue = default(TReturnable);
 		}
 
+
 		public virtual void SafeCloseModal()
 		{
 			SafeCloseModal(BaseExitValue);
 		}
 
-		public virtual async Task SafeCloseModal(Task<TReturnable> buttonCommand)
+		/// <summary>
+		/// awaits the async action to complete, and then
+		/// passes the result to the sync SafeCloseModal
+		/// </summary>
+		/// <param name="asyncResult">still processing results</param>
+		/// <returns></returns>
+		public virtual async Task SafeCloseModal(Task<TReturnable> asyncResult)
 		{
-			if (buttonCommand.Status.Equals(TaskStatus.Created) == buttonCommand.Status.Equals(TaskStatus.WaitingForActivation))
+			if (asyncResult.Status.Equals(TaskStatus.Created) || asyncResult.Status.Equals(TaskStatus.WaitingForActivation))
 			{
-				buttonCommand.Start();
+				asyncResult.Start();
 			}
-			var buttonCommandResult = await buttonCommand;
+			var buttonCommandResult = await asyncResult;
 			SafeCloseModal(buttonCommandResult);
 		}
 
+		/// <summary>
+		/// returns the result of the popup into the awaitable task, With
+		/// fallback attempts if necessary.
+		/// </summary>
+		/// <param name="result">User Feedback/Processed Results</param>
 		public virtual void SafeCloseModal(TReturnable result)
 		{
 			try
@@ -59,7 +81,7 @@ namespace AwaitablePopups.AbstractClasses
 			catch (Exception)
 			{
 				Returnable = new TaskCompletionSource<TReturnable>();
-				Returnable.SetResult(default);
+				Returnable.SetResult(BaseExitValue);
 			}
 			finally
 			{
@@ -79,6 +101,37 @@ namespace AwaitablePopups.AbstractClasses
 			{
 				GetType().GetProperty(property.Key).SetValue(this, property.Value, null);
 			}
+		}
+
+		/// <summary>
+		/// This is for use only when you wish for some form of reusable wrapper,
+		/// This method requires a specific type which it then will handle in a parallel fashion. 
+		/// </summary>
+		/// <typeparam name="TPropertyValue"></typeparam>
+		/// <param name="optionalProperties"></param>
+		public void InitialiseOptionalProperties<TPropertyValue>(Dictionary<string, TPropertyValue> optionalProperties)
+		{
+			optionalProperties
+				.AsParallel()
+				.ForAll((KeyValuePair<string, TPropertyValue> property)
+					=> GetType()
+						.GetProperty(property.Key)
+						.SetValue(this, property.Value, null));
+		}
+
+		/// <summary>
+		/// Allows you to gather the values of every property that is on the popupviewmodel
+		/// into a key/value pair. Properties will need to be cast into their proper types
+		/// </summary>
+		/// <typeparam name="TViewModel"> Viwemodel Type you wish to iterate over</typeparam>
+		/// <returns></returns>
+		public Dictionary<string, object> PullViewModelProperties<TViewModel>()
+			where TViewModel : BasePopupViewModel
+		{
+			var propertyDictionary = new Dictionary<string, object>();
+			PropertyInfo[] properties = typeof(TViewModel).GetProperties();
+			properties.AsParallel().ForAll((property) => propertyDictionary.Add(property.Name, property.GetValue(this, null)));
+			return propertyDictionary;
 		}
 	}
 }

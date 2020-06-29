@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
 
@@ -24,8 +25,8 @@ namespace AwaitablePopups.PopupPages.Loader
 			set => SetValue(ref _textColour, value);
 		}
 
-		private List<string> _reasonsForLoader;
-		public List<string> ReasonsForLoader
+		private IEnumerable<string> _reasonsForLoader;
+		public IEnumerable<string> ReasonsForLoader
 		{
 			get => _reasonsForLoader;
 			set => SetValue(ref _reasonsForLoader, value);
@@ -40,16 +41,15 @@ namespace AwaitablePopups.PopupPages.Loader
 
 		private CancellationTokenSource TextColourToken { get; set; }
 
-		public LoaderViewModel(IPopupService popupService, List<string> reasonsForLoader) : base(popupService)
+		public LoaderViewModel(IPopupService popupService, IEnumerable<string> reasonsForLoader) : base(popupService)
 		{
 			TextColourToken = new CancellationTokenSource();
 			ReasonsForLoader = reasonsForLoader;
 			MainPopupInformation = ReasonsForLoader.Last();
-			if (ReasonsForLoader?.Count > 1)
+			if ((reasonsForLoader?.Count() ?? 0) > 1)
 			{
-				Task.Run(() => InformationSwitch(TextColourToken));
+				Task.Run(() => InformationSwitch(TextColourToken)).ConfigureAwait(false);
 			}
-
 		}
 
 		private void InformationSwitch(CancellationTokenSource TextToken)
@@ -62,15 +62,18 @@ namespace AwaitablePopups.PopupPages.Loader
 					Thread.Sleep(50);
 					TextColour = TextColour.WithLuminosity(i * 0.1);
 				}
-				MainPopupInformation = ReasonsForLoader[new Random().Next(ReasonsForLoader.Count - 1)];
-				ReasonsForLoader.Remove(MainPopupInformation);
-				ReasonsForLoader.Add(MainPopupInformation);
+
+				int SelectionFromUnchosen = new Random().Next(ReasonsForLoader.Count() - 2);
+				MainPopupInformation = ReasonsForLoader
+										.OrderBy(pushChosenToBack)
+										.ElementAt(SelectionFromUnchosen);
 				for (int i = 10; i > 0; i--)
 				{
 					Thread.Sleep(50);
 					TextColour = TextColour.WithLuminosity(i * 0.1);
 				}
 			}
+			bool pushChosenToBack(string reasons) => !reasons.Equals(MainPopupInformation);
 		}
 
 		public override void SafeCloseModal()
