@@ -22,6 +22,7 @@ Added in the new EntryInputViewModel. Its the same as the original TextInput, ho
 
 Fixed issues with the example app, as i had some brainfog and had switched the text/vibe of the left and right buttons</PackageReleaseNotes>
         <PackOnBuild>true</PackOnBuild>
+        <ReleaseVersion>0.2</ReleaseVersion>
     </PropertyGroup>
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
