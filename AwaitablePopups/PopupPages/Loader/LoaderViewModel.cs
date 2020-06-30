@@ -65,27 +65,29 @@ namespace AwaitablePopups.PopupPages.Loader
             }
 
         }
+		private void InformationSwitch(CancellationTokenSource TextToken)
+		{
+			while (!TextToken.IsCancellationRequested)
+			{
+				Thread.Sleep(MillisecondsBetweenReasonSwitch);
+				for (int i = 1; i < 10; i++)
+				{
+					Thread.Sleep(50);
+					TextColour = TextColour.WithLuminosity(i * 0.1);
+				}
 
-        private void InformationSwitch(CancellationTokenSource TextToken)
-        {
-            while (!TextToken.IsCancellationRequested)
-            {
-                Thread.Sleep(MillisecondsBetweenReasonSwitch);
-                for (int i = 1; i < 10; i++)
-                {
-                    Thread.Sleep(50);
-                    TextColour = TextColour.WithLuminosity(i * 0.1);
-                }
-                MainPopupInformation = ReasonsForLoader[new Random().Next(ReasonsForLoader.Count - 1)];
-                ReasonsForLoader.Remove(MainPopupInformation);
-                ReasonsForLoader.Add(MainPopupInformation);
-                for (int i = 10; i > 0; i--)
-                {
-                    Thread.Sleep(50);
-                    TextColour = TextColour.WithLuminosity(i * 0.1);
-                }
-            }
-        }
+				int SelectionFromUnchosen = new Random().Next(ReasonsForLoader.Count() - 2);
+				MainPopupInformation = ReasonsForLoader
+										.OrderBy(pushChosenToBack)
+										.ElementAt(SelectionFromUnchosen);
+				for (int i = 10; i > 0; i--)
+				{
+					Thread.Sleep(50);
+					TextColour = TextColour.WithLuminosity(i * 0.1);
+				}
+			}
+			bool pushChosenToBack(string reasons) => !reasons.Equals(MainPopupInformation);
+		}
 
         public override void SafeCloseModal()
         {

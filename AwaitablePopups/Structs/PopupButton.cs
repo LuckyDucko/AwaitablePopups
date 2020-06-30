@@ -1,4 +1,6 @@
-﻿namespace AwaitablePopups.Structs
+﻿using System.Collections.Generic;
+
+namespace AwaitablePopups.Structs
 {
 	public struct PopupButton
 	{
