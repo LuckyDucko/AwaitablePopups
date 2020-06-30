@@ -1,4 +1,5 @@
 ﻿using AwaitablePopups.Interfaces;
+
 using Rg.Plugins.Popup.Pages;
 namespace AwaitablePopups.PopupPages.TextInput
 {
@@ -28,7 +29,7 @@ namespace AwaitablePopups.PopupPages.TextInput
 
         protected override bool OnBackButtonPressed()
         {
-            ViewModel.SafeCloseModal();
+            ViewModel.SafeCloseModal<TextInputPopupPage>();
             return base.OnBackButtonPressed();
         }
 

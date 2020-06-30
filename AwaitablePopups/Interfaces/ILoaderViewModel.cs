@@ -10,6 +10,6 @@ namespace AwaitablePopups.Interfaces
         Color TextColour { get; set; }
         List<string> ReasonsForLoader { get; set; }
         int MillisecondsBetweenReasonSwitch { get; set; }
-        void SafeCloseModal();
+        void SafeCloseModal<TPopupType>() where TPopupType : Rg.Plugins.Popup.Pages.PopupPage, new();
     }
 }

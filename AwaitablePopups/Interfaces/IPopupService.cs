@@ -60,7 +60,8 @@ namespace AwaitablePopups.Interfaces
         Task<TReturnable> PushAsync<TViewModel, TPopupPage, TReturnable>(TViewModel modalViewModel)
             where TPopupPage : PopupPage, IGenericViewModel<TViewModel>, new()
             where TViewModel : PopupViewModel<TReturnable>;
-        void PopAsync();
+
+        void PopAsync<TPopupType>() where TPopupType : PopupPage, new();
 
     }
 }

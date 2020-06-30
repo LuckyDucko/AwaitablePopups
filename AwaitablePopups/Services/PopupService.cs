@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using AsyncAwaitBestPractices;
@@ -22,11 +23,22 @@ namespace AwaitablePopups.Services
         private static volatile PopupService s_internalPopupService = null;
         private static IPopupNavigation s_popupNavigation = null;
         private static readonly object s_threadPadlock = new object();
+        private PopupPage TopPopupPage { get; set; }
 
         private PopupService(IPopupNavigation popupNavigation = null)
         {
             s_popupNavigation = popupNavigation ?? PopupNavigation.Instance;
         }
+
+        //private void ResetTopPopupPage(object sender, Rg.Plugins.Popup.Events.PopupNavigationEventArgs e)
+        //{
+        //    TopPopupPage = s_popupNavigation.PopupStack.Last();
+        //}
+
+        //private void RestrictPopAbility(object sender, Rg.Plugins.Popup.Events.PopupNavigationEventArgs e)
+        //{
+        //    TopPopupPage = null;
+        //}
 
         public static PopupService GetInstance(IPopupNavigation popupNavigation = null)
         {
@@ -43,15 +55,15 @@ namespace AwaitablePopups.Services
             return s_internalPopupService;
         }
 
-        public void PopAsync()
+        public void PopAsync<TPopupType>() where TPopupType : PopupPage, new()
         {
             lock (s_threadPadlock)
             {
-                if (s_popupNavigation.PopupStack.Any())
+                var PotentialPages = s_popupNavigation.PopupStack.Where((PopupPage arg) => arg.GetType().IsEquivalentTo(typeof(TPopupType)));
+                if (PotentialPages.Any())
                 {
-                    s_popupNavigation.PopAsync().SafeFireAndForget();
+                    s_popupNavigation.RemovePageAsync(PotentialPages.First()).SafeFireAndForget();
                 }
-
             }
         }
 
@@ -99,7 +111,7 @@ namespace AwaitablePopups.Services
         private void ConstructTCSSafeLoaderAndDisplay(Task action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
         {
             LoaderViewModel loaderWaiting = ConstructLoaderModal(loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
-            action.GetAwaiter().OnCompleted(() => Device.BeginInvokeOnMainThread(() => loaderWaiting.SafeCloseModal()));
+            action.GetAwaiter().OnCompleted(() => Device.BeginInvokeOnMainThread(() => loaderWaiting.SafeCloseModal<LoaderPopupPage>()));
             if (!action.IsCompleted)
             {
                 LoaderAttachAndPush(loaderWaiting).SafeFireAndForget();
@@ -109,7 +121,7 @@ namespace AwaitablePopups.Services
         private void ConstructLoaderAndDisplay(Task action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
         {
             LoaderViewModel loaderWaiting = ConstructLoaderModal(loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
-            action.GetAwaiter().OnCompleted(() => Device.BeginInvokeOnMainThread(() => loaderWaiting.SafeCloseModal()));
+            action.GetAwaiter().OnCompleted(() => Device.BeginInvokeOnMainThread(() => loaderWaiting.SafeCloseModal<LoaderPopupPage>()));
             if (!action.IsCompleted && action.Status != TaskStatus.WaitingForActivation)
             {
                 LoaderAttachAndPush(loaderWaiting).SafeFireAndForget();

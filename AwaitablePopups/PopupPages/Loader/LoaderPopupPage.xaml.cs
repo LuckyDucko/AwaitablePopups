@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using AwaitablePopups.Interfaces;
+
 using Rg.Plugins.Popup.Pages;
+
 using Xamarin.Forms;
 
 namespace AwaitablePopups.PopupPages.Loader
@@ -24,13 +27,13 @@ namespace AwaitablePopups.PopupPages.Loader
 
         protected override bool OnBackButtonPressed()
         {
-            ViewModel.SafeCloseModal();
+            ViewModel.SafeCloseModal<LoaderPopupPage>();
             return base.OnBackButtonPressed();
         }
 
         protected override bool OnBackgroundClicked()
         {
-            ViewModel.SafeCloseModal();
+            ViewModel.SafeCloseModal<LoaderPopupPage>();
             return base.OnBackgroundClicked();
         }
 

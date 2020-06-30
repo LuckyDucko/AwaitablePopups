@@ -8,8 +8,8 @@
     xmlns:ViewModel="clr-namespace:AwaitablePopups.PopupPages.SingleResponse"
     x:DataType="ViewModel:SingleResponseViewModel"
     HasKeyboardOffset="False">
-	<pages:PopupPage.Animation>
-		<animations:ScaleAnimation
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation
             DurationIn="400"
             DurationOut="300"
             EasingIn="SinOut"
@@ -19,11 +19,11 @@
             PositionOut="Center"
             ScaleIn="1.2"
             ScaleOut="0.8" />
-	</pages:PopupPage.Animation>
-	<pages:PopupPage.Content>
-		<ContentView>
-			<AbsoluteLayout>
-				<Frame
+    </pages:PopupPage.Animation>
+    <pages:PopupPage.Content>
+        <ContentView>
+            <AbsoluteLayout>
+                <Frame
                     Margin="0"
                     Padding="5"
                     AbsoluteLayout.LayoutBounds=".5,.4,.756,.5"
@@ -31,28 +31,28 @@
                     BackgroundColor="{Binding MainPopupColour, FallbackValue=#343434}"
                     CornerRadius="5"
                     HasShadow="false"
-               MinimumWidthRequest="90000"
-                MinimumHeightRequest="90000">
-					<Grid HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition />
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="35*" />
-							<RowDefinition Height="50*" />
-							<RowDefinition Height="15*" />
-						</Grid.RowDefinitions>
-						<Image
+                MinimumWidthRequest="{Binding WidthRequest, Mode=OneTime, FallbackValue=100}"
+                MinimumHeightRequest="{Binding HeightRequest, Mode=OneTime, FallbackValue=100}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35*" />
+                            <RowDefinition Height="50*" />
+                            <RowDefinition Height="15*" />
+                        </Grid.RowDefinitions>
+                        <Image
                             Grid.Row="0"
                             HorizontalOptions="FillAndExpand"
                             Source="{Binding SingleDisplayImage, Mode=OneWay, FallbackValue='NoSource.png'}" />
-						<Label
+                        <Label
                             Grid.Row="1"
                             FontSize="17"
                             HorizontalTextAlignment="Center"
                             Text="{Binding MainPopupInformation, Mode=OneWay, FallbackValue='Generic Information here for information about the modal you are on'}"
                             TextColor="#FDFDFD" />
-						<Button
+                        <Button
                             Grid.Row="2"
                             Margin="0"
                             Padding="0"
@@ -61,9 +61,9 @@
                             CornerRadius="5"
                             Text="{Binding SingleButtonText, Mode=OneWay, FallbackValue='Button Text'}"
                             TextColor="{Binding SingleButtonTextColour, FallbackValue=Green}" />
-					</Grid>
-				</Frame>
-			</AbsoluteLayout>
-		</ContentView>
-	</pages:PopupPage.Content>
+                    </Grid>
+                </Frame>
+            </AbsoluteLayout>
+        </ContentView>
+    </pages:PopupPage.Content>
 </pages:PopupPage>

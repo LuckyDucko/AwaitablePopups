@@ -8,8 +8,8 @@
     xmlns:ViewModel="clr-namespace:AwaitablePopups.PopupPages.DualResponse"
     x:DataType="ViewModel:DualResponseViewModel"
     HasKeyboardOffset="False">
-	<pages:PopupPage.Animation>
-		<animations:ScaleAnimation
+    <pages:PopupPage.Animation>
+        <animations:ScaleAnimation
             DurationIn="400"
             DurationOut="300"
             EasingIn="SinOut"
@@ -19,11 +19,11 @@
             PositionOut="Center"
             ScaleIn="1.2"
             ScaleOut="0.8" />
-	</pages:PopupPage.Animation>
-	<pages:PopupPage.Content>
-		<ContentView>
-			<AbsoluteLayout>
-				<Frame
+    </pages:PopupPage.Animation>
+    <pages:PopupPage.Content>
+        <ContentView>
+            <AbsoluteLayout>
+                <Frame
                     Margin="0"
                     Padding="5"
                     AbsoluteLayout.LayoutBounds=".5,.35,.6,.6"
@@ -31,26 +31,26 @@
                     BackgroundColor="{Binding MainPopupColour, FallbackValue=#343434}"
                     CornerRadius="5"
                     HasShadow="false"
-                MinimumWidthRequest="90000"
-                MinimumHeightRequest="90000">
-					<Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="50*" />
-							<ColumnDefinition Width="50*" />
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition Height="3*" />
-							<RowDefinition Height="37*" />
-							<RowDefinition Height="45*" />
-							<RowDefinition Height="15*" />
-						</Grid.RowDefinitions>
-						<Image
+                MinimumWidthRequest="{Binding WidthRequest, Mode=OneTime}"
+                MinimumHeightRequest="{Binding HeightRequest, Mode=OneTime}">
+                    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*" />
+                            <ColumnDefinition Width="50*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*" />
+                            <RowDefinition Height="37*" />
+                            <RowDefinition Height="45*" />
+                            <RowDefinition Height="15*" />
+                        </Grid.RowDefinitions>
+                        <Image
                             Grid.Row="1"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
                             HorizontalOptions="FillAndExpand"
                             Source="{Binding PictureSource}" />
-						<Label
+                        <Label
                             Grid.Row="2"
                             Grid.Column="0"
                             Grid.ColumnSpan="2"
@@ -59,7 +59,7 @@
                             Text="{Binding MainPopupInformation, Mode=OneWay, FallbackValue='Generic'}"
                             TextColor="#FDFDFD"
                             VerticalTextAlignment="Center" />
-						<Button
+                        <Button
                             Grid.Row="3"
                             Grid.Column="0"
                             Padding="0"
@@ -68,7 +68,7 @@
                             CornerRadius="5"
                             Text="{Binding LeftButtonText, Mode=OneWay, FallbackValue='Left'}"
                             TextColor="{Binding LeftButtonTextColour, FallbackValue=Green}" />
-						<Button
+                        <Button
                             Grid.Row="3"
                             Grid.Column="1"
                             Padding="0"
@@ -77,9 +77,9 @@
                             CornerRadius="5"
                             Text="{Binding RightButtonText, Mode=OneWay, FallbackValue='Right'}"
                             TextColor="{Binding RightButtonTextColour, FallbackValue=Red}" />
-					</Grid>
-				</Frame>
-			</AbsoluteLayout>
-		</ContentView>
-	</pages:PopupPage.Content>
+                    </Grid>
+                </Frame>
+            </AbsoluteLayout>
+        </ContentView>
+    </pages:PopupPage.Content>
 </pages:PopupPage>
