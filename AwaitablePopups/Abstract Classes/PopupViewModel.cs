@@ -6,156 +6,143 @@ using System.Threading.Tasks;
 
 using AwaitablePopups.Interfaces;
 
+using Xamarin.Forms.Internals;
+
 namespace AwaitablePopups.AbstractClasses
 {
-    public abstract class PopupViewModel<TReturnable> : BasePopupViewModel, IPopupViewModel<TReturnable>
-    {
-        /// <summary>
-        /// This is what the result of the popupPage will be when it returns to its caller
-        /// </summary>
-        public TaskCompletionSource<TReturnable> Returnable { get; set; }
+	public abstract class PopupViewModel<TReturnable> : BasePopupViewModel, IPopupViewModel<TReturnable>
+	{
+		/// <summary>
+		/// This is what the result of the popupPage will be when it returns to its caller
+		/// </summary>
+		public TaskCompletionSource<TReturnable> Returnable { get; set; }
 
-        /// <summary>
-        /// This is the fallback value, incase of premature exists
-        /// </summary>
-        protected TReturnable BaseExitValue { get; set; }
+		/// <summary>
+		/// This is the fallback value, incase of premature exists
+		/// </summary>
+		protected TReturnable BaseExitValue { get; set; }
 
-        private string _mainPopupInformation;
-        public string MainPopupInformation
-        {
-            get => _mainPopupInformation;
-            set => SetValue(ref _mainPopupInformation, value);
-        }
+		private string _mainPopupInformation;
+		public string MainPopupInformation
+		{
+			get => _mainPopupInformation;
+			set => SetValue(ref _mainPopupInformation, value);
+		}
 
-        private Xamarin.Forms.Color _mainPopupColour;
-        public Xamarin.Forms.Color MainPopupColour
-        {
-            get => _mainPopupColour;
-            set => SetValue(ref _mainPopupColour, value);
-        }
+		private Xamarin.Forms.Color _mainPopupColour;
+		public Xamarin.Forms.Color MainPopupColour
+		{
+			get => _mainPopupColour;
+			set => SetValue(ref _mainPopupColour, value);
+		}
 
-        private int _widthRequest; //Ensure this is _name
-        public int WidthRequest //Ensure this is Name
-        {
-            get => _widthRequest;
-            set => SetValue(ref _widthRequest, value);
-        }
+		private int _widthRequest; //Ensure this is _name
+		public int WidthRequest //Ensure this is Name
+		{
+			get => _widthRequest;
+			set => SetValue(ref _widthRequest, value);
+		}
 
-        private int _heightRequest; //Ensure this is _name
-        public int HeightRequest //Ensure this is Name
-        {
-            get => _heightRequest;
-            set => SetValue(ref _heightRequest, value);
-        }
+		private int _heightRequest; //Ensure this is _name
+		public int HeightRequest //Ensure this is Name
+		{
+			get => _heightRequest;
+			set => SetValue(ref _heightRequest, value);
+		}
 
-        protected PopupViewModel(IPopupService popupService, int heightRequest, int widthRequest) : base(popupService)
-        {
-            Returnable = new TaskCompletionSource<TReturnable>();
-            HeightRequest = heightRequest;
-            WidthRequest = widthRequest;
-            BaseExitValue = default(TReturnable);
-        }
+		protected PopupViewModel(IPopupService popupService, int heightRequest, int widthRequest) : base(popupService)
+		{
+			Returnable = new TaskCompletionSource<TReturnable>();
+			HeightRequest = heightRequest;
+			WidthRequest = widthRequest;
+			BaseExitValue = default(TReturnable);
+		}
 
-        protected PopupViewModel(IPopupService popupService) : base(popupService)
-        {
-            Returnable = new TaskCompletionSource<TReturnable>();
-            HeightRequest = 100;
-            WidthRequest = 100;
-            BaseExitValue = default(TReturnable);
-        }
+		protected PopupViewModel(IPopupService popupService) : base(popupService)
+		{
+			Returnable = new TaskCompletionSource<TReturnable>();
+			HeightRequest = 100;
+			WidthRequest = 100;
+			BaseExitValue = default(TReturnable);
+		}
 
 
-        public virtual void SafeCloseModal<TPopupType>() where TPopupType : Rg.Plugins.Popup.Pages.PopupPage, new()
-        {
-            SafeCloseModal<TPopupType>(BaseExitValue);
-        }
+		public virtual void SafeCloseModal<TPopupType>() where TPopupType : Rg.Plugins.Popup.Pages.PopupPage, new()
+		{
+			SafeCloseModal<TPopupType>(BaseExitValue);
+		}
 
-        /// <summary>
-        /// awaits the async action to complete, and then
-        /// passes the result to the sync SafeCloseModal
-        /// </summary>
-        /// <param name="asyncResult">still processing results</param>
-        /// <returns></returns>
-        public virtual async Task SafeCloseModal<TPopupType>(Task<TReturnable> asyncResult) where TPopupType : Rg.Plugins.Popup.Pages.PopupPage, new()
-        {
-            if (asyncResult.Status.Equals(TaskStatus.Created) || asyncResult.Status.Equals(TaskStatus.WaitingForActivation))
-            {
-                asyncResult.Start();
-            }
-            var buttonCommandResult = await asyncResult;
-            SafeCloseModal<TPopupType>(buttonCommandResult);
-        }
+		/// <summary>
+		/// awaits the async action to complete, and then
+		/// passes the result to the sync SafeCloseModal
+		/// </summary>
+		/// <param name="asyncResult">still processing results</param>
+		/// <returns></returns>
+		public virtual async Task SafeCloseModal<TPopupType>(Task<TReturnable> asyncResult) where TPopupType : Rg.Plugins.Popup.Pages.PopupPage, new()
+		{
+			if (asyncResult.Status.Equals(TaskStatus.Created) || asyncResult.Status.Equals(TaskStatus.WaitingForActivation))
+			{
+				asyncResult.Start();
+			}
+			var buttonCommandResult = await asyncResult;
+			SafeCloseModal<TPopupType>(buttonCommandResult);
+		}
 
-        /// <summary>
-        /// returns the result of the popup into the awaitable task, With
-        /// fallback attempts if necessary.
-        /// </summary>
-        /// <param name="result">User Feedback/Processed Results</param>
-        public virtual void SafeCloseModal<TPopupType>(TReturnable result) where TPopupType : Rg.Plugins.Popup.Pages.PopupPage, new()
-        {
-            try
-            {
-                var safeCloseAttempt = Returnable.TrySetResult(result);
-                if (!safeCloseAttempt)
-                {
-                    Returnable = new TaskCompletionSource<TReturnable>();
-                    Returnable.SetResult(result);
-                }
-            }
-            catch (Exception)
-            {
-                Returnable = new TaskCompletionSource<TReturnable>();
-                Returnable.SetResult(BaseExitValue);
-            }
-            finally
-            {
-                PopupService.PopAsync<TPopupType>();
-            }
+		/// <summary>
+		/// returns the result of the popup into the awaitable task, With
+		/// fallback attempts if necessary.
+		/// </summary>
+		/// <param name="result">User Feedback/Processed Results</param>
+		public virtual void SafeCloseModal<TPopupType>(TReturnable result) where TPopupType : Rg.Plugins.Popup.Pages.PopupPage, new()
+		{
+			try
+			{
+				var safeCloseAttempt = Returnable.TrySetResult(result);
+				if (!safeCloseAttempt)
+				{
+					Returnable = new TaskCompletionSource<TReturnable>();
+					Returnable.SetResult(result);
+				}
+			}
+			catch (Exception)
+			{
+				Returnable = new TaskCompletionSource<TReturnable>();
+				Returnable.SetResult(BaseExitValue);
+			}
+			finally
+			{
+				PopupService.PopAsync<TPopupType>();
+			}
 
-        }
+		}
 
-        /// <summary>
-        /// This is for use only when you wish for some form of reusable wrapper,
-        /// it provides little protection or help.
-        /// </summary>
-        /// <param name="optionalProperties"></param>
-        public virtual void InitialiseOptionalProperties(Dictionary<string, object> optionalProperties)
-        {
-            foreach (KeyValuePair<string, object> property in optionalProperties)
-            {
-                GetType().GetProperty(property.Key).SetValue(this, property.Value, null);
-            }
-        }
+		/// <summary>
+		/// This is for use only when you wish for some form of reusable wrapper,
+		/// it provides little protection or help.
+		/// </summary>
+		/// <param name="optionalProperties"></param>
+		public virtual void InitialiseOptionalProperties(Dictionary<string, object> optionalProperties)
+		{
+			foreach (KeyValuePair<string, object> property in optionalProperties)
+			{
+				GetType().GetProperty(property.Key).SetValue(this, property.Value, null);
+			}
+		}
 
-        /// <summary>
-        /// This is for use only when you wish for some form of reusable wrapper,
-        /// This method requires a specific type which it then will handle in a parallel fashion. 
-        /// </summary>
-        /// <typeparam name="TPropertyValue"></typeparam>
-        /// <param name="optionalProperties"></param>
-        public void InitialiseOptionalProperties<TPropertyValue>(Dictionary<string, TPropertyValue> optionalProperties)
-        {
-            optionalProperties
-                .AsParallel()
-                .ForAll((KeyValuePair<string, TPropertyValue> property)
-                    => GetType()
-                        .GetProperty(property.Key)
-                        .SetValue(this, property.Value, null));
-        }
 
-        /// <summary>
-        /// Allows you to gather the values of every property that is on the popupviewmodel
-        /// into a key/value pair. Properties will need to be cast into their proper types
-        /// </summary>
-        /// <typeparam name="TViewModel"> Viwemodel Type you wish to iterate over</typeparam>
-        /// <returns></returns>
-        public Dictionary<string, object> PullViewModelProperties<TViewModel>()
-            where TViewModel : BasePopupViewModel
-        {
-            var propertyDictionary = new Dictionary<string, object>();
-            PropertyInfo[] properties = typeof(TViewModel).GetProperties();
-            properties.AsParallel().ForAll((property) => propertyDictionary.Add(property.Name, property.GetValue(this, null)));
-            return propertyDictionary;
-        }
-    }
+		/// <summary>
+		/// Allows you to gather the values of every property that is on the popupviewmodel
+		/// into a key/value pair. Properties will need to be cast into their proper types
+		/// </summary>
+		/// <typeparam name="TViewModel"> Viwemodel Type you wish to iterate over</typeparam>
+		/// <returns></returns>
+		public Dictionary<string, object> PullViewModelProperties<TViewModel>()
+			where TViewModel : BasePopupViewModel
+		{
+			var propertyDictionary = new Dictionary<string, object>();
+			PropertyInfo[] properties = typeof(TViewModel).GetProperties();
+			properties.ForEach((property) => propertyDictionary.Add(property.Name, property.GetValue(this, null)));
+			return propertyDictionary;
+		}
+	}
 }
