@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <PackageVersion>0.3.8</PackageVersion>
+        <PackageVersion>1.0.0</PackageVersion>
         <Authors>Tyson Hooker</Authors>
         <NeutralLanguage>en-AU</NeutralLanguage>
         <Description>Create your own DisplayAlerts using XAML,
@@ -14,15 +14,12 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
         <PackageTags>xamarin-forms async popup MVVM custom-popup dialogs userdialogs xamarin popup-page loader awaitable-popups</PackageTags>
         <Title>Awaitable Popups</Title>
         <Summary>Popup Modals For Xamarin Forms</Summary>
-        <PackageReleaseNotes>Fixed Major bug in LoginViewModel using its GeneratePopup Methods which caused it to return bad results. This was due to me assigning the wrong ViewModel in the background.
+        <PackageReleaseNotes>Fixed a bug concerning LoaderView and how it wouldnt exit properly
 
-Beginning the process of Interfacing this out. Added Basic interfaces for all the ViewModels. However, not too useful just yet. 
+Changed the underlying workings of the push pop to be FAR more reliable. However, this change may impact custom dialogs based on this.
 
-Added in the new EntryInputViewModel. Its the same as the original TextInput, however, this uses the much smaller entry field opposed to the Editor in the TextInput. IN hindsight a name change would've been smarter
-
-Fixed issues with the example app, as i had some brainfog and had switched the text/vibe of the left and right buttons</PackageReleaseNotes>
+Added in the ability to change height/width for custom views. i will look into making it easy to add this for other views aswell. </PackageReleaseNotes>
         <PackOnBuild>true</PackOnBuild>
-        <ReleaseVersion>0.2</ReleaseVersion>
     </PropertyGroup>
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -45,8 +42,8 @@ Fixed issues with the example app, as i had some brainfog and had switched the t
         <Compile Remove="Class1.cs" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.2" />
-        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="4.1.0" />
+        <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.3" />
+        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="4.1.1" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="PopupPages\Loader\" />
