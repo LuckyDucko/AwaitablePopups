@@ -31,9 +31,9 @@
                     BackgroundColor="{Binding MainPopupColour, FallbackValue=#343434}"
                     CornerRadius="5"
                     HasShadow="false"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center">
-					<Grid HorizontalOptions="Center" VerticalOptions="Center">
+                MinimumWidthRequest="{Binding WidthRequest, Mode=OneTime}"
+                MinimumHeightRequest="{Binding HeightRequest, Mode=OneTime}">
+					<Grid >
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="50*" />
 							<ColumnDefinition Width="50*" />
@@ -56,7 +56,7 @@
                             Grid.ColumnSpan="2"
                             FontSize="17"
                             HorizontalTextAlignment="Center"
-                            Text="{Binding MainPopupInformation, Mode=OneWay, FallbackValue='Generic Information here for information about the modal you are on'}"
+                            Text="{Binding MainPopupInformation, Mode=OneWay, FallbackValue='Generic'}"
                             TextColor="#FDFDFD"
                             VerticalTextAlignment="Center" />
 						<Button
@@ -66,7 +66,7 @@
                             BackgroundColor="{Binding LeftButtonColour, FallbackValue='#FDFDFD'}"
                             Command="{Binding LeftButtonCommand, Mode=OneWay}"
                             CornerRadius="5"
-                            Text="{Binding LeftButtonText, Mode=OneWay, FallbackValue='Left Button Text'}"
+                            Text="{Binding LeftButtonText, Mode=OneWay, FallbackValue='Left'}"
                             TextColor="{Binding LeftButtonTextColour, FallbackValue=Green}" />
 						<Button
                             Grid.Row="3"
@@ -75,7 +75,7 @@
                             BackgroundColor="{Binding RightButtonColour, FallbackValue='#FDFDFD'}"
                             Command="{Binding RightButtonCommand, Mode=OneWay}"
                             CornerRadius="5"
-                            Text="{Binding RightButtonText, Mode=OneWay, FallbackValue='Right Button Text'}"
+                            Text="{Binding RightButtonText, Mode=OneWay, FallbackValue='Right'}"
                             TextColor="{Binding RightButtonTextColour, FallbackValue=Red}" />
 					</Grid>
 				</Frame>

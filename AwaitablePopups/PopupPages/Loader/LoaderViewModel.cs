@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
+
+using Xamarin.Forms;
 
 namespace AwaitablePopups.PopupPages.Loader
 {
@@ -52,6 +55,17 @@ namespace AwaitablePopups.PopupPages.Loader
 
 		}
 
+		public LoaderViewModel(IPopupService popupService, List<string> reasonsForLoader, int millisecondsBetweenReasons) : base(popupService)
+		{
+			TextColourToken = new CancellationTokenSource();
+			ReasonsForLoader = reasonsForLoader;
+			MainPopupInformation = ReasonsForLoader.Last();
+			MillisecondsBetweenReasonSwitch = millisecondsBetweenReasons;
+			if (ReasonsForLoader?.Count > 1)
+			{
+				Task.Run(() => InformationSwitch(TextColourToken)).ConfigureAwait(false);
+			}
+		}
 		private void InformationSwitch(CancellationTokenSource TextToken)
 		{
 			while (!TextToken.IsCancellationRequested)
@@ -60,23 +74,26 @@ namespace AwaitablePopups.PopupPages.Loader
 				for (int i = 1; i < 10; i++)
 				{
 					Thread.Sleep(50);
-					TextColour = TextColour.WithLuminosity(i * 0.1);
+					Device.BeginInvokeOnMainThread(() => TextColour = TextColour.WithLuminosity(i * 0.1));
 				}
-				MainPopupInformation = ReasonsForLoader[new Random().Next(ReasonsForLoader.Count - 1)];
-				ReasonsForLoader.Remove(MainPopupInformation);
-				ReasonsForLoader.Add(MainPopupInformation);
+
+				int SelectionFromUnchosen = new Random().Next(ReasonsForLoader.Count() - 2);
+				Device.BeginInvokeOnMainThread(() => MainPopupInformation = ReasonsForLoader
+																			.OrderBy(pushChosenToBack)
+																			.ElementAt(SelectionFromUnchosen));
 				for (int i = 10; i > 0; i--)
 				{
 					Thread.Sleep(50);
-					TextColour = TextColour.WithLuminosity(i * 0.1);
+					Device.BeginInvokeOnMainThread(() => TextColour = TextColour.WithLuminosity(i * 0.1));
 				}
 			}
+			bool pushChosenToBack(string reasons) => reasons.Equals(MainPopupInformation);
 		}
 
-		public override void SafeCloseModal()
+		public override void SafeCloseModal<TPopupType>()
 		{
 			TextColourToken.Cancel();
-			base.SafeCloseModal(true);
+			base.SafeCloseModal<LoaderPopupPage>(true);
 		}
 	}
 }

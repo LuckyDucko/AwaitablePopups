@@ -1,5 +1,6 @@
 ﻿
 using AwaitablePopups.Interfaces;
+
 using Rg.Plugins.Popup.Pages;
 
 namespace AwaitablePopups.PopupPages.DualResponse
@@ -22,13 +23,13 @@ namespace AwaitablePopups.PopupPages.DualResponse
 
         protected override bool OnBackButtonPressed()
         {
-            ViewModel.SafeCloseModal();
+            ViewModel.SafeCloseModal<DualResponsePopupPage>();
             return base.OnBackButtonPressed();
         }
 
         protected override bool OnBackgroundClicked()
         {
-            ViewModel.SafeCloseModal();
+            ViewModel.SafeCloseModal<DualResponsePopupPage>();
             return base.OnBackgroundClicked();
         }
     }

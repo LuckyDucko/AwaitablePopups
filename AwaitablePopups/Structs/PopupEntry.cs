@@ -1,7 +1,9 @@
 ﻿
+using System;
+
 namespace AwaitablePopups.Structs
 {
-	public struct PopupEntry
+	public struct PopupEntry : IEquatable<PopupEntry>
 	{
 		public string EntryText { get; set; }
 		public string EntryPlaceholder { get; set; }
@@ -16,6 +18,15 @@ namespace AwaitablePopups.Structs
 			EntryTextColour = entryTextColour;
 			PlaceholderTextColour = placeholderTextColour;
 			BackgroundColour = backgroundColour;
+		}
+
+		public bool Equals(PopupEntry other)
+		{
+			return EntryText.Equals(other.EntryText)
+				&& EntryPlaceholder.Equals(other.EntryPlaceholder)
+				&& EntryTextColour.Equals(other.EntryTextColour)
+				&& PlaceholderTextColour.Equals(other.PlaceholderTextColour)
+				&& BackgroundColour.Equals(other.BackgroundColour);
 		}
 	}
 }
