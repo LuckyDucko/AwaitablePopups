@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+
 using AwaitablePopups.Interfaces;
 
 namespace AwaitablePopups.AbstractClasses
@@ -31,7 +32,10 @@ namespace AwaitablePopups.AbstractClasses
 		protected virtual void SetValue<T>(ref T backingField, T value, [CallerMemberName] string propertyName = null)
 		{
 			if (EqualityComparer<T>.Default.Equals(backingField, value))
+			{
 				return;
+
+			}
 
 			backingField = value;
 			OnPropertyChanged(propertyName);

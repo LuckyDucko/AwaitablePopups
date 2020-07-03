@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AwaitablePopups.Structs
 {
-	public struct PopupButton
+	public struct PopupButton : IEquatable<PopupButton>
 	{
 		public Xamarin.Forms.Color ButtonColour { get; set; }
 		public Xamarin.Forms.Color ButtonTextColour { get; set; }
@@ -13,6 +14,13 @@ namespace AwaitablePopups.Structs
 			ButtonColour = buttonColour;
 			ButtonTextColour = buttonTextColour;
 			ButtonText = buttonText;
+		}
+
+		public bool Equals(PopupButton other)
+		{
+			return ButtonColour.Equals(other.ButtonColour)
+				&& ButtonTextColour.Equals(other.ButtonTextColour)
+				&& ButtonText.Equals(ButtonText);
 		}
 	}
 }

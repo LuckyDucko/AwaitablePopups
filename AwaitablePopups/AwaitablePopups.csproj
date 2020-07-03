@@ -20,6 +20,7 @@ Changed the underlying workings of the push pop to be FAR more reliable. However
 
 Added in the ability to change height/width for custom views. i will look into making it easy to add this for other views aswell. </PackageReleaseNotes>
         <PackOnBuild>true</PackOnBuild>
+        <ReleaseVersion>0.2</ReleaseVersion>
     </PropertyGroup>
     <PropertyGroup>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -33,10 +34,15 @@ Added in the ability to change height/width for custom views. i will look into m
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
         <LangVersion>latest</LangVersion>
-        <DebugType></DebugType>
+        <DebugType>
+        </DebugType>
         <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <NoStdLib>false</NoStdLib>
+    </PropertyGroup>
+    <PropertyGroup>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
     <ItemGroup>
         <Compile Remove="Class1.cs" />
@@ -46,17 +52,17 @@ Added in the ability to change height/width for custom views. i will look into m
         <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="4.1.1" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="PopupPages\Loader\" />
-      <Folder Include="Structs\" />
-      <Folder Include="PopupPages\TextInput\" />
-      <Folder Include="PopupPages\Login\" />
-      <Folder Include="PopupPages\EntryInput\" />
+        <Folder Include="PopupPages\Loader\" />
+        <Folder Include="Structs\" />
+        <Folder Include="PopupPages\TextInput\" />
+        <Folder Include="PopupPages\Login\" />
+        <Folder Include="PopupPages\EntryInput\" />
     </ItemGroup>
     <ItemGroup>
-      <None Remove="nuget.config" />
-      <None Remove="PopupPages\TextInput\EntryInputPopupPage.xaml.cs~" />
+        <None Remove="nuget.config" />
+        <None Remove="PopupPages\TextInput\EntryInputPopupPage.xaml.cs~" />
     </ItemGroup>
     <ItemGroup>
-      <None Include="PopupPages\EntryInput\EntryInputPopupPage.xaml.cs~" />
+        <None Include="PopupPages\EntryInput\EntryInputPopupPage.xaml.cs~" />
     </ItemGroup>
 </Project>
