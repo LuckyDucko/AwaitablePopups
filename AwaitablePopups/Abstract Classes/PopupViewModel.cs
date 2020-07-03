@@ -61,8 +61,8 @@ namespace AwaitablePopups.AbstractClasses
 		protected PopupViewModel(IPopupService popupService) : base(popupService)
 		{
 			Returnable = new TaskCompletionSource<TReturnable>();
-			HeightRequest = 100;
-			WidthRequest = 100;
+			HeightRequest = 0;
+			WidthRequest = 0;
 			BaseExitValue = default(TReturnable);
 		}
 
