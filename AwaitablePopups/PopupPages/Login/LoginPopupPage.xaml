@@ -31,8 +31,8 @@
                     BackgroundColor="{Binding MainPopupColour, FallbackValue=#343434}"
                     CornerRadius="5"
                     HasShadow="false"
-               MinimumWidthRequest="90000"
-                MinimumHeightRequest="90000">
+                MinimumWidthRequest="{Binding WidthRequest, Mode=OneTime, FallbackValue=100}"
+                MinimumHeightRequest="{Binding HeightRequest, Mode=OneTime, FallbackValue=100}">
 					<Grid HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition Width="50*" />
