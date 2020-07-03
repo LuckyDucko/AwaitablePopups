@@ -76,7 +76,6 @@ namespace AwaitablePopups.Services
 			await Task.WhenAll(initialTime, returnableTask);
 		}
 
-
 		public async Task WrapTaskInLoader(Task action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
 		{
 			await WrapTaskInLoader(action, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
@@ -88,8 +87,6 @@ namespace AwaitablePopups.Services
 			ConstructLoaderAndDisplay(PaddedTaskTime, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 			await PaddedTaskTime;
 		}
-
-
 
 		public async Task<TAsyncActionResult> WrapReturnableTaskInLoader<TAsyncActionResult>(Task<TAsyncActionResult> action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
 		{
@@ -147,7 +144,6 @@ namespace AwaitablePopups.Services
 			return await WrapReturnableTaskInLoader(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-
 		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TSyncActionResult>(Func<TArgument1, TArgument2, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
 		{
 			return await WrapReturnableFuncInLoader(action, argument1, argument2, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
@@ -158,8 +154,6 @@ namespace AwaitablePopups.Services
 			Task<TSyncActionResult> actionResult = Task.Run(() => action.Invoke(argument1, argument2));
 			return await WrapReturnableTaskInLoader(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
-
-
 
 		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
 		{
@@ -172,7 +166,6 @@ namespace AwaitablePopups.Services
 			return await WrapReturnableTaskInLoader(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-
 		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
 		{
 			return await WrapReturnableFuncInLoader(action, argument1, argument2, argument3, argument4, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
@@ -184,21 +177,16 @@ namespace AwaitablePopups.Services
 			return await WrapReturnableTaskInLoader(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-
-
 		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, TArgument5 argument5, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
 		{
 			return await WrapReturnableFuncInLoader(action, argument1, argument2, argument3, argument4, argument5, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
 		}
-
 
 		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, TArgument5 argument5, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
 		{
 			Task<TSyncActionResult> actionResult = Task.Run(() => action.Invoke(argument1, argument2, argument3, argument4, argument5));
 			return await WrapReturnableTaskInLoader(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
-
-
 
 		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TArgument6, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TArgument6, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, TArgument5 argument5, TArgument6 argument6, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
 		{
@@ -211,7 +199,6 @@ namespace AwaitablePopups.Services
 			return await WrapReturnableTaskInLoader(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-
 		private LoaderViewModel ConstructLoaderModal(Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
 		{
 			return new LoaderViewModel(this, reasonsForLoader)
@@ -222,7 +209,6 @@ namespace AwaitablePopups.Services
 				MillisecondsBetweenReasonSwitch = millisecondsBetweenReasons,
 			};
 		}
-
 
 		private void ConstructLoaderAndDisplay(Task action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
 		{

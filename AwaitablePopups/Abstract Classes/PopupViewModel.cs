@@ -66,7 +66,6 @@ namespace AwaitablePopups.AbstractClasses
 			BaseExitValue = default(TReturnable);
 		}
 
-
 		public virtual void SafeCloseModal<TPopupType>() where TPopupType : Rg.Plugins.Popup.Pages.PopupPage, new()
 		{
 			SafeCloseModal<TPopupType>(BaseExitValue);
@@ -113,7 +112,6 @@ namespace AwaitablePopups.AbstractClasses
 			{
 				PopupService.PopAsync<TPopupType>();
 			}
-
 		}
 
 		/// <summary>
@@ -128,7 +126,6 @@ namespace AwaitablePopups.AbstractClasses
 				GetType().GetProperty(property.Key).SetValue(this, property.Value, null);
 			}
 		}
-
 
 		/// <summary>
 		/// Allows you to gather the values of every property that is on the popupviewmodel

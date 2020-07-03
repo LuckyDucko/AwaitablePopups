@@ -65,7 +65,6 @@ namespace AwaitablePopups.PopupPages.Loader
 			{
 				Task.Run(() => InformationSwitch(TextColourToken)).ConfigureAwait(false);
 			}
-
 		}
 		private void InformationSwitch(CancellationTokenSource TextToken)
 		{
