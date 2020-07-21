@@ -34,7 +34,6 @@ namespace AwaitablePopups.AbstractClasses
 			if (EqualityComparer<T>.Default.Equals(backingField, value))
 			{
 				return;
-
 			}
 
 			backingField = value;

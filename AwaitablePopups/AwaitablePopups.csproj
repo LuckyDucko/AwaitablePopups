@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <PackageVersion>1.0.1</PackageVersion>
+        <PackageVersion>1.0.2</PackageVersion>
         <Authors>Tyson Hooker</Authors>
         <NeutralLanguage>en-AU</NeutralLanguage>
         <Description>Create your own DisplayAlerts using XAML,
@@ -14,8 +14,8 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
         <PackageTags>xamarin-forms async popup MVVM custom-popup dialogs userdialogs xamarin popup-page loader awaitable-popups</PackageTags>
         <Title>Awaitable Popups</Title>
         <Summary>Popup Modals For Xamarin Forms</Summary>
-        <PackageReleaseNotes>Updated to allow for better spacing
-This is the completed first version to be used</PackageReleaseNotes>
+        <PackageReleaseNotes>Added HeightRequest and WidthRequest as optionalparameters to keep backwards compat
+Added in automationIDs</PackageReleaseNotes>
         <PackOnBuild>true</PackOnBuild>
     </PropertyGroup>
     <PropertyGroup>
@@ -45,7 +45,7 @@ This is the completed first version to be used</PackageReleaseNotes>
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.3" />
-        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="4.1.1" />
+        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="4.2.0" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="PopupPages\Loader\" />

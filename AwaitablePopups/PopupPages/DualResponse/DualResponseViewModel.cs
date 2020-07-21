@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -81,56 +82,38 @@ namespace AwaitablePopups.PopupPages.DualResponse
 		{
 		}
 
-		/// <summary>
-		///  <seealso cref=""/>
-		/// </summary>
-		/// <param name="leftButton"></param>
-		/// <param name="rightButton"></param>
-		/// <param name="leftButtonTask"></param>
-		/// <param name="rightButtonTask"></param>
-		/// <param name="MainPopupColour"></param>
-		/// <param name="popupInformation"></param>
-		/// <param name="displayImageName"></param>
-		/// <returns></returns>
-		public static async Task<bool> GeneratePopup(
-			PopupButton leftButton,
-			PopupButton rightButton,
-			Task<bool> leftButtonTask,
-			Task<bool> rightButtonTask,
-			Color MainPopupColour,
-			string popupInformation,
-			string displayImageName)
+		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Task<bool> leftButtonTask, Task<bool> rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
-			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, leftButtonTask, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, rightButtonTask, MainPopupColour, popupInformation, displayImageName);
+			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, leftButtonTask, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, rightButtonTask, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
 		}
 
-		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Color MainPopupColour, string popupInformation, string displayImageName)
+		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
-			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, MainPopupColour, popupInformation, displayImageName);
+			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
 		}
 
-		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Task leftButtonTask, Task rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName)
+		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Task leftButtonTask, Task rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
-			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, leftButtonTask, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, rightButtonTask, MainPopupColour, popupInformation, displayImageName);
+			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, leftButtonTask, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, rightButtonTask, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
 		}
 
-		public static async Task<bool> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Task<bool> leftButtonTask, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Task<bool> rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName)
+		public static async Task<bool> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Task<bool> leftButtonTask, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Task<bool> rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
 			var AutoGeneratePopupViewModel = new DualResponseViewModel(AwaitablePopups.Services.PopupService.GetInstance());
 			ICommand leftButtonCommand = new AsyncCommand(async () => await AutoGeneratePopupViewModel.SafeCloseModal<DualResponsePopupPage>(leftButtonTask));
 			ICommand rightButtonCommand = new AsyncCommand(async () => await AutoGeneratePopupViewModel.SafeCloseModal<DualResponsePopupPage>(rightButtonTask));
-			return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, popupInformation, displayImageName, AutoGeneratePopupViewModel);
+			return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest, AutoGeneratePopupViewModel);
 		}
 
-		public static async Task<bool> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Color MainPopupColour, string popupInformation, string displayImageName)
+		public static async Task<bool> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
 			var AutoGeneratePopupViewModel = new DualResponseViewModel(AwaitablePopups.Services.PopupService.GetInstance());
 			ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<DualResponsePopupPage>(false));
 			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<DualResponsePopupPage>(true));
-			return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, popupInformation, displayImageName, AutoGeneratePopupViewModel);
+			return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest, AutoGeneratePopupViewModel);
 		}
 
-		public static async Task<bool> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Task leftButtonTask, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Task rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName)
+		public static async Task<bool> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Task leftButtonTask, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Task rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
 			var AutoGeneratePopupViewModel = new DualResponseViewModel(Services.PopupService.GetInstance());
 			AsyncCommand leftButtonCommand = new AsyncCommand(async () =>
@@ -144,7 +127,7 @@ namespace AwaitablePopups.PopupPages.DualResponse
 				await rightButtonTask;
 				AutoGeneratePopupViewModel.SafeCloseModal<DualResponsePopupPage>(true);
 			});
-			return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, popupInformation, displayImageName, AutoGeneratePopupViewModel);
+			return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest, AutoGeneratePopupViewModel);
 		}
 
 		private static async Task<bool> GeneratePopup(
@@ -159,13 +142,15 @@ namespace AwaitablePopups.PopupPages.DualResponse
 			Color MainPopupColour,
 			string popupInformation,
 			string displayImageName,
+			int heightRequest,
+			int widthRequest,
 			DualResponseViewModel AutoGeneratePopupViewModel)
 		{
-			PropertySetter(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, popupInformation, displayImageName, AutoGeneratePopupViewModel);
+			PropertySetter(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest, AutoGeneratePopupViewModel);
 			return await Services.PopupService.GetInstance().PushAsync<DualResponseViewModel, DualResponsePopupPage, bool>(AutoGeneratePopupViewModel);
 		}
 
-		private static void PropertySetter(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, ICommand leftButtonCommand, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, ICommand rightButtonCommand, Color MainPopupColour, string popupInformation, string displayImageName, DualResponseViewModel AutoGeneratePopupViewModel)
+		private static void PropertySetter(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, ICommand leftButtonCommand, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, ICommand rightButtonCommand, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest, int widthRequest, DualResponseViewModel AutoGeneratePopupViewModel)
 		{
 			AutoGeneratePopupViewModel.LeftButtonCommand = leftButtonCommand;
 			AutoGeneratePopupViewModel.LeftButtonColour = leftButtonColour;
@@ -177,6 +162,8 @@ namespace AwaitablePopups.PopupPages.DualResponse
 			AutoGeneratePopupViewModel.RightButtonText = rightButtonText ?? "No";
 			AutoGeneratePopupViewModel.RightButtonTextColour = rightButtonTextColour;
 
+			AutoGeneratePopupViewModel.HeightRequest = heightRequest;
+			AutoGeneratePopupViewModel.WidthRequest = widthRequest;
 			AutoGeneratePopupViewModel.MainPopupInformation = popupInformation ?? "An Error has occured, try again";
 			AutoGeneratePopupViewModel.MainPopupColour = MainPopupColour;
 			AutoGeneratePopupViewModel.PictureSource = displayImageName ?? "NoSource.png";
