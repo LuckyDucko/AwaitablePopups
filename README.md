@@ -114,7 +114,7 @@ await PopupService.WrapReturnableFuncInLoader(LongRunningFunction, 6000, Color.B
 
 ```
 
-That's it! for a more advanced usage read on
+## That's it! for advanced usage read on
 
 In Version 1.1.0, AwaitablePopups will be starting on a new set of API's
 
