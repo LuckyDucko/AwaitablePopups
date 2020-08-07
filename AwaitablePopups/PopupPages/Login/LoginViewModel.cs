@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 using AwaitablePopups.Structs;
 using AsyncAwaitBestPractices.MVVM;
+using System.Collections.Generic;
 
 namespace AwaitablePopups.PopupPages.Login
 {
@@ -148,19 +149,97 @@ namespace AwaitablePopups.PopupPages.Login
 		{
 		}
 
+
+		public static LoginViewModel GenerateVM()
+		{
+			return new LoginViewModel(Services.PopupService.GetInstance());
+		}
+
+		/// <summary>
+		/// provides the LoginPopupPage Generic Type argument to
+		/// <see cref="GeneratePopup{TPopupPage}(Dictionary{string, object})"/>
+		/// </summary>
+		/// <param name="propertyDictionary">Page Properties, for an example pull <seealso cref="PullViewModelProperties"/></param>
+		/// <returns> Task that waits for user input</returns>
+		public async Task<(string username, string password)> GeneratePopup(Dictionary<string, object> propertyDictionary)
+		{
+			return await GeneratePopup<LoginPopupPage>(propertyDictionary);
+		}
+
+		/// <summary>
+		/// Attaches properties through the use of reflection. <see cref="PopupViewModel{TReturnable}.InitialiseOptionalProperties(Dictionary{string, object})"/>
+		/// </summary>
+		/// <typeparam name="TPopupPage">User defined page that uses the LoginViewModel ViewModel</typeparam>
+		/// <param name="propertyDictionary">Page Properties, for an example pull <seealso cref="PullViewModelProperties"/></param>
+		/// <returns> Task that waits for user input</returns>
+		public async Task<(string username, string password)> GeneratePopup<TPopupPage>(Dictionary<string, object> optionalProperties) where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<LoginViewModel>, new()
+		{
+			InitialiseOptionalProperties(optionalProperties);
+			return await Services.PopupService.GetInstance().PushAsync<LoginViewModel, TPopupPage, (string username, string password)>(this);
+		}
+
+		/// <summary>
+		/// Provides a base dictionary, along with types that you can use to Initialise properties
+		/// </summary>
+		/// <returns>All Properties contained within the Viewmodel, with their names, current values, and types</returns>
+		public virtual Dictionary<string, (object property, Type propertyType)> PullViewModelProperties()
+		{
+			return base.PullViewModelProperties<LoginViewModel>();
+		}
+
+		/// <summary>
+		/// provides the LoginPopupPage Generic Type argument to
+		/// <see cref="AutoGenerateBasicPopup{TPopupPage}(Color, Color, string, Color, Color, string, Color, string, string, string, string, string, int, int)"/>
+		/// </summary>
+		public static async Task<(string username, string password)> AutoGenerateBasicPopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Color mainPopupColour, string username, string usernamePlaceHolder, string password, string passwordPlaceHolder, string PictureSource, int heightRequest = 0, int widthRequest = 0)
+		{
+			return await AutoGenerateBasicPopup<LoginPopupPage>(leftButtonColour, leftButtonTextColour, leftButtonText, rightButtonColour, rightButtonTextColour, rightButtonText, mainPopupColour, username, usernamePlaceHolder, password, passwordPlaceHolder, PictureSource, heightRequest, widthRequest);
+		}
+
+		public static async Task<(string username, string password)> AutoGenerateBasicPopup<TPopupPage>(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Color mainPopupColour, string username, string usernamePlaceHolder, string password, string passwordPlaceHolder, string PictureSource, int heightRequest = 0, int widthRequest = 0) where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<LoginViewModel>, new()
+		{
+			var AutoGeneratePopupViewModel = new LoginViewModel(Services.PopupService.GetInstance());
+			ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<LoginPopupPage>(("invalid", "invalid")));
+			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<LoginPopupPage>((AutoGeneratePopupViewModel.Username, AutoGeneratePopupViewModel.Password)));
+
+			var propertyDictionary = new Dictionary<string, object>
+			{
+				{ "LeftButtonCommand", leftButtonCommand },
+				{ "LeftButtonColour", leftButtonColour },
+				{ "LeftButtonText", leftButtonText ?? "Yes" },
+				{ "LeftButtonTextColour", leftButtonTextColour },
+				{ "RightButtonCommand", rightButtonCommand },
+				{ "RightButtonColour", rightButtonColour },
+				{ "RightButtonText", rightButtonText ?? "No" },
+				{ "RightButtonTextColour", rightButtonTextColour },
+				{ "HeightRequest", heightRequest },
+				{ "WidthRequest", widthRequest },
+				{ "MainPopupColour", mainPopupColour },
+				{ "Username", username},
+				{ "UsernamePlaceholder" , usernamePlaceHolder},
+				{ "Password" , password},
+				{ "PasswordPlaceholder" , passwordPlaceHolder},
+				{ "PictureSource" , PictureSource}
+			};
+			return await AutoGeneratePopupViewModel.GeneratePopup(propertyDictionary);
+		}
+
+
+
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		public static async Task<(string username, string password)> GeneratePopup(PopupEntry usernameField, PopupEntry passwordField, PopupButton leftPopupButton, PopupButton rightPopupButton, ICommand leftButtonCommand, ICommand rightButtonCommand, string pictureSource, int heightRequest = 0, int widthRequest = 0)
 		{
 			var AutoGeneratePopupViewModel = new LoginViewModel(AwaitablePopups.Services.PopupService.GetInstance());
 			PropertySetter(usernameField, passwordField, leftPopupButton, rightPopupButton, leftButtonCommand, rightButtonCommand, pictureSource, heightRequest, widthRequest, AutoGeneratePopupViewModel);
 			return await Services.PopupService.GetInstance().PushAsync<LoginViewModel, LoginPopupPage, (string username, string password)>(AutoGeneratePopupViewModel);
 		}
-
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		private static async Task<(string username, string password)> GeneratePopup(PopupEntry usernameField, PopupEntry passwordField, PopupButton leftPopupButton, PopupButton rightPopupButton, ICommand leftButtonCommand, ICommand rightButtonCommand, string pictureSource, int heightRequest, int widthRequest, LoginViewModel autoGeneratedLoginViewModel)
 		{
 			PropertySetter(usernameField, passwordField, leftPopupButton, rightPopupButton, leftButtonCommand, rightButtonCommand, pictureSource, heightRequest, widthRequest, autoGeneratedLoginViewModel);
 			return await Services.PopupService.GetInstance().PushAsync<LoginViewModel, LoginPopupPage, (string username, string password)>(autoGeneratedLoginViewModel);
 		}
-
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		public static async Task<(string username, string password)> GeneratePopup(PopupEntry usernameField, PopupEntry passwordField, PopupButton leftPopupButton, PopupButton rightPopupButton, Task<(string username, string password)> leftButtonTask, Task<(string username, string password)> rightButtonTask, string pictureSource, int heightRequest = 0, int widthRequest = 0)
 		{
 			var AutoGeneratePopupViewModel = new LoginViewModel(AwaitablePopups.Services.PopupService.GetInstance());
@@ -168,7 +247,7 @@ namespace AwaitablePopups.PopupPages.Login
 			ICommand rightButtonCommand = new AsyncCommand(async () => await AutoGeneratePopupViewModel.SafeCloseModal<LoginPopupPage>(rightButtonTask));
 			return await GeneratePopup(usernameField, passwordField, leftPopupButton, rightPopupButton, leftButtonCommand, rightButtonCommand, pictureSource, heightRequest, widthRequest, AutoGeneratePopupViewModel);
 		}
-
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		public static async Task<(string username, string password)> GeneratePopup(PopupEntry usernameField, PopupEntry passwordField, PopupButton leftPopupButton, PopupButton rightPopupButton, string pictureSource, int heightRequest = 0, int widthRequest = 0)
 		{
 			var AutoGeneratePopupViewModel = new LoginViewModel(AwaitablePopups.Services.PopupService.GetInstance());
@@ -176,7 +255,7 @@ namespace AwaitablePopups.PopupPages.Login
 			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<LoginPopupPage>((AutoGeneratePopupViewModel.Username, AutoGeneratePopupViewModel.Password)));
 			return await GeneratePopup(usernameField, passwordField, leftPopupButton, rightPopupButton, leftButtonCommand, rightButtonCommand, pictureSource, heightRequest, widthRequest, AutoGeneratePopupViewModel);
 		}
-
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		public static async Task<(string username, string password)> GeneratePopup(PopupEntry usernameField, PopupEntry passwordField, PopupButton leftPopupButton, PopupButton rightPopupButton, Task leftButtonTask, Task rightButtonTask, string pictureSource, int heightRequest = 0, int widthRequest = 0)
 		{
 			var AutoGeneratePopupViewModel = new LoginViewModel(AwaitablePopups.Services.PopupService.GetInstance());
@@ -193,7 +272,7 @@ namespace AwaitablePopups.PopupPages.Login
 			});
 			return await GeneratePopup(usernameField, passwordField, leftPopupButton, rightPopupButton, leftButtonCommand, rightButtonCommand, pictureSource, heightRequest, widthRequest, AutoGeneratePopupViewModel);
 		}
-
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		private static void PropertySetter(PopupEntry usernameField, PopupEntry passwordField, PopupButton leftPopupButton, PopupButton rightPopupButton, ICommand leftButtonCommand, ICommand rightButtonCommand, string PictureSource, int heightRequest, int widthRequest, LoginViewModel AutoGeneratePopupViewModel)
 		{
 			AutoGeneratePopupViewModel.WidthRequest = widthRequest;

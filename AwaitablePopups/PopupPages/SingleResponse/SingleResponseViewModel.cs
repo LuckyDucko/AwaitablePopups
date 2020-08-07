@@ -5,6 +5,8 @@ using AwaitablePopups.Interfaces;
 using Xamarin.Forms;
 using AwaitablePopups.Structs;
 using AsyncAwaitBestPractices.MVVM;
+using System.Collections.Generic;
+using System;
 
 namespace AwaitablePopups.PopupPages.SingleResponse
 {
@@ -51,6 +53,85 @@ namespace AwaitablePopups.PopupPages.SingleResponse
 		{
 		}
 
+
+		public static SingleResponseViewModel GenerateVM()
+		{
+			return new SingleResponseViewModel(Services.PopupService.GetInstance());
+		}
+
+		/// <summary>
+		/// provides the SingleResponsePopupPage Generic Type argument to
+		/// <see cref="GeneratePopup{TPopupPage}(Dictionary{string, object})"/>
+		/// </summary>
+		/// <param name="propertyDictionary">Page Properties, for an example pull <seealso cref="PullViewModelProperties"/></param>
+		/// <returns> Task that waits for user input</returns>
+		public async Task<bool> GeneratePopup(Dictionary<string, object> propertyDictionary)
+		{
+			return await GeneratePopup<SingleResponsePopupPage>(propertyDictionary);
+		}
+
+		/// <summary>
+		/// Attaches properties through the use of reflection. <see cref="PopupViewModel{TReturnable}.InitialiseOptionalProperties(Dictionary{string, object})"/>
+		/// </summary>
+		/// <typeparam name="TPopupPage">User defined page that uses the SingleResponseViewModel ViewModel</typeparam>
+		/// <param name="propertyDictionary">Page Properties, for an example pull <seealso cref="PullViewModelProperties"/></param>
+		/// <returns> Task that waits for user input</returns>
+		public async Task<bool> GeneratePopup<TPopupPage>(Dictionary<string, object> optionalProperties) where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<SingleResponseViewModel>, new()
+		{
+			InitialiseOptionalProperties(optionalProperties);
+			return await Services.PopupService.GetInstance().PushAsync<SingleResponseViewModel, TPopupPage, bool>(this);
+		}
+
+		/// <summary>
+		/// Provides a base dictionary, along with types that you can use to Initialise properties
+		/// </summary>
+		/// <returns>All Properties contained within the Viewmodel, with their names, current values, and types</returns>
+		public virtual Dictionary<string, (object property, Type propertyType)> PullViewModelProperties()
+		{
+			return base.PullViewModelProperties<SingleResponseViewModel>();
+		}
+
+		/// <summary>
+		/// provides the SingleResponsePopupPage Generic Type argument to
+		/// <see cref="AutoGenerateBasicPopup{TPopupPage}(Color, Color, string, Color, string, string, int, int)"/>
+		/// <returns> a task awaiting user interaction</returns>
+		public static async Task<bool> AutoGenerateBasicPopup(Color buttonColour, Color buttonTextColour, string buttonText, Color mainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
+		{
+			return await AutoGenerateBasicPopup<SingleResponsePopupPage>(buttonColour, buttonTextColour, buttonText, mainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
+		}
+
+		/// <summary>
+		/// Attached basic properties defined.
+		/// Left button will return false
+		/// Right button will return true
+		/// </summary>
+		/// <typeparam name="TPopupPage">User defined page that uses the SingleResponseViewModel ViewModel</typeparam>
+		/// <returns> a task awaiting user interaction</returns>
+		public static async Task<bool> AutoGenerateBasicPopup<TPopupPage>(Color buttonColour, Color buttonTextColour, string buttonText, Color mainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0) where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<SingleResponseViewModel>, new()
+		{
+			var AutoGeneratePopupViewModel = new SingleResponseViewModel(Services.PopupService.GetInstance());
+			ICommand singleButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<SingleResponsePopupPage>(true));
+
+			var propertyDictionary = new Dictionary<string, object>
+			{
+				{ "SingleButtonCommand", singleButtonCommand },
+				{ "SingleButtonColour", buttonColour },
+				{ "SingleButtonText", buttonText ?? "Yes" },
+				{ "SingleButtonTextColour", buttonTextColour },
+				{ "HeightRequest", heightRequest },
+				{ "WidthRequest", widthRequest },
+				{ "MainPopupInformation", popupInformation ?? "An Error has occured, try again" },
+				{ "MainPopupColour", mainPopupColour },
+				{ "SingleDisplayImage", displayImageName ?? "NoSource.png" }
+			};
+			return await AutoGeneratePopupViewModel.GeneratePopup(propertyDictionary);
+		}
+
+
+
+
+
+
 		/// <summary>
 		/// designed as the single flowpoint into PropertySetter and providing an awaitable task
 		/// </summary>
@@ -62,13 +143,13 @@ namespace AwaitablePopups.PopupPages.SingleResponse
 		/// <param name="displayImageName"></param>
 		/// <param name="singleButtonCommand"></param>
 		/// <param name="AutoGeneratePopupViewModel"></param>
-		/// <returns></returns>
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		private static async Task<bool> GeneratePopup(Color buttonColour, Color buttonTextColour, string buttonText, Color MainPopupColour, string popupInformation, string displayImageName, ICommand singleButtonCommand, int heightRequest, int widthRequest, SingleResponseViewModel AutoGeneratePopupViewModel)
 		{
 			PropertySetter(buttonColour, buttonTextColour, buttonText, MainPopupColour, popupInformation, displayImageName, singleButtonCommand, heightRequest, widthRequest, AutoGeneratePopupViewModel);
 			return await Services.PopupService.GetInstance().PushAsync<SingleResponseViewModel, SingleResponsePopupPage, bool>(AutoGeneratePopupViewModel);
 		}
-
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		private static void PropertySetter(Color buttonColour, Color buttonTextColour, string buttonText, Color MainPopupColour, string popupInformation, string displayImageName, ICommand singleButtonCommand, int heightRequest, int widthRequest, SingleResponseViewModel AutoGeneratePopupViewModel)
 		{
 			AutoGeneratePopupViewModel.WidthRequest = widthRequest;
@@ -89,7 +170,7 @@ namespace AwaitablePopups.PopupPages.SingleResponse
 		/// <param name="MainPopupColour"></param>
 		/// <param name="popupInformation"></param>
 		/// <param name="displayImageName"></param>
-		/// <returns></returns>
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		public static async Task<bool> GeneratePopup(PopupButton singleButton, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
 			return await GeneratePopup(singleButton.ButtonColour, singleButton.ButtonTextColour, singleButton.ButtonText, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
@@ -104,7 +185,7 @@ namespace AwaitablePopups.PopupPages.SingleResponse
 		/// <param name="MainPopupColour"></param>
 		/// <param name="popupInformation"></param>
 		/// <param name="displayImageName"></param>
-		/// <returns></returns>
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		public static async Task<bool> GeneratePopup(PopupButton singleButton, Task buttonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
 			return await GeneratePopup(singleButton.ButtonColour, singleButton.ButtonTextColour, singleButton.ButtonText, buttonTask, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
@@ -119,13 +200,13 @@ namespace AwaitablePopups.PopupPages.SingleResponse
 		/// <param name="MainPopupColour"></param>
 		/// <param name="popupInformation"></param>
 		/// <param name="displayImageName"></param>
-		/// <returns></returns>
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		public static async Task<bool> GeneratePopup(PopupButton singleButton, Task<bool> buttonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest, int widthRequest)
 		{
 			return await GeneratePopup(singleButton.ButtonColour, singleButton.ButtonTextColour, singleButton.ButtonText, buttonTask, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
 		}
 
-
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		public static async Task<bool> GeneratePopup(Color buttonColour, Color buttonTextColour, string buttonText, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest, int widthRequest)
 		{
 			var AutoGeneratePopupViewModel = new SingleResponseViewModel(AwaitablePopups.Services.PopupService.GetInstance());
@@ -144,7 +225,7 @@ namespace AwaitablePopups.PopupPages.SingleResponse
 		/// <param name="MainPopupColour"></param>
 		/// <param name="popupInformation"></param>
 		/// <param name="displayImageName"></param>
-		/// <returns></returns>
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		public static async Task<bool> GeneratePopup(Color buttonColour, Color buttonTextColour, string buttonText, Task buttonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
 			var AutoGeneratePopupViewModel = new SingleResponseViewModel(AwaitablePopups.Services.PopupService.GetInstance());
@@ -167,6 +248,7 @@ namespace AwaitablePopups.PopupPages.SingleResponse
 		/// <param name="popupInformation"></param>
 		/// <param name="displayImageName"></param>
 		/// <returns></returns>
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		public static async Task<bool> GeneratePopup(Color buttonColour, Color buttonTextColour, string buttonText, Task<bool> buttonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
 			var AutoGeneratePopupViewModel = new SingleResponseViewModel(AwaitablePopups.Services.PopupService.GetInstance());

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Threading;
 using AwaitablePopups.PopupPages.EntryInput;
 using AwaitablePopups.PopupPages.Login;
+using System.Windows.Input;
 
 namespace AwaitablePopupsExample.FakeLogin
 {
@@ -61,26 +62,29 @@ namespace AwaitablePopupsExample.FakeLogin
 		{
 			try
 			{
-				if (string.IsNullOrEmpty(Mobile) || string.IsNullOrEmpty(Password))
-				{
-					var (username, password) = await LoginViewModel.GeneratePopup(new PopupEntry(string.Empty, "Username", Color.Black, Color.BlanchedAlmond, Color.WhiteSmoke),
-													   new PopupEntry(string.Empty, "Password", Color.Black, Color.BlanchedAlmond, Color.WhiteSmoke),
-													   new PopupButton(Color.Green, Color.Black, "Cancel"),
-													   new PopupButton(Color.Green, Color.Black, "Submit"),
-													   "NoSource.png");
-					Mobile = username;
-					Password = password;
-				}
+				await EmptyCredentialCheck();
 				LoginEnabled = false;
-				var textinput = await EntryInputViewModel.GeneratePopup(new PopupButton(Color.Red, Color.Black, "I decline"), new PopupButton(Color.Green, Color.Black, "I Accept"), Color.Green, "TEXT HERE", "Placeholder");
-				var pointlessBoolean = await DualResponseViewModel.GeneratePopup(new PopupButton(Color.Red, Color.Black, "I decline"), new PopupButton(Color.Green, Color.Black, "I Accept"), Color.Gray, string.Concat("Your Text:", textinput, "I am doing this weird formatting to attempt to break this with weird scenarios"), "NoSource.png");
-				pointlessBoolean = pointlessBoolean == await PopupService.WrapReturnableFuncInLoader(LongRunningFunction, 6000, pointlessBoolean, Color.Red, Color.White, LoadingReasons(), Color.Black);
-				return await PopupService.WrapReturnableTaskInLoader(NeedlessTestAbstraction(pointlessBoolean), Color.Blue, Color.White, LoadingReasons(), Color.Black);
+
+
+				var textinput = await EntryInputViewModel.AutoGenerateBasicPopup(Color.WhiteSmoke, Color.Red, "Cancel", Color.WhiteSmoke, Color.Green, "Submit", Color.DimGray, "Text input Example", string.Empty);
+				var dualresponseinput = await DualResponseViewModel.AutoGenerateBasicPopup(Color.WhiteSmoke, Color.Red, "Okay", Color.WhiteSmoke, Color.Green, "Looks Good!", Color.DimGray, "This is an example of a dual response popup page", "thumbsup.png");
+				dualresponseinput = dualresponseinput == await PopupService.WrapReturnableFuncInLoader(LongRunningFunction, 6000, dualresponseinput, Color.Red, Color.White, LoadingReasons(), Color.Black);
+				return await PopupService.WrapReturnableTaskInLoader(NeedlessTestAbstraction(dualresponseinput), Color.Blue, Color.White, LoadingReasons(), Color.Black);
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex.Message);
 				return false;
+			}
+		}
+
+		private async Task EmptyCredentialCheck()
+		{
+			if (string.IsNullOrEmpty(Mobile) || string.IsNullOrEmpty(Password))
+			{
+				var (username, password) = await LoginViewModel.AutoGenerateBasicPopup(Color.WhiteSmoke, Color.Red, "Cancel", Color.WhiteSmoke, Color.Green, "Submit", Color.DimGray, string.Empty, "Username Here", string.Empty, "Password here", "thumbsup.png", 0, 0);
+				Mobile = username;
+				Password = password;
 			}
 		}
 
@@ -125,26 +129,46 @@ namespace AwaitablePopupsExample.FakeLogin
 			};
 		}
 
+		/// <summary>
+		/// this is an example of why you would use this method. to reproduce based on an existing VM
+		/// this is a far fetched example i'll admit.
+		/// </summary>
+		/// <param name="VM"></param>
+		/// <returns></returns>
+		private async Task<bool> ExampleOfDictionaryUsingPullProperties(SingleResponseViewModel VM)
+		{
+			var VMDictionary = VM.PullViewModelProperties();
+			VMDictionary["SingleButtonCommand"] = (new AsyncCommand(async () =>
+			{
+				bool loaderResultWhichIsTrue = await PopupService.WrapReturnableFuncInLoader(LongRunningFunction, 4000, true, Color.Green, Color.White, LoadingReasons(), Color.Black);
+				var innervm = SingleResponseViewModel.GenerateVM();
+				var innervmdictionary = VM.PullViewModelProperties();
+				innervmdictionary["SingleButtonCommand"] = (new Command(() => innervm.SafeCloseModal<SingleResponsePopupPage>(true)), typeof(Command));
+				VM.SafeCloseModal<SingleResponsePopupPage>(await innervm.GeneratePopup(innervm.FinalisePreparedProperties(innervmdictionary)));
+			}), typeof(AsyncCommand));
+			VMDictionary["SingleButtonColour"] = (Color.HotPink, typeof(Color));
+			VMDictionary["SingleButtonText"] = ("Nice", typeof(string));
+			VMDictionary["SingleButtonTextColour"] = (Color.Black, typeof(Color));
+			VMDictionary["MainPopupInformation"] = ("Good Job, enjoy this single response example", typeof(string));
+			VMDictionary["MainPopupColour"] = (Color.DimGray, typeof(Color));
+			VMDictionary["SingleDisplayImage"] = ("thumbsup.png", typeof(string));
+			return await VM.GeneratePopup(VM.FinalisePreparedProperties(VMDictionary));
+		}
 
 		private async Task<bool> GenericErrorAsync()
 		{
 
-			return await SingleResponseViewModel.GeneratePopup(new PopupButton(Color.Coral, Color.Black, "Okay"), Color.Gray, "There was a Device error. Dang.", "NoSource.png");
-		}
-
-		private async Task<bool> IncorrectLoginAsync()
-		{
-			return await SingleResponseViewModel.GeneratePopup(new PopupButton(Color.Goldenrod, Color.Black, "Okay"), Color.Gray, "Your Phone Number or Pin is incorrect, please try again.", "NoSource.png");
+			return await SingleResponseViewModel.AutoGenerateBasicPopup(Color.Coral, Color.Black, "Okay", Color.Gray, "There was a Device error. Dang. But the SingleResponse page example looks nice", "thumbsup.png");
 		}
 
 		private async Task<bool> SuccessfulLoginAsync()
 		{
-			return await SingleResponseViewModel.GeneratePopup(new PopupButton(Color.HotPink, Color.Black, "I Accept"), Color.Gray, "Good Job.", "NoSource.png");
+			return await SingleResponseViewModel.AutoGenerateBasicPopup(Color.HotPink, Color.Black, "I Accept", Color.Gray, "Good Job, enjoy this single response example", "thumbsup.png");
 		}
 
 		private async Task<bool> AcceptConditions()
 		{
-			return await DualResponseViewModel.GeneratePopup(new PopupButton(Color.Red, Color.Black, "I decline"), new PopupButton(Color.Green, Color.Black, "I Accept"), Color.Gray, "Do you accept the terms and conditions?", "NoSource.png");
+			return await ExampleOfDictionaryUsingPullProperties(SingleResponseViewModel.GenerateVM());
 		}
 	}
 }

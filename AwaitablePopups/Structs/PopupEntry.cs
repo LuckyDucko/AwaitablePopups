@@ -3,6 +3,7 @@ using System;
 
 namespace AwaitablePopups.Structs
 {
+	[Obsolete("phasing out, not compatible with non-obsolete API")]
 	public struct PopupEntry : IEquatable<PopupEntry>
 	{
 		public string EntryText { get; set; }

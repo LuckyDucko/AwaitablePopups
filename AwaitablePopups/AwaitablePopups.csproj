@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <PackageVersion>1.0.2</PackageVersion>
+        <PackageVersion>1.1.0</PackageVersion>
         <Authors>Tyson Hooker</Authors>
         <NeutralLanguage>en-AU</NeutralLanguage>
         <Description>Create your own DisplayAlerts using XAML,
@@ -14,8 +14,10 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
         <PackageTags>xamarin-forms async popup MVVM custom-popup dialogs userdialogs xamarin popup-page loader awaitable-popups</PackageTags>
         <Title>Awaitable Popups</Title>
         <Summary>Popup Modals For Xamarin Forms</Summary>
-        <PackageReleaseNotes>Added HeightRequest and WidthRequest as optionalparameters to keep backwards compat
-Added in automationIDs</PackageReleaseNotes>
+        <PackageReleaseNotes>Beginning to create a new API
+Obsoleting the old API, it will not get any new functionality, only compatibility fixes
+Added the ability to supply your own crafted loginpage to the GeneratePopup Functions
+</PackageReleaseNotes>
         <PackOnBuild>true</PackOnBuild>
     </PropertyGroup>
     <PropertyGroup>
