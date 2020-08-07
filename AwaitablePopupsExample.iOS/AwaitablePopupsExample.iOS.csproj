@@ -127,13 +127,18 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AwaitablePopupsExample\AwaitablePopupsExample.csproj">
-      <Project>{1B03D8A0-DA76-491C-AAFB-B753DD687555}</Project>
+      <Project>{D4468CD2-F90C-411E-8605-260560C933A0}</Project>
       <Name>AwaitablePopupsExample</Name>
     </ProjectReference>
     <ProjectReference Include="..\AwaitablePopups\AwaitablePopups.csproj">
       <Project>{26FEC38B-0321-4940-B00E-9929CED67B85}</Project>
       <Name>AwaitablePopups</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\thumbsup.png" />
+    <BundleResource Include="Resources\thumbsup%403x.png" />
+    <BundleResource Include="Resources\thumbsup%402x.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>

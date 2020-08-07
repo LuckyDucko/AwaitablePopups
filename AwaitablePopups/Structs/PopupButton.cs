@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace AwaitablePopups.Structs
 {
+	[Obsolete("phasing out, not compatible with non-obsolete API")]
 	public struct PopupButton : IEquatable<PopupButton>
 	{
 		public Xamarin.Forms.Color ButtonColour { get; set; }

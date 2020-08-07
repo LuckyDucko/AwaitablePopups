@@ -66,6 +66,7 @@ namespace AwaitablePopups.AbstractClasses
 			BaseExitValue = default(TReturnable);
 		}
 
+
 		public virtual void SafeCloseModal<TPopupType>() where TPopupType : Rg.Plugins.Popup.Pages.PopupPage, new()
 		{
 			SafeCloseModal<TPopupType>(BaseExitValue);
@@ -116,7 +117,7 @@ namespace AwaitablePopups.AbstractClasses
 
 		/// <summary>
 		/// This is for use only when you wish for some form of reusable wrapper,
-		/// it provides little protection or help.
+		/// used internally for property setting.
 		/// </summary>
 		/// <param name="optionalProperties"></param>
 		public virtual void InitialiseOptionalProperties(Dictionary<string, object> optionalProperties)
@@ -133,13 +134,28 @@ namespace AwaitablePopups.AbstractClasses
 		/// </summary>
 		/// <typeparam name="TViewModel"> Viwemodel Type you wish to iterate over</typeparam>
 		/// <returns></returns>
-		public Dictionary<string, object> PullViewModelProperties<TViewModel>()
-			where TViewModel : BasePopupViewModel
+		protected virtual Dictionary<string, (object property, Type propertyType)> PullViewModelProperties<TViewModel>() where TViewModel : BasePopupViewModel
 		{
-			var propertyDictionary = new Dictionary<string, object>();
+			var propertyDictionary = new Dictionary<string, (object property, Type propertyType)>();
 			PropertyInfo[] properties = typeof(TViewModel).GetProperties();
-			properties.ForEach((property) => propertyDictionary.Add(property.Name, property.GetValue(this, null)));
+			properties.ForEach((property) => propertyDictionary.Add(property.Name, (property.GetValue(this, null), property.DeclaringType)));
 			return propertyDictionary;
 		}
+
+		/// <summary>
+		/// Converts the Dictionary provided by <see cref="PullViewModelProperties{TViewModel}"/> into one usable by popup generation functions
+		/// </summary>
+		/// <param name="viewModelProperties">user edited dictionary of viewModelProperties</param>
+		/// <returns></returns>
+		public Dictionary<string, object> FinalisePreparedProperties(Dictionary<string, (object property, Type propertyType)> viewModelProperties)
+		{
+			var propertyDictionary = new Dictionary<string, object>();
+			foreach (var viewModelProperty in viewModelProperties)
+			{
+				propertyDictionary.Add(viewModelProperty.Key, viewModelProperty.Value.property);
+			}
+			return propertyDictionary;
+		}
+
 	}
 }

@@ -82,29 +82,144 @@ namespace AwaitablePopups.PopupPages.DualResponse
 		{
 		}
 
-		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Task<bool> leftButtonTask, Task<bool> rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
+		public static DualResponseViewModel GenerateVM()
 		{
-			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, leftButtonTask, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, rightButtonTask, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
+			return new DualResponseViewModel(Services.PopupService.GetInstance());
 		}
 
-		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
+		/// <summary>
+		/// provides the DualResponsePopupPage Generic Type argument to
+		/// <see cref="GeneratePopup{TPopupPage}(Dictionary{string, object})"/>
+		/// </summary>
+		/// <param name="propertyDictionary">Page Properties, for an example pull <seealso cref="PullViewModelProperties"/></param>
+		/// <returns> Task that waits for user input</returns>
+		public async Task<bool> GeneratePopup(Dictionary<string, object> propertyDictionary)
 		{
-			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
+			return await GeneratePopup<DualResponsePopupPage>(propertyDictionary);
 		}
 
-		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Task leftButtonTask, Task rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
+		/// <summary>
+		/// Attaches properties through the use of reflection. <see cref="PopupViewModel{TReturnable}.InitialiseOptionalProperties(Dictionary{string, object})"/>
+		/// </summary>
+		/// <typeparam name="TPopupPage">User defined page that uses the DualResponseViewModel ViewModel</typeparam>
+		/// <param name="propertyDictionary">Page Properties, for an example pull <seealso cref="PullViewModelProperties"/></param>
+		/// <returns> Task that waits for user input</returns>
+		public async Task<bool> GeneratePopup<TPopupPage>(Dictionary<string, object> optionalProperties) where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<DualResponseViewModel>, new()
 		{
-			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, leftButtonTask, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, rightButtonTask, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
+			InitialiseOptionalProperties(optionalProperties);
+			return await Services.PopupService.GetInstance().PushAsync<DualResponseViewModel, TPopupPage, bool>(this);
 		}
 
+
+
+		/// <summary>
+		/// Provides a base dictionary, along with types that you can use to Initialise properties
+		/// </summary>
+		/// <returns>All Properties contained within the Viewmodel, with their names, current values, and types</returns>
+		public virtual Dictionary<string, (object property, Type propertyType)> PullViewModelProperties()
+		{
+			return base.PullViewModelProperties<DualResponseViewModel>();
+		}
+
+		/// <summary>
+		/// provides the DualResponsePopupPage Generic Type argument to
+		/// <see cref="AutoGenerateBasicPopup{TPopupPage}(Color, Color, string, Color, Color, string, Color, string, string, int, int)"/>
+		/// </summary>
+		/// <param name="leftButtonColour"></param>
+		/// <param name="leftButtonTextColour"></param>
+		/// <param name="leftButtonText"></param>
+		/// <param name="rightButtonColour"></param>
+		/// <param name="rightButtonTextColour"></param>
+		/// <param name="rightButtonText"></param>
+		/// <param name="mainPopupColour">Background colour</param>
+		/// <param name="popupInformation">Information Displayed to inform the user what they are making a decision on</param>
+		/// <param name="displayImageName">If an image is wanted, can add it in</param>
+		/// <param name="heightRequest">the height of the popup</param>
+		/// <param name="widthRequest">the width</param>
+		/// <returns> a task awaiting user interaction</returns>
+		public static async Task<bool> AutoGenerateBasicPopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Color mainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
+		{
+			return await AutoGenerateBasicPopup<DualResponsePopupPage>(leftButtonColour, leftButtonTextColour, leftButtonText, rightButtonColour, rightButtonTextColour, rightButtonText, mainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
+		}
+
+		/// <summary>
+		/// Attached basic properties defined.
+		/// Left button will return false
+		/// Right button will return true
+		/// </summary>
+		/// <typeparam name="TPopupPage">User defined page that uses the DualResponseViewModel ViewModel</typeparam>
+		/// <param name="leftButtonColour"></param>
+		/// <param name="leftButtonTextColour"></param>
+		/// <param name="leftButtonText"></param>
+		/// <param name="rightButtonColour"></param>
+		/// <param name="rightButtonTextColour"></param>
+		/// <param name="rightButtonText"></param>
+		/// <param name="mainPopupColour">Background colour</param>
+		/// <param name="popupInformation">Information Displayed to inform the user what they are making a decision on</param>
+		/// <param name="displayImageName">If an image is wanted, can add it in</param>
+		/// <param name="heightRequest">the height of the popup</param>
+		/// <param name="widthRequest">the width</param>
+		/// <returns> a task awaiting user interaction</returns>
+		public static async Task<bool> AutoGenerateBasicPopup<TPopupPage>(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Color mainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0) where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<DualResponseViewModel>, new()
+		{
+			var AutoGeneratePopupViewModel = new DualResponseViewModel(Services.PopupService.GetInstance());
+			ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<DualResponsePopupPage>(false));
+			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<DualResponsePopupPage>(true));
+
+			var propertyDictionary = new Dictionary<string, object>
+			{
+				{ "LeftButtonCommand", leftButtonCommand },
+				{ "LeftButtonColour", leftButtonColour },
+				{ "LeftButtonText", leftButtonText ?? "Yes" },
+				{ "LeftButtonTextColour", leftButtonTextColour },
+
+				{ "RightButtonCommand", rightButtonCommand },
+				{ "RightButtonColour", rightButtonColour },
+				{ "RightButtonText", rightButtonText ?? "No" },
+				{ "RightButtonTextColour", rightButtonTextColour },
+
+				{ "HeightRequest", heightRequest },
+				{ "WidthRequest", widthRequest },
+				{ "MainPopupInformation", popupInformation ?? "An Error has occured, try again" },
+				{ "MainPopupColour", mainPopupColour },
+				{ "PictureSource", displayImageName ?? "NoSource.png" }
+			};
+			return await AutoGeneratePopupViewModel.GeneratePopup<TPopupPage>(propertyDictionary);
+		}
+
+
+
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		public static async Task<bool> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Task<bool> leftButtonTask, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Task<bool> rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
-			var AutoGeneratePopupViewModel = new DualResponseViewModel(AwaitablePopups.Services.PopupService.GetInstance());
+			var AutoGeneratePopupViewModel = new DualResponseViewModel(Services.PopupService.GetInstance());
 			ICommand leftButtonCommand = new AsyncCommand(async () => await AutoGeneratePopupViewModel.SafeCloseModal<DualResponsePopupPage>(leftButtonTask));
 			ICommand rightButtonCommand = new AsyncCommand(async () => await AutoGeneratePopupViewModel.SafeCloseModal<DualResponsePopupPage>(rightButtonTask));
-			return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest, AutoGeneratePopupViewModel);
+
+			var propertyDictionary = new Dictionary<string, object>
+			{
+				{ "LeftButtonCommand", leftButtonCommand },
+				{ "LeftButtonColour", leftButtonColour },
+				{ "LeftButtonText", leftButtonText ?? "Yes" },
+				{ "LeftButtonTextColour", leftButtonTextColour },
+
+				{ "RightButtonCommand", rightButtonCommand },
+				{ "RightButtonColour", rightButtonColour },
+				{ "RightButtonText", rightButtonText ?? "No" },
+				{ "RightButtonTextColour", rightButtonTextColour },
+
+				{ "HeightRequest", heightRequest },
+				{ "WidthRequest", widthRequest },
+				{ "MainPopupInformation", popupInformation ?? "An Error has occured, try again" },
+				{ "MainPopupColour", MainPopupColour },
+				{ "PictureSource", displayImageName ?? "NoSource.png" }
+			};
+
+			return await AutoGeneratePopupViewModel.GeneratePopup(propertyDictionary);
 		}
 
+
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		public static async Task<bool> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
 			var AutoGeneratePopupViewModel = new DualResponseViewModel(AwaitablePopups.Services.PopupService.GetInstance());
@@ -113,6 +228,7 @@ namespace AwaitablePopups.PopupPages.DualResponse
 			return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest, AutoGeneratePopupViewModel);
 		}
 
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		public static async Task<bool> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Task leftButtonTask, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Task rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
 			var AutoGeneratePopupViewModel = new DualResponseViewModel(Services.PopupService.GetInstance());
@@ -130,10 +246,8 @@ namespace AwaitablePopups.PopupPages.DualResponse
 			return await GeneratePopup(leftButtonColour, leftButtonTextColour, leftButtonText, leftButtonCommand, rightButtonColour, rightButtonTextColour, rightButtonText, rightButtonCommand, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest, AutoGeneratePopupViewModel);
 		}
 
-		private static async Task<bool> GeneratePopup(
-			Color leftButtonColour,
-			Color leftButtonTextColour,
-			string leftButtonText,
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
+		private static async Task<bool> GeneratePopup(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText,
 			ICommand leftButtonCommand,
 			Color rightButtonColour,
 			Color rightButtonTextColour,
@@ -150,8 +264,11 @@ namespace AwaitablePopups.PopupPages.DualResponse
 			return await Services.PopupService.GetInstance().PushAsync<DualResponseViewModel, DualResponsePopupPage, bool>(AutoGeneratePopupViewModel);
 		}
 
+		[Obsolete("phasing out, making API simplier and easier to upgrade")]
 		private static void PropertySetter(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, ICommand leftButtonCommand, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, ICommand rightButtonCommand, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest, int widthRequest, DualResponseViewModel AutoGeneratePopupViewModel)
 		{
+
+
 			AutoGeneratePopupViewModel.LeftButtonCommand = leftButtonCommand;
 			AutoGeneratePopupViewModel.LeftButtonColour = leftButtonColour;
 			AutoGeneratePopupViewModel.LeftButtonText = leftButtonText ?? "Yes";
@@ -167,6 +284,24 @@ namespace AwaitablePopups.PopupPages.DualResponse
 			AutoGeneratePopupViewModel.MainPopupInformation = popupInformation ?? "An Error has occured, try again";
 			AutoGeneratePopupViewModel.MainPopupColour = MainPopupColour;
 			AutoGeneratePopupViewModel.PictureSource = displayImageName ?? "NoSource.png";
+		}
+
+
+
+		[Obsolete("phasing out, making API simplier and easier to upgrade, throwing errors due to the use of Obsolete structs, want to encourage their removal", true)]
+		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Task<bool> leftButtonTask, Task<bool> rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
+		{
+			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, leftButtonTask, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, rightButtonTask, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
+		}
+		[Obsolete("phasing out, making API simplier and easier to upgrade, throwing errors due to the use of Obsolete structs, want to encourage their removal", true)]
+		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
+		{
+			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
+		}
+		[Obsolete("phasing out, making API simplier and easier to upgrade, throwing errors due to the use of Obsolete structs, want to encourage their removal", true)]
+		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Task leftButtonTask, Task rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
+		{
+			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, leftButtonTask, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, rightButtonTask, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
 		}
 	}
 }
