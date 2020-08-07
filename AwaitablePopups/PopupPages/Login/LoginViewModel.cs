@@ -221,7 +221,7 @@ namespace AwaitablePopups.PopupPages.Login
 				{ "PasswordPlaceholder" , passwordPlaceHolder},
 				{ "PictureSource" , PictureSource}
 			};
-			return await AutoGeneratePopupViewModel.GeneratePopup(propertyDictionary);
+			return await AutoGeneratePopupViewModel.GeneratePopup<TPopupPage>(propertyDictionary);
 		}
 
 

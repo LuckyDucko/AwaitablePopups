@@ -163,7 +163,7 @@ namespace AwaitablePopups.PopupPages.EntryInput
 				{ "MainPopupColour", mainPopupColour },
 				{ "TextInput", defaultTextInput }
 			};
-			return await AutoGeneratePopupViewModel.GeneratePopup(propertyDictionary);
+			return await AutoGeneratePopupViewModel.GeneratePopup<TPopupPage>(propertyDictionary);
 		}
 
 

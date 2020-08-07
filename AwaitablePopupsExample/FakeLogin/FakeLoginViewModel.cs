@@ -66,7 +66,7 @@ namespace AwaitablePopupsExample.FakeLogin
 				LoginEnabled = false;
 
 
-				var textinput = await EntryInputViewModel.AutoGenerateBasicPopup(Color.WhiteSmoke, Color.Red, "Cancel", Color.WhiteSmoke, Color.Green, "Submit", Color.DimGray, "Text input Example", string.Empty);
+				await EntryInputViewModel.AutoGenerateBasicPopup(Color.WhiteSmoke, Color.Red, "Cancel", Color.WhiteSmoke, Color.Green, "Submit", Color.DimGray, "Text input Example", string.Empty);
 				var dualresponseinput = await DualResponseViewModel.AutoGenerateBasicPopup(Color.WhiteSmoke, Color.Red, "Okay", Color.WhiteSmoke, Color.Green, "Looks Good!", Color.DimGray, "This is an example of a dual response popup page", "thumbsup.png");
 				dualresponseinput = dualresponseinput == await PopupService.WrapReturnableFuncInLoader(LongRunningFunction, 6000, dualresponseinput, Color.Red, Color.White, LoadingReasons(), Color.Black);
 				return await PopupService.WrapReturnableTaskInLoader(NeedlessTestAbstraction(dualresponseinput), Color.Blue, Color.White, LoadingReasons(), Color.Black);
@@ -140,7 +140,7 @@ namespace AwaitablePopupsExample.FakeLogin
 			var VMDictionary = VM.PullViewModelProperties();
 			VMDictionary["SingleButtonCommand"] = (new AsyncCommand(async () =>
 			{
-				bool loaderResultWhichIsTrue = await PopupService.WrapReturnableFuncInLoader(LongRunningFunction, 4000, true, Color.Green, Color.White, LoadingReasons(), Color.Black);
+				await PopupService.WrapReturnableFuncInLoader(LongRunningFunction, 4000, true, Color.Green, Color.White, LoadingReasons(), Color.Black);
 				var innervm = SingleResponseViewModel.GenerateVM();
 				var innervmdictionary = VM.PullViewModelProperties();
 				innervmdictionary["SingleButtonCommand"] = (new Command(() => innervm.SafeCloseModal<SingleResponsePopupPage>(true)), typeof(Command));

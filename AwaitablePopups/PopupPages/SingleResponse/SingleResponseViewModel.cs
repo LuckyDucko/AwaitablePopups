@@ -124,7 +124,7 @@ namespace AwaitablePopups.PopupPages.SingleResponse
 				{ "MainPopupColour", mainPopupColour },
 				{ "SingleDisplayImage", displayImageName ?? "NoSource.png" }
 			};
-			return await AutoGeneratePopupViewModel.GeneratePopup(propertyDictionary);
+			return await AutoGeneratePopupViewModel.GeneratePopup<TPopupPage>(propertyDictionary);
 		}
 
 
