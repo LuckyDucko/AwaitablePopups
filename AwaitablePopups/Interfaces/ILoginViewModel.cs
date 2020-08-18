@@ -1,9 +1,29 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Windows.Input;
+
+using AwaitablePopups.Interfaces;
+using AwaitablePopups.PopupPages.Login;
+
+using Rg.Plugins.Popup.Pages;
+
 using Xamarin.Forms;
 
 namespace AwaitablePopups.Interfaces
 {
-	public interface ILoginViewModel
+	public interface ILoginViewModel : ILogin
+	{
+		Task<(string username, string password)> GeneratePopup(Dictionary<string, object> propertyDictionary);
+		Task<(string username, string password)> GeneratePopup<TPopupPage>(Dictionary<string, object> optionalProperties) where TPopupPage : PopupPage, IGenericViewModel<LoginViewModel>, new();
+		Task<(string username, string password)> GeneratePopup();
+		Task<(string username, string password)> GeneratePopup<TPopupPage>() where TPopupPage : PopupPage, IGenericViewModel<LoginViewModel>, new();
+		Task<(string username, string password)> GeneratePopup(ILogin propertyInterface);
+		Task<(string username, string password)> GeneratePopup<TPopupPage>(ILogin propertyInterface) where TPopupPage : PopupPage, IGenericViewModel<LoginViewModel>, new();
+		Dictionary<string, (object property, Type propertyType)> PullViewModelProperties();
+	}
+
+	public interface ILogin
 	{
 		string Username { get; set; }
 		string UsernamePlaceholder { get; set; }

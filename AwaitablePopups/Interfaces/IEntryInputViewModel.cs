@@ -1,9 +1,29 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Windows.Input;
+
+using AwaitablePopups.Interfaces;
+using AwaitablePopups.PopupPages.EntryInput;
+
+using Rg.Plugins.Popup.Pages;
+
 using Xamarin.Forms;
 
 namespace AwaitablePopups.Interfaces
 {
-	public interface IEntryInputViewModel
+	public interface IEntryInputViewModel : IEntryInput
+	{
+		Task<string> GeneratePopup(Dictionary<string, object> propertyDictionary);
+		Task<string> GeneratePopup<TPopupPage>(Dictionary<string, object> optionalProperties) where TPopupPage : PopupPage, IGenericViewModel<EntryInputViewModel>, new();
+		Task<string> GeneratePopup();
+		Task<string> GeneratePopup<TPopupPage>() where TPopupPage : PopupPage, IGenericViewModel<EntryInputViewModel>, new();
+		Task<string> GeneratePopup(IEntryInput propertyInterface);
+		Task<string> GeneratePopup<TPopupPage>(IEntryInput propertyInterface) where TPopupPage : PopupPage, IGenericViewModel<EntryInputViewModel>, new();
+		Dictionary<string, (object property, Type propertyType)> PullViewModelProperties();
+	}
+
+	public interface IEntryInput
 	{
 		string TextInput { get; set; }
 		string PlaceHolderInput { get; set; }

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using AwaitablePopups.Structs;
 using AsyncAwaitBestPractices.MVVM;
 using System.Collections.Generic;
+using Rg.Plugins.Popup.Pages;
+using System.Reflection;
+using System.Linq;
 
 namespace AwaitablePopups.PopupPages.Login
 {
@@ -178,6 +181,34 @@ namespace AwaitablePopups.PopupPages.Login
 			return await Services.PopupService.GetInstance().PushAsync<LoginViewModel, TPopupPage, (string username, string password)>(this);
 		}
 
+		/// <returns> Task that waits for user input</returns>
+		public async Task<(string username, string password)> GeneratePopup()
+		{
+			return await GeneratePopup<LoginPopupPage>();
+		}
+
+		/// <returns> Task that waits for user input</returns>
+		public async Task<(string username, string password)> GeneratePopup<TPopupPage>() where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<LoginViewModel>, new()
+		{
+			return await Services.PopupService.GetInstance().PushAsync<LoginViewModel, TPopupPage, (string username, string password)>(this);
+		}
+
+		public async Task<(string username, string password)> GeneratePopup(ILogin propertyInterface)
+		{
+			return await GeneratePopup<LoginPopupPage>(propertyInterface);
+		}
+
+		public async Task<(string username, string password)> GeneratePopup<TPopupPage>(ILogin propertyInterface) where TPopupPage : PopupPage, IGenericViewModel<LoginViewModel>, new()
+		{
+			PropertyInfo[] properties = typeof(ILogin).GetProperties();
+			for (int propertyIndex = 0; propertyIndex < properties.Count(); propertyIndex++)
+			{
+				GetType().GetProperty(properties[propertyIndex].Name).SetValue(this, properties[propertyIndex].GetValue(propertyInterface, null), null);
+			}
+			return await Services.PopupService.GetInstance().PushAsync<LoginViewModel, TPopupPage, (string username, string password)>(this);
+		}
+
+
 		/// <summary>
 		/// Provides a base dictionary, along with types that you can use to Initialise properties
 		/// </summary>
@@ -199,8 +230,8 @@ namespace AwaitablePopups.PopupPages.Login
 		public static async Task<(string username, string password)> AutoGenerateBasicPopup<TPopupPage>(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Color mainPopupColour, string username, string usernamePlaceHolder, string password, string passwordPlaceHolder, string PictureSource, int heightRequest = 0, int widthRequest = 0) where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<LoginViewModel>, new()
 		{
 			var AutoGeneratePopupViewModel = new LoginViewModel(Services.PopupService.GetInstance());
-			ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<LoginPopupPage>(("invalid", "invalid")));
-			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<LoginPopupPage>((AutoGeneratePopupViewModel.Username, AutoGeneratePopupViewModel.Password)));
+			ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<TPopupPage>(("invalid", "invalid")));
+			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<TPopupPage>((AutoGeneratePopupViewModel.Username, AutoGeneratePopupViewModel.Password)));
 
 			var propertyDictionary = new Dictionary<string, object>
 			{

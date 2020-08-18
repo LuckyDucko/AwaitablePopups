@@ -7,6 +7,9 @@ using AwaitablePopups.Structs;
 using AsyncAwaitBestPractices.MVVM;
 using System.Collections.Generic;
 using System;
+using Rg.Plugins.Popup.Pages;
+using System.Reflection;
+using System.Linq;
 
 namespace AwaitablePopups.PopupPages.SingleResponse
 {
@@ -82,6 +85,37 @@ namespace AwaitablePopups.PopupPages.SingleResponse
 			return await Services.PopupService.GetInstance().PushAsync<SingleResponseViewModel, TPopupPage, bool>(this);
 		}
 
+
+		/// <returns> Task that waits for user input</returns>
+		public async Task<bool> GeneratePopup()
+		{
+			return await GeneratePopup<SingleResponsePopupPage>();
+		}
+
+		/// <returns> Task that waits for user input</returns>
+		public async Task<bool> GeneratePopup<TPopupPage>() where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<SingleResponseViewModel>, new()
+		{
+			return await Services.PopupService.GetInstance().PushAsync<SingleResponseViewModel, TPopupPage, bool>(this);
+		}
+
+		public async Task<bool> GeneratePopup(ISingleResponse propertyInterface)
+		{
+			return await GeneratePopup<SingleResponsePopupPage>(propertyInterface);
+		}
+
+		public async Task<bool> GeneratePopup<TPopupPage>(ISingleResponse propertyInterface) where TPopupPage : PopupPage, IGenericViewModel<SingleResponseViewModel>, new()
+		{
+			PropertyInfo[] properties = typeof(ISingleResponse).GetProperties();
+			for (int propertyIndex = 0; propertyIndex < properties.Count(); propertyIndex++)
+			{
+				GetType().GetProperty(properties[propertyIndex].Name).SetValue(this, properties[propertyIndex].GetValue(propertyInterface, null), null);
+			}
+			return await Services.PopupService.GetInstance().PushAsync<SingleResponseViewModel, TPopupPage, bool>(this);
+		}
+
+
+
+
 		/// <summary>
 		/// Provides a base dictionary, along with types that you can use to Initialise properties
 		/// </summary>
@@ -110,7 +144,7 @@ namespace AwaitablePopups.PopupPages.SingleResponse
 		public static async Task<bool> AutoGenerateBasicPopup<TPopupPage>(Color buttonColour, Color buttonTextColour, string buttonText, Color mainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0) where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<SingleResponseViewModel>, new()
 		{
 			var AutoGeneratePopupViewModel = new SingleResponseViewModel(Services.PopupService.GetInstance());
-			ICommand singleButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<SingleResponsePopupPage>(true));
+			ICommand singleButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<TPopupPage>(true));
 
 			var propertyDictionary = new Dictionary<string, object>
 			{
