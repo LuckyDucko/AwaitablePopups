@@ -138,7 +138,11 @@ namespace AwaitablePopups.AbstractClasses
 		{
 			var propertyDictionary = new Dictionary<string, (object property, Type propertyType)>();
 			PropertyInfo[] properties = typeof(TViewModel).GetProperties();
-			properties.ForEach((property) => propertyDictionary.Add(property.Name, (property.GetValue(this, null), property.DeclaringType)));
+
+			for (int propertyIndex = 0; propertyIndex < properties.Count(); propertyIndex++)
+			{
+				propertyDictionary.Add(properties[propertyIndex].Name, (properties[propertyIndex].GetValue(this, null), properties[propertyIndex].DeclaringType));
+			}
 			return propertyDictionary;
 		}
 

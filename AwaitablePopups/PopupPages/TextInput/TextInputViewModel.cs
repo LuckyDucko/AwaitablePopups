@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -8,6 +10,8 @@ using AsyncAwaitBestPractices.MVVM;
 using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
 using AwaitablePopups.Structs;
+
+using Rg.Plugins.Popup.Pages;
 
 using Xamarin.Forms;
 
@@ -116,7 +120,33 @@ namespace AwaitablePopups.PopupPages.TextInput
 			return await Services.PopupService.GetInstance().PushAsync<TextInputViewModel, TPopupPage, string>(this);
 		}
 
+		/// <returns> Task that waits for user input</returns>
+		public async Task<string> GeneratePopup()
+		{
+			return await GeneratePopup<TextInputPopupPage>();
+		}
 
+		/// <typeparam name="TPopupPage">User defined page that uses the TextInputViewModel ViewModel</typeparam>
+		/// <returns> Task that waits for user input</returns>
+		public async Task<string> GeneratePopup<TPopupPage>() where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<TextInputViewModel>, new()
+		{
+			return await Services.PopupService.GetInstance().PushAsync<TextInputViewModel, TPopupPage, string>(this);
+		}
+
+		public async Task<string> GeneratePopup(ITextInput propertyInterface)
+		{
+			return await GeneratePopup<TextInputPopupPage>(propertyInterface);
+		}
+
+		public async Task<string> GeneratePopup<TPopupPage>(ITextInput propertyInterface) where TPopupPage : PopupPage, IGenericViewModel<TextInputViewModel>, new()
+		{
+			PropertyInfo[] properties = typeof(ITextInput).GetProperties();
+			for (int propertyIndex = 0; propertyIndex < properties.Count(); propertyIndex++)
+			{
+				GetType().GetProperty(properties[propertyIndex].Name).SetValue(this, properties[propertyIndex].GetValue(propertyInterface, null), null);
+			}
+			return await Services.PopupService.GetInstance().PushAsync<TextInputViewModel, TPopupPage, string>(this);
+		}
 
 		/// <summary>
 		/// Provides a base dictionary, along with types that you can use to Initialise properties
@@ -139,8 +169,8 @@ namespace AwaitablePopups.PopupPages.TextInput
 		public static async Task<string> AutoGenerateBasicPopup<TPopupPage>(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Color mainPopupColour, string defaultTextInput, string defaultPlaceHolder, int heightRequest = 0, int widthRequest = 0) where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<TextInputViewModel>, new()
 		{
 			var AutoGeneratePopupViewModel = new TextInputViewModel(Services.PopupService.GetInstance());
-			ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<TextInputPopupPage>("No Text Available"));
-			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<TextInputPopupPage>(AutoGeneratePopupViewModel.TextInput));
+			ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<TPopupPage>("No Text Available"));
+			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<TPopupPage>(AutoGeneratePopupViewModel.TextInput));
 
 			var propertyDictionary = new Dictionary<string, object>
 			{

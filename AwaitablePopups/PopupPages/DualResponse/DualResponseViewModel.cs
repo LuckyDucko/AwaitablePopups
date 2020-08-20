@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -8,6 +10,8 @@ using AsyncAwaitBestPractices.MVVM;
 using AwaitablePopups.AbstractClasses;
 using AwaitablePopups.Interfaces;
 using AwaitablePopups.Structs;
+
+using Rg.Plugins.Popup.Pages;
 
 using Xamarin.Forms;
 
@@ -110,6 +114,33 @@ namespace AwaitablePopups.PopupPages.DualResponse
 			return await Services.PopupService.GetInstance().PushAsync<DualResponseViewModel, TPopupPage, bool>(this);
 		}
 
+		/// <returns> Task that waits for user input</returns>
+		public async Task<bool> GeneratePopup()
+		{
+			return await GeneratePopup<DualResponsePopupPage>();
+		}
+
+		/// <returns> Task that waits for user input</returns>
+		public async Task<bool> GeneratePopup<TPopupPage>() where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<DualResponseViewModel>, new()
+		{
+			return await Services.PopupService.GetInstance().PushAsync<DualResponseViewModel, TPopupPage, bool>(this);
+		}
+
+		public async Task<bool> GeneratePopup(IDualResponse propertyInterface)
+		{
+			return await GeneratePopup<DualResponsePopupPage>(propertyInterface);
+		}
+
+		public async Task<bool> GeneratePopup<TPopupPage>(IDualResponse propertyInterface) where TPopupPage : PopupPage, IGenericViewModel<DualResponseViewModel>, new()
+		{
+			PropertyInfo[] properties = typeof(IDualResponse).GetProperties();
+			for (int propertyIndex = 0; propertyIndex < properties.Count(); propertyIndex++)
+			{
+				GetType().GetProperty(properties[propertyIndex].Name).SetValue(this, properties[propertyIndex].GetValue(propertyInterface, null), null);
+			}
+			return await Services.PopupService.GetInstance().PushAsync<DualResponseViewModel, TPopupPage, bool>(this);
+		}
+
 
 
 		/// <summary>
@@ -163,8 +194,8 @@ namespace AwaitablePopups.PopupPages.DualResponse
 		public static async Task<bool> AutoGenerateBasicPopup<TPopupPage>(Color leftButtonColour, Color leftButtonTextColour, string leftButtonText, Color rightButtonColour, Color rightButtonTextColour, string rightButtonText, Color mainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0) where TPopupPage : Rg.Plugins.Popup.Pages.PopupPage, IGenericViewModel<DualResponseViewModel>, new()
 		{
 			var AutoGeneratePopupViewModel = new DualResponseViewModel(Services.PopupService.GetInstance());
-			ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<DualResponsePopupPage>(false));
-			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<DualResponsePopupPage>(true));
+			ICommand leftButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<TPopupPage>(false));
+			ICommand rightButtonCommand = new Command(() => AutoGeneratePopupViewModel.SafeCloseModal<TPopupPage>(true));
 
 			var propertyDictionary = new Dictionary<string, object>
 			{
@@ -186,6 +217,13 @@ namespace AwaitablePopups.PopupPages.DualResponse
 			};
 			return await AutoGeneratePopupViewModel.GeneratePopup<TPopupPage>(propertyDictionary);
 		}
+
+
+
+
+
+
+
 
 
 
@@ -288,17 +326,17 @@ namespace AwaitablePopups.PopupPages.DualResponse
 
 
 
-		[Obsolete("phasing out, making API simplier and easier to upgrade, throwing errors due to the use of Obsolete structs, want to encourage their removal", true)]
+		[Obsolete("phasing out, making API simplier and easier to upgrade, throwing errors due to the use of Obsolete structs, want to encourage their removal")]
 		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Task<bool> leftButtonTask, Task<bool> rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
 			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, leftButtonTask, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, rightButtonTask, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
 		}
-		[Obsolete("phasing out, making API simplier and easier to upgrade, throwing errors due to the use of Obsolete structs, want to encourage their removal", true)]
+		[Obsolete("phasing out, making API simplier and easier to upgrade, throwing errors due to the use of Obsolete structs, want to encourage their removal")]
 		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
 			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);
 		}
-		[Obsolete("phasing out, making API simplier and easier to upgrade, throwing errors due to the use of Obsolete structs, want to encourage their removal", true)]
+		[Obsolete("phasing out, making API simplier and easier to upgrade, throwing errors due to the use of Obsolete structs, want to encourage their removal")]
 		public static async Task<bool> GeneratePopup(PopupButton leftButton, PopupButton rightButton, Task leftButtonTask, Task rightButtonTask, Color MainPopupColour, string popupInformation, string displayImageName, int heightRequest = 0, int widthRequest = 0)
 		{
 			return await GeneratePopup(leftButton.ButtonColour, leftButton.ButtonTextColour, leftButton.ButtonText, leftButtonTask, rightButton.ButtonColour, rightButton.ButtonTextColour, rightButton.ButtonText, rightButtonTask, MainPopupColour, popupInformation, displayImageName, heightRequest, widthRequest);

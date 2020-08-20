@@ -59,5 +59,13 @@ namespace AwaitablePopups.Interfaces
 
 		void PopAsync<TPopupType>() where TPopupType : PopupPage, new();
 
+		/// <summary>
+		/// Added the ability to specify an action when an exception happens when popping.
+		/// An example of this is issues on detach, such as AiForms.Effects on popupPages
+		/// </summary>
+		/// <typeparam name="TPopupType"></typeparam>
+		/// <param name="exceptionActionForSafeFireAndForget"></param>
+		void PopAsync<TPopupType>(Action<Exception> exceptionActionForSafeFireAndForget) where TPopupType : PopupPage, new();
+
 	}
 }

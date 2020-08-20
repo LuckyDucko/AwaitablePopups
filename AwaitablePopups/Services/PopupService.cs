@@ -51,10 +51,29 @@ namespace AwaitablePopups.Services
 				var PotentialPages = s_popupNavigation.PopupStack.Where((PopupPage PageOnPopupStack) => PageOnPopupStack.GetType().IsEquivalentTo(typeof(TPopupType)));
 				if (PotentialPages.Any())
 				{
-					s_popupNavigation.RemovePageAsync(PotentialPages.First()).SafeFireAndForget();
+					s_popupNavigation.RemovePageAsync(PotentialPages.First()).SafeFireAndForget(onException: (Exception ex) => Console.WriteLine(ex));
 				}
 			}
 		}
+
+		/// <summary>
+		/// Added the ability to specify an action when an exception happens when popping.
+		/// An example of this is issues on detach, such as AiForms.Effects on popupPages
+		/// </summary>
+		/// <typeparam name="TPopupType"></typeparam>
+		/// <param name="exceptionActionForSafeFireAndForget"></param>
+		public void PopAsync<TPopupType>(Action<Exception> exceptionActionForSafeFireAndForget) where TPopupType : PopupPage, new()
+		{
+			lock (s_threadPadlock)
+			{
+				var PotentialPages = s_popupNavigation.PopupStack.Where((PopupPage PageOnPopupStack) => PageOnPopupStack.GetType().IsEquivalentTo(typeof(TPopupType)));
+				if (PotentialPages.Any())
+				{
+					s_popupNavigation.RemovePageAsync(PotentialPages.First()).SafeFireAndForget(exceptionActionForSafeFireAndForget);
+				}
+			}
+		}
+
 
 		public TPopupPage CreatePopupPage<TPopupPage>()
 			where TPopupPage : PopupPage, new()
