@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<PackageVersion>1.1.1-rc</PackageVersion>
+		<PackageVersion>1.1.2</PackageVersion>
 		<Authors>Tyson Hooker</Authors>
 		<NeutralLanguage>en-AU</NeutralLanguage>
 		<Description>Create your own DisplayAlerts using XAML,
@@ -13,11 +13,12 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
 		<PackageProjectUrl>https://github.com/LuckyDucko/AwaitablePopups</PackageProjectUrl>
 		<PackageTags>xamarin-forms async popup MVVM custom-popup dialogs userdialogs xamarin popup-page loader awaitable-popups</PackageTags>
 		<Title>Awaitable Popups</Title>
-		<Summary>Popup Modals For Xamarin Forms</Summary>
+		<Summary>Async/Await Popup Modals and dialogs For Xamarin Forms</Summary>
 		<PackageReleaseNotes>Added in fixes to GitHub Issues
 1. Added ability to generate a popuppage without the need for any constructor
 2. fixed bug where custom popuppages werent attached properly
-3. Added the ability to use something that implements a viewmodels propertyinterface to be used in generating the viewmodel</PackageReleaseNotes>
+3. Added the ability to use something that implements a viewmodels propertyinterface to be used in generating the viewmodel
+4. Added in a fix where exceptions arised from PopAsync can either be ignored (default) or dealt with (action required)</PackageReleaseNotes>
 		<PackOnBuild>true</PackOnBuild>
 	</PropertyGroup>
 	<PropertyGroup>
@@ -46,8 +47,8 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
 		<Compile Remove="Class1.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.3" />
 		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="4.2.0" />
+		<PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.3" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="PopupPages\Loader\" />

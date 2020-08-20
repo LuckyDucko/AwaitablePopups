@@ -35,7 +35,6 @@ namespace AwaitablePopups.AbstractClasses
 			{
 				return;
 			}
-
 			backingField = value;
 			OnPropertyChanged(propertyName);
 		}
