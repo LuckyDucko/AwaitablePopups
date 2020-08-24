@@ -233,7 +233,7 @@ namespace AwaitablePopups.Services
 		{
 			LoaderViewModel loaderWaiting = ConstructLoaderModal(loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 			action.GetAwaiter().OnCompleted(() => Device.BeginInvokeOnMainThread(() => loaderWaiting.SafeCloseModal<LoaderPopupPage>()));
-			if (!action.IsCompleted && action.Status != TaskStatus.WaitingForActivation)
+			if (!action.IsCompleted)
 			{
 				LoaderAttachAndPush(loaderWaiting).SafeFireAndForget();
 			}
@@ -245,14 +245,16 @@ namespace AwaitablePopups.Services
 			await Device.InvokeOnMainThreadAsync(() => s_popupNavigation.PushAsync(popupModal));
 		}
 
+		[Obsolete("Now calls WrapReturnableTaskInLoader as functionality has been made equal")]
 		private void ConstructTCSSafeLoaderAndDisplay(Task action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
 		{
-			LoaderViewModel loaderWaiting = ConstructLoaderModal(loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
-			action.GetAwaiter().OnCompleted(() => Device.BeginInvokeOnMainThread(() => loaderWaiting.SafeCloseModal<LoaderPopupPage>()));
-			if (!action.IsCompleted)
-			{
-				LoaderAttachAndPush(loaderWaiting).SafeFireAndForget();
-			}
+			ConstructLoaderAndDisplay(action, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+			//LoaderViewModel loaderWaiting = ConstructLoaderModal(loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+			//action.GetAwaiter().OnCompleted(() => Device.BeginInvokeOnMainThread(() => loaderWaiting.SafeCloseModal<LoaderPopupPage>()));
+			//if (!action.IsCompleted)
+			//{
+			//	LoaderAttachAndPush(loaderWaiting).SafeFireAndForget();
+			//}
 		}
 	}
 }
