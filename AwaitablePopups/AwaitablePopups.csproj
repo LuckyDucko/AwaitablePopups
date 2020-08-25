@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<PackageVersion>1.1.3</PackageVersion>
+		<PackageVersion>1.1.4</PackageVersion>
 		<Authors>Tyson Hooker</Authors>
 		<NeutralLanguage>en-AU</NeutralLanguage>
 		<Description>Create your own DisplayAlerts using XAML,
@@ -14,7 +14,7 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
 		<PackageTags>xamarin-forms async popup MVVM custom-popup dialogs userdialogs xamarin popup-page loader awaitable-popups</PackageTags>
 		<Title>Awaitable Popups</Title>
 		<Summary>Async/Await Popup Modals and dialogs For Xamarin Forms</Summary>
-		<PackageReleaseNotes>Added in a fix so the Loaders are presented correctly.</PackageReleaseNotes>
+		<PackageReleaseNotes>Added in the ability to supply your own Loader popup page, instead of relying on your own. </PackageReleaseNotes>
 		<PackOnBuild>true</PackOnBuild>
 	</PropertyGroup>
 	<PropertyGroup>

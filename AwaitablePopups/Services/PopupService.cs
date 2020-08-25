@@ -89,48 +89,6 @@ namespace AwaitablePopups.Services
 			return popupPage;
 		}
 
-		public async Task ForceMinimumWaitTime(Task returnableTask, int millisecondsDelay)
-		{
-			Task initialTime = Task.Delay(millisecondsDelay);
-			await Task.WhenAll(initialTime, returnableTask);
-		}
-
-		public async Task WrapTaskInLoader(Task action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
-		{
-			await WrapTaskInLoader(action, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
-		}
-
-		public async Task WrapTaskInLoader(Task action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
-		{
-			Task PaddedTaskTime = ForceMinimumWaitTime(action, 1000);
-			ConstructLoaderAndDisplay(PaddedTaskTime, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
-			await PaddedTaskTime;
-		}
-
-		public async Task<TAsyncActionResult> WrapReturnableTaskInLoader<TAsyncActionResult>(Task<TAsyncActionResult> action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
-		{
-			return await WrapReturnableTaskInLoader(action, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
-		}
-
-		public async Task<TAsyncActionResult> WrapReturnableTaskInLoader<TAsyncActionResult>(Task<TAsyncActionResult> action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
-		{
-			ConstructLoaderAndDisplay(action, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
-			await action;
-			return action.Result;
-		}
-
-		public async Task<TAsyncActionResult> WrapReturnableTCSInLoader<TAsyncActionResult>(Task<TAsyncActionResult> action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
-		{
-			return await WrapReturnableTCSInLoader(action, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
-		}
-
-		public async Task<TAsyncActionResult> WrapReturnableTCSInLoader<TAsyncActionResult>(Task<TAsyncActionResult> action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
-		{
-			ConstructTCSSafeLoaderAndDisplay(action, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
-			await action;
-			return action.Result;
-		}
-
 		public async Task<TReturnable> PushAsync<TViewModel, TPopupPage, TReturnable>(TViewModel modalViewModel)
 			where TPopupPage : PopupPage, IGenericViewModel<TViewModel>, new()
 			where TViewModel : PopupViewModel<TReturnable>
@@ -140,83 +98,144 @@ namespace AwaitablePopups.Services
 			return await modalViewModel.Returnable.Task;
 		}
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TSyncActionResult>(Func<TSyncActionResult> action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
+		/// <summary>
+		/// Used to provide a minimum wait time to any task.
+		/// </summary>
+		/// <param name="returnableTask">The task you wish to await</param>
+		/// <param name="millisecondsDelay">Delay you wish to add</param>
+		/// <returns></returns>
+		public async Task ForceMinimumWaitTime(Task returnableTask, int millisecondsDelay)
 		{
-			return await WrapReturnableFuncInLoader(action, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
+			Task initialTime = Task.Delay(millisecondsDelay);
+			await Task.WhenAll(initialTime, returnableTask);
 		}
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TSyncActionResult>(Func<TSyncActionResult> action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
+		/// <summary>
+		/// Used to provide a minimum wait time to any task with a return value
+		/// </summary>
+		/// <typeparam name="TAsyncActionResult">the type for what the task returns</typeparam>
+		/// <param name="returnableTask">The task you wish to await</param>
+		/// <param name="millisecondsDelay">Delay you wish to add</param>
+		/// <returns></returns>
+		public async Task<TAsyncActionResult> ForceMinimumWaitTime<TAsyncActionResult>(Task<TAsyncActionResult> returnableTask, int millisecondsDelay)
+		{
+			Task initialTime = Task.Delay(millisecondsDelay);
+			await Task.WhenAll(initialTime, returnableTask);
+			return returnableTask.Result;
+		}
+
+		public async Task WrapTaskInLoader(Task action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
+		{
+			await WrapTaskInLoader<LoaderPopupPage>(action, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+		}
+
+		public async Task WrapTaskInLoader<TPopupPage>(Task action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
+			where TPopupPage : PopupPage, IGenericViewModel<LoaderViewModel>, new()
+		{
+			Task PaddedTaskTime = ForceMinimumWaitTime(action, 1000);
+			ConstructLoaderAndDisplay<TPopupPage>(PaddedTaskTime, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+			await PaddedTaskTime;
+		}
+
+		public async Task<TAsyncActionResult> WrapReturnableTaskInLoader<TAsyncActionResult>(Task<TAsyncActionResult> action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
+		{
+			return await WrapReturnableTaskInLoader<TAsyncActionResult, LoaderPopupPage>(action, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+		}
+
+		public async Task<TAsyncActionResult> WrapReturnableTaskInLoader<TAsyncActionResult, TPopupPage>(Task<TAsyncActionResult> action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
+			where TPopupPage : PopupPage, IGenericViewModel<LoaderViewModel>, new()
+		{
+			ConstructLoaderAndDisplay<TPopupPage>(action, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+			await action;
+			return action.Result;
+		}
+
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TSyncActionResult>(Func<TSyncActionResult> action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
+		{
+			return await WrapReturnableFuncInLoader<TSyncActionResult, LoaderPopupPage>(action, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+		}
+
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TSyncActionResult, TPopupPage>(Func<TSyncActionResult> action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
+			where TPopupPage : PopupPage, IGenericViewModel<LoaderViewModel>, new()
 		{
 			Task<TSyncActionResult> actionResult = Task.Run(action);
-			return await WrapReturnableTaskInLoader(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+			return await WrapReturnableTaskInLoader<TSyncActionResult, TPopupPage>(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TSyncActionResult>(Func<TArgument1, TSyncActionResult> action, TArgument1 argument1, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TSyncActionResult>(Func<TArgument1, TSyncActionResult> action, TArgument1 argument1, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
 		{
-			return await WrapReturnableFuncInLoader(action, argument1, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
+			return await WrapReturnableFuncInLoader<TArgument1, TSyncActionResult, LoaderPopupPage>(action, argument1, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TSyncActionResult>(Func<TArgument1, TSyncActionResult> action, TArgument1 argument1, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TSyncActionResult, TPopupPage>(Func<TArgument1, TSyncActionResult> action, TArgument1 argument1, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
+			where TPopupPage : PopupPage, IGenericViewModel<LoaderViewModel>, new()
 		{
 			Task<TSyncActionResult> actionResult = Task.Run(() => action.Invoke(argument1));
-			return await WrapReturnableTaskInLoader(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+			return await WrapReturnableTaskInLoader<TSyncActionResult, TPopupPage>(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TSyncActionResult>(Func<TArgument1, TArgument2, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
+
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TSyncActionResult>(Func<TArgument1, TArgument2, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
 		{
-			return await WrapReturnableFuncInLoader(action, argument1, argument2, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
+			return await WrapReturnableFuncInLoader<TArgument1, TArgument2, TSyncActionResult, LoaderPopupPage>(action, argument1, argument2, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TSyncActionResult>(Func<TArgument1, TArgument2, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TSyncActionResult, TPopupPage>(Func<TArgument1, TArgument2, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
+			where TPopupPage : PopupPage, IGenericViewModel<LoaderViewModel>, new()
 		{
 			Task<TSyncActionResult> actionResult = Task.Run(() => action.Invoke(argument1, argument2));
-			return await WrapReturnableTaskInLoader(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+			return await WrapReturnableTaskInLoader<TSyncActionResult, TPopupPage>(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
 		{
-			return await WrapReturnableFuncInLoader(action, argument1, argument2, argument3, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
+			return await WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TSyncActionResult, LoaderPopupPage>(action, argument1, argument2, argument3, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TSyncActionResult, TPopupPage>(Func<TArgument1, TArgument2, TArgument3, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
+			where TPopupPage : PopupPage, IGenericViewModel<LoaderViewModel>, new()
 		{
 			Task<TSyncActionResult> actionResult = Task.Run(() => action.Invoke(argument1, argument2, argument3));
-			return await WrapReturnableTaskInLoader(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+			return await WrapReturnableTaskInLoader<TSyncActionResult, TPopupPage>(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
 		{
-			return await WrapReturnableFuncInLoader(action, argument1, argument2, argument3, argument4, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
+			return await WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TSyncActionResult, LoaderPopupPage>(action, argument1, argument2, argument3, argument4, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TSyncActionResult, TPopupPage>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
+			where TPopupPage : PopupPage, IGenericViewModel<LoaderViewModel>, new()
 		{
 			Task<TSyncActionResult> actionResult = Task.Run(() => action.Invoke(argument1, argument2, argument3, argument4));
-			return await WrapReturnableTaskInLoader(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+			return await WrapReturnableTaskInLoader<TSyncActionResult, TPopupPage>(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, TArgument5 argument5, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, TArgument5 argument5, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
 		{
-			return await WrapReturnableFuncInLoader(action, argument1, argument2, argument3, argument4, argument5, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
+			return await WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TSyncActionResult, LoaderPopupPage>(action, argument1, argument2, argument3, argument4, argument5, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, TArgument5 argument5, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TSyncActionResult, TPopupPage>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, TArgument5 argument5, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
+			where TPopupPage : PopupPage, IGenericViewModel<LoaderViewModel>, new()
 		{
 			Task<TSyncActionResult> actionResult = Task.Run(() => action.Invoke(argument1, argument2, argument3, argument4, argument5));
-			return await WrapReturnableTaskInLoader(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+			return await WrapReturnableTaskInLoader<TSyncActionResult, TPopupPage>(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TArgument6, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TArgument6, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, TArgument5 argument5, TArgument6 argument6, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour)
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TArgument6, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TArgument6, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, TArgument5 argument5, TArgument6 argument6, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
 		{
-			return await WrapReturnableFuncInLoader(action, argument1, argument2, argument3, argument4, argument5, argument6, loaderColour, loaderPopupColour, reasonsForLoader, textColour, 2000);
+			return await WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TArgument6, TSyncActionResult, LoaderPopupPage>(action, argument1, argument2, argument3, argument4, argument5, argument6, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
 
-		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TArgument6, TSyncActionResult>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TArgument6, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, TArgument5 argument5, TArgument6 argument6, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
+		public async Task<TSyncActionResult> WrapReturnableFuncInLoader<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TArgument6, TSyncActionResult, TPopupPage>(Func<TArgument1, TArgument2, TArgument3, TArgument4, TArgument5, TArgument6, TSyncActionResult> action, TArgument1 argument1, TArgument2 argument2, TArgument3 argument3, TArgument4 argument4, TArgument5 argument5, TArgument6 argument6, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons = 2000)
+			where TPopupPage : PopupPage, IGenericViewModel<LoaderViewModel>, new()
 		{
 			Task<TSyncActionResult> actionResult = Task.Run(() => action.Invoke(argument1, argument2, argument3, argument4, argument5, argument6));
-			return await WrapReturnableTaskInLoader(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
+			return await WrapReturnableTaskInLoader<TSyncActionResult, TPopupPage>(actionResult, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
 		}
+
 
 		private LoaderViewModel ConstructLoaderModal(Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
 		{
@@ -229,32 +248,20 @@ namespace AwaitablePopups.Services
 			};
 		}
 
-		private void ConstructLoaderAndDisplay(Task action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
+		private void ConstructLoaderAndDisplay<TPopupPage>(Task action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons) where TPopupPage : PopupPage, IGenericViewModel<LoaderViewModel>, new()
 		{
 			LoaderViewModel loaderWaiting = ConstructLoaderModal(loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
-			action.GetAwaiter().OnCompleted(() => Device.BeginInvokeOnMainThread(() => loaderWaiting.SafeCloseModal<LoaderPopupPage>()));
+			action.GetAwaiter().OnCompleted(() => Device.BeginInvokeOnMainThread(() => loaderWaiting.SafeCloseModal<TPopupPage>()));
 			if (!action.IsCompleted)
 			{
-				LoaderAttachAndPush(loaderWaiting).SafeFireAndForget();
+				LoaderAttachAndPush<TPopupPage>(loaderWaiting).SafeFireAndForget();
 			}
 		}
 
-		private async Task LoaderAttachAndPush(LoaderViewModel loaderWaiting)
+		private async Task LoaderAttachAndPush<TPopupPage>(LoaderViewModel loaderWaiting) where TPopupPage : PopupPage, IGenericViewModel<LoaderViewModel>, new()
 		{
-			var popupModal = AttachViewModel(CreatePopupPage<LoaderPopupPage>(), loaderWaiting);
+			var popupModal = AttachViewModel(CreatePopupPage<TPopupPage>(), loaderWaiting);
 			await Device.InvokeOnMainThreadAsync(() => s_popupNavigation.PushAsync(popupModal));
-		}
-
-		[Obsolete("Now calls WrapReturnableTaskInLoader as functionality has been made equal")]
-		private void ConstructTCSSafeLoaderAndDisplay(Task action, Color loaderColour, Color loaderPopupColour, List<string> reasonsForLoader, Color textColour, int millisecondsBetweenReasons)
-		{
-			ConstructLoaderAndDisplay(action, loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
-			//LoaderViewModel loaderWaiting = ConstructLoaderModal(loaderColour, loaderPopupColour, reasonsForLoader, textColour, millisecondsBetweenReasons);
-			//action.GetAwaiter().OnCompleted(() => Device.BeginInvokeOnMainThread(() => loaderWaiting.SafeCloseModal<LoaderPopupPage>()));
-			//if (!action.IsCompleted)
-			//{
-			//	LoaderAttachAndPush(loaderWaiting).SafeFireAndForget();
-			//}
 		}
 	}
 }

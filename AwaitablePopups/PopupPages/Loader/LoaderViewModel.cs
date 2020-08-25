@@ -90,10 +90,10 @@ namespace AwaitablePopups.PopupPages.Loader
 			bool pushChosenToBack(string reasons) => reasons.Equals(MainPopupInformation);
 		}
 
-		public override void SafeCloseModal<TPopupType>()
+		public override void SafeCloseModal<TPopupPage>()
 		{
 			TextColourToken.Cancel();
-			base.SafeCloseModal<LoaderPopupPage>(true);
+			base.SafeCloseModal<TPopupPage>(true);
 		}
 	}
 }
