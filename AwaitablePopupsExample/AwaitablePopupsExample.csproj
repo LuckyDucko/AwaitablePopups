@@ -21,6 +21,6 @@
     <Folder Include="FakeLogin\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="4.2.0" />
+    <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="5.0.0" />
   </ItemGroup>
 </Project>
