@@ -12,6 +12,7 @@ using System.Threading;
 using AwaitablePopups.PopupPages.EntryInput;
 using AwaitablePopups.PopupPages.Login;
 using System.Windows.Input;
+using AwaitablePopups.PopupPages.Loader;
 
 namespace AwaitablePopupsExample.FakeLogin
 {
@@ -69,7 +70,9 @@ namespace AwaitablePopupsExample.FakeLogin
 				await EntryInputViewModel.AutoGenerateBasicPopup(Color.WhiteSmoke, Color.Red, "Cancel", Color.WhiteSmoke, Color.Green, "Submit", Color.DimGray, "Text input Example", string.Empty);
 				var dualresponseinput = await DualResponseViewModel.AutoGenerateBasicPopup(Color.WhiteSmoke, Color.Red, "Okay", Color.WhiteSmoke, Color.Green, "Looks Good!", Color.DimGray, "This is an example of a dual response popup page", "thumbsup.png");
 				dualresponseinput = dualresponseinput == await PopupService.WrapReturnableFuncInLoader(LongRunningFunction, 6000, dualresponseinput, Color.Red, Color.White, LoadingReasons(), Color.Black);
-				return await PopupService.WrapReturnableTaskInLoader(NeedlessTestAbstraction(dualresponseinput), Color.Blue, Color.White, LoadingReasons(), Color.Black);
+				await PopupService.WrapReturnableTaskInLoader<bool, LoaderPopupPage>(NeedlessSpinnerOfAFunction(1000, true), Color.Blue, Color.White, LoadingReasons(), Color.Black);
+				return await NeedlessTestAbstraction(dualresponseinput);
+
 			}
 			catch (Exception ex)
 			{
@@ -86,6 +89,13 @@ namespace AwaitablePopupsExample.FakeLogin
 				Mobile = username;
 				Password = password;
 			}
+		}
+
+
+		private async Task<bool> NeedlessSpinnerOfAFunction(int MillisecondDelay, bool pointlessBoolean)
+		{
+			await Task.Delay(MillisecondDelay);
+			return pointlessBoolean;
 		}
 
 		private async Task<bool> NeedlessTestAbstraction(bool loginResult)

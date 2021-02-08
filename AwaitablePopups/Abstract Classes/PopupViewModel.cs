@@ -111,6 +111,7 @@ namespace AwaitablePopups.AbstractClasses
 			}
 			finally
 			{
+
 				PopupService.PopAsync<TPopupType>();
 			}
 		}
