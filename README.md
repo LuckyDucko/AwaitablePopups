@@ -99,7 +99,7 @@ var (username, password) = await LoginViewModel.AutoGenerateBasicPopup(Color.Whi
 
 or, to return from the loader a value
 ```csharp
-await PopupService.WrapReturnableTaskInLoader<bool>(IndepthCheckAgainstDatabase(), Color.Blue, Color.White, LoadingReasons(), Color.Black);
+await PopupService.WrapReturnableTaskInLoader<bool, LoaderPopupPage>(IndepthCheckAgainstDatabase(), Color.Blue, Color.White, LoadingReasons(), Color.Black);
 ```
 
 you can also add in synchronous functions, however they are wrapped in a task
