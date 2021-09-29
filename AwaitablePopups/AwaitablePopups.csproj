@@ -44,7 +44,7 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="5.0.2" />
-		<PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.10" />
+		<PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.13" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="PopupPages\Loader\" />
