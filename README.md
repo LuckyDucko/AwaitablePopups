@@ -14,11 +14,8 @@
 
 ## Table of Contents
 
-**Codacy**  [![Codacy Badge](https://api.codacy.com/project/badge/Grade/609f811983454f5babd100dabde256c1)](https://app.codacy.com/manual/LuckyDucko/AwaitablePopups?utm_source=github.com&utm_medium=referral&utm_content=LuckyDucko/AwaitablePopups&utm_campaign=Badge_Grade_Settings)
-**NuGet** [![nuget](https://img.shields.io/nuget/v/AwaitablePopups.svg)](https://www.nuget.org/packages/AwaitablePopups/)
-**CodeFactor** [![CodeFactor](https://www.codefactor.io/repository/github/luckyducko/awaitablepopups/badge)](https://www.codefactor.io/repository/github/luckyducko/awaitablepopups)
-**Fuget** [![AwaitablePopups on fuget.org](https://www.fuget.org/packages/AwaitablePopups/badge.svg)](https://www.fuget.org/packages/AwaitablePopups)
-(Use Fuget to see API differences between each package.)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/AwaitablePopups.svg)](https://www.nuget.org/packages/AwaitablePopups/)
+[![nuget](https://img.shields.io/nuget/v/AwaitablePopups.svg)](https://www.nuget.org/packages/AwaitablePopups/)
 
 https://www.fuget.org/packages/AwaitablePopups/badges
 * [About the Project](#about-the-project)
