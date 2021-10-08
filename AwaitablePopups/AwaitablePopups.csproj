@@ -16,6 +16,7 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
 		<Summary>Async/Await Popup Modals and dialogs For Xamarin Forms</Summary>
 		<PackageReleaseNotes>Updated Packages, also changed sample project to remove bad examples </PackageReleaseNotes>
 		<PackOnBuild>true</PackOnBuild>
+		<ReleaseVersion>0.2</ReleaseVersion>
 	</PropertyGroup>
 	<PropertyGroup>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -43,8 +44,8 @@ Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
 		<Compile Remove="Class1.cs" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="5.0.2" />
-		<PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.10" />
+		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.1" />
+		<PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.13" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="PopupPages\Loader\" />

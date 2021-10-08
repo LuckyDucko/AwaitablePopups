@@ -86,6 +86,7 @@ namespace AwaitablePopups.Services
 			where TViewModel : BasePopupViewModel
 		{
 			popupPage.SetViewModel(viewModel);
+			viewModel.RunOnAttachment<TPopupPage>(popupPage);
 			return popupPage;
 		}
 

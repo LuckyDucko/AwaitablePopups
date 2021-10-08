@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 using AwaitablePopups.Interfaces;
 
-using Xamarin.Forms.Internals;
-
 namespace AwaitablePopups.AbstractClasses
 {
 	public abstract class PopupViewModel<TReturnable> : BasePopupViewModel, IPopupViewModel<TReturnable>
