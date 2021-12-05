@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<PackageVersion>1.1.5</PackageVersion>
+		<Authors>Tyson Hooker</Authors>
+		<NeutralLanguage>en-AU</NeutralLanguage>
+		<Description>Create your own DisplayAlerts using XAML,
+or use the DisplayAlerts,LoaderDialogs and LoginViews that's included!
+Powered by AsyncAwaitBestPractices and Rg.Plugins.Popup</Description>
+		<PackageId>AwaitablePopups</PackageId>
+		<Owners>LuckyDucko</Owners>
+		<PackageProjectUrl>https://github.com/LuckyDucko/AwaitablePopups</PackageProjectUrl>
+		<PackageTags>xamarin-forms async popup MVVM custom-popup dialogs userdialogs xamarin popup-page loader awaitable-popups</PackageTags>
+		<Title>Awaitable Popups</Title>
+		<Summary>Async/Await Popup Modals and dialogs For Xamarin Forms</Summary>
+		<PackageReleaseNotes>Updated Packages, also changed sample project to remove bad examples </PackageReleaseNotes>
+		<PackOnBuild>true</PackOnBuild>
+		<ReleaseVersion>0.2</ReleaseVersion>
+	</PropertyGroup>
+	<PropertyGroup>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<RepositoryUrl>https://github.com/LuckyDucko/AwaitablePopups</RepositoryUrl>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+		<LangVersion>latest</LangVersion>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<NoStdLib>false</NoStdLib>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<LangVersion>latest</LangVersion>
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<NoStdLib>false</NoStdLib>
+	</PropertyGroup>
+	<PropertyGroup>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="Class1.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.1" />
+		<PackageReference Include="Rg.Plugins.Popup" Version="2.0.0.13" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="PopupPages\Loader\" />
+		<Folder Include="Structs\" />
+		<Folder Include="PopupPages\TextInput\" />
+		<Folder Include="PopupPages\Login\" />
+		<Folder Include="PopupPages\EntryInput\" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove="nuget.config" />
+		<None Remove="PopupPages\TextInput\EntryInputPopupPage.xaml.cs~" />
+		<None Remove="**\*~" />
+	</ItemGroup>
+</Project>
